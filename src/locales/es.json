@@ -1,0 +1,21 @@
+{
+  "sign_in_title": "Iniciar sesión",
+  "sign_in_email_label": "Correo electrónico",
+  "sign_in_password_label": "Contraseña",
+  "sign_in_button": "Iniciar sesión",
+  "sign_in_sign_up_prompt": "¿No tienes una cuenta?",
+  "sign_in_sign_up_link": "Regístrate",
+  "sign_in_forgot_password_prompt": "¿Olvidaste tu contraseña?",
+  "sign_in_forgot_password_link": "Restablecer contraseña",
+  "sign_in_google_failure": "¡La autenticación de Google falló!",
+
+  "sign_up_title": "Registrarse",
+  "sign_up_email_label": "Correo electrónico",
+  "sign_up_password_label": "Contraseña",
+  "sign_up_password_confirmation_label": "Confirmación de contraseña",
+  "sign_up_button": "Registrarse",
+  "sign_up_sign_in_prompt": "¿Ya tienes una cuenta?",
+  "sign_up_sign_in_link": "Iniciar sesión",
+
+  "sign_out_button": "Cerrar sesión"
+}

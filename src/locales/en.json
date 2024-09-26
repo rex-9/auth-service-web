@@ -1,0 +1,21 @@
+{
+  "sign_in_title": "Login",
+  "sign_in_email_label": "Email",
+  "sign_in_password_label": "Password",
+  "sign_in_button": "Login",
+  "sign_in_sign_up_prompt": "Don't have an account?",
+  "sign_in_sign_up_link": "Sign Up",
+  "sign_in_forgot_password_prompt": "Forgot your password?",
+  "sign_in_forgot_password_link": "Reset Password",
+  "sign_in_google_failure": "Google authentication failed!",
+
+  "sign_up_title": "Register",
+  "sign_up_email_label": "Email",
+  "sign_up_password_label": "Password",
+  "sign_up_password_confirmation_label": "Password Confirmation",
+  "sign_up_button": "Register",
+  "sign_up_sign_in_prompt": "Already have an account?",
+  "sign_up_sign_in_link": "Sign In",
+
+  "sign_out_button": "Sign Out"
+}
