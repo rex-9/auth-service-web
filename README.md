@@ -1,18 +1,18 @@
-# creator-alliance-web
+# auth-service-web
 
 <a name="readme-top"></a>
 
 <div align="center">
-  <h3><b>Creator Alliance Web</b></h3>
+  <h3><b>Auth Service Web</b></h3>
 </div>
 
 <!-- TABLE OF CONTENTS -->
 
 # 📗 Table of Contents
 
-- [creator-alliance-web](#creator-alliance-web)
+- [auth-service-web](#auth-service-web)
 - [📗 Table of Contents](#-table-of-contents)
-- [📖 Creator Alliance Web ](#-creator-alliance-web-)
+- [📖 Auth Service Web ](#-auth-service-web-)
   - [🛠 Built With ](#-built-with-)
     - [Tech Stack ](#tech-stack-)
   - [💻 Getting Started ](#-getting-started-)
@@ -22,9 +22,9 @@
 
 <!-- PROJECT DESCRIPTION -->
 
-# 📖 Creator Alliance Web <a name="about-project"></a>
+# 📖 Auth Service Web <a name="about-project"></a>
 
-**Creator Alliance Web** is the frontend web interface for [Creator Alliance](https://google.com/) to contribute the Creator-Sponsor society.
+**Auth Service Web** is the frontend web interface for [Auth Service](https://google.com/) to contribute the society.
 
 ## 🛠 Built With <a name="built-with"></a>
 
@@ -76,13 +76,13 @@ Clone this repository or download as a zip file to your desired folder:
 
 ```sh
   cd my-folder
-  git clone git@github.com:creator-alliance/creator-alliance-web.git
+  git clone git@github.com:rex-9/auth-service-web.git
 ```
 
 Enter the Root level of the project
 
 ```sh
-  cd creator-alliance-web
+  cd auth-service-web
 ```
 
 Install the dependencies using yarn or npm:

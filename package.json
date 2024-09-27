@@ -1,5 +1,5 @@
 {
-  "name": "creator-alliance-web",
+  "name": "auth-service-web",
   "private": true,
   "version": "0.0.0",
   "type": "module",
