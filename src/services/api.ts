@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import AppConfig from "../AppConfig";
 import { useLoading } from "../contexts/LoadingContext";
 import { useEffect } from "react";
+import { useAuth } from "../contexts";
 
 interface ApiResponse<T> {
   data: T | null;
@@ -69,10 +70,14 @@ export const api = {
 // Custom hook to set up axios interceptor
 export const useAxiosInterceptor = () => {
   const { setLoading } = useLoading();
+  const { token } = useAuth();
 
   useEffect(() => {
     const requestInterceptor = axiosInstance.interceptors.request.use(
       (config) => {
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
         setLoading(true);
         return config;
       },
@@ -97,5 +102,5 @@ export const useAxiosInterceptor = () => {
       axiosInstance.interceptors.request.eject(requestInterceptor);
       axiosInstance.interceptors.response.eject(responseInterceptor);
     };
-  }, [setLoading]);
+  }, [setLoading, token]);
 };

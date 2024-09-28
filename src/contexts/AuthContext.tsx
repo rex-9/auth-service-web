@@ -4,6 +4,7 @@ import { User } from "../models";
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  token: string | null;
   login: (token: string, user: User) => void;
   logout: () => void;
 }
@@ -13,25 +14,31 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+  const [token, setToken] = useState<string | null>(() => {
     // Check local storage for token
-    return !!LocalStorageService.getItem<string>("token");
+    return LocalStorageService.getItem<string>("token");
+  });
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return !!token;
   });
 
   const login = (token: string, user: User) => {
     LocalStorageService.setItem<string>("token", token);
     LocalStorageService.setItem<User>("user", user);
+    setToken(token);
     setIsAuthenticated(true);
   };
 
   const logout = () => {
     LocalStorageService.removeItem("token");
     LocalStorageService.removeItem("user");
+    setToken(null);
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

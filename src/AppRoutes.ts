@@ -27,6 +27,7 @@ class AppRoutes {
       RESET_PASSWORD: "/password/reset",
     },
     protected: {
+      GET_CURRENT_USER: "/users/current", // Protected API call Example in Home component
       // Example: USER_PROFILE: `${AppRoutes.PROTECTED_PREFIX}/user/profile`,
     },
   };
