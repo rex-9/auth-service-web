@@ -9,6 +9,7 @@ import {
   ConfirmEmail,
   ForgotPassword,
   ResetPassword,
+  NotFound, // Import NotFound component
 } from "./pages";
 import { PublicRoute, ProtectedRoute, LoadingOverlay } from "./components";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -51,6 +52,7 @@ const App: React.FC = () => {
                 path={AppRoutes.client.protected.HOME}
                 element={<ProtectedRoute element={<Home />} />}
               />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Router>
         </LoadingProvider>

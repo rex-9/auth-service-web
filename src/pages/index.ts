@@ -6,3 +6,4 @@ export { default as SignOut } from "./auth/SignOut";
 export { default as SignUp } from "./auth/SignUp";
 export { default as Home } from "./Home";
 export { default as PageLayout } from "./PageLayout";
+export { default as NotFound } from "./NotFound";
