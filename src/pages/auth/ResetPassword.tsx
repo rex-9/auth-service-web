@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { api } from "../../services/api";
-import AppRoutes from "../../AppRoutes";
 import { AlertMessage, PrimaryBtn, TextInput } from "../../components";
 import { PageLayout } from "../../pages";
 import FormContainer from "../../components/FormContainer";
+import authService from "../../services/authService";
 
 const ResetPassword: React.FC = () => {
   const location = useLocation();
@@ -19,27 +18,17 @@ const ResetPassword: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await api.put<{
-      status: {
-        code: number;
-        success: boolean;
-        message: string;
-        error?: string;
-      };
-    }>(AppRoutes.server.public.RESET_PASSWORD, {
-      user: {
-        reset_password_token: token,
+    if (token) {
+      await authService.resetPassword(
+        token,
         password,
-        password_confirmation: passwordConfirmation,
-      },
-    });
-    const { status } = response.data || {};
-    if (status?.success) {
-      setError("");
-      setMessage(status.message);
-      navigate(AppRoutes.client.public.SIGN_IN);
+        passwordConfirmation,
+        setError,
+        setMessage,
+        navigate
+      );
     } else {
-      setError(status?.error ?? "An error occurred during resending email.");
+      setError(`Invalid reset password token: ${token}`);
     }
   };
 

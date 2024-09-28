@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AppRoutes from "../../AppRoutes";
 import { useAuth } from "../../contexts";
-import { api } from "../../services/api";
 import {
   GoogleSignIn,
   TextInput,
@@ -11,9 +10,9 @@ import {
   FormContainer,
 } from "../../components";
 import PageLayout from "../PageLayout";
-import { User } from "../../models";
 import { useTranslation } from "react-i18next";
 import { LocaleKeys } from "../../locales/locales";
+import authService from "../../services/authService";
 
 const SignIn: React.FC = () => {
   const { t } = useTranslation();
@@ -27,30 +26,8 @@ const SignIn: React.FC = () => {
       const params = new URLSearchParams(location.search);
       const authToken = params.get("auth_token");
       const errorParam = params.get("error");
-
       if (authToken) {
-        try {
-          const response = await api.post<{
-            status: {
-              code: number;
-              success: boolean;
-              message: string;
-              error?: string;
-            };
-            data: { user: User; token: string };
-          }>(AppRoutes.server.public.SIGN_IN_TOKEN, {
-            token: authToken,
-          });
-          const { status, data } = response.data || {};
-          if (status?.success && data) {
-            setError("");
-            login(data.token, data.user); // Update authentication state with token
-          } else {
-            setError(status?.error ?? "An error occurred during login.");
-          }
-        } catch (error) {
-          setError("Failed to log in with the provided token.");
-        }
+        await authService.signInWithToken(authToken, setError, login);
       } else if (errorParam) {
         setError(errorParam);
       }
@@ -61,48 +38,12 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await api.post<{
-        status: {
-          code: number;
-          success: boolean;
-          message: string;
-          error?: string;
-        };
-        data: { user: User; token: string };
-      }>(AppRoutes.server.public.SIGN_IN_EMAIL, { user: { email, password } });
-      const { status, data } = response.data || {};
-      if (status?.success && data) {
-        setError("");
-        login(data.token, data.user); // Update authentication state with token
-      } else {
-        setError(status?.error ?? "An error occurred during login.");
-      }
-    } catch (error) {
-      setError(`An error occurred during login. error: ${error}`);
-    }
+    await authService.signInWithEmail(email, password, setError, login);
   };
 
   const handleGoogleSuccess = async (response: any) => {
     if (response.credential) {
-      const res = await api.post<{
-        status: {
-          code: number;
-          success: boolean;
-          message: string;
-          error?: string;
-        };
-        data: { user: User; token: string };
-      }>(AppRoutes.server.public.SIGN_IN_GOOGLE, {
-        token: response.credential,
-      });
-      const { status, data } = res.data || {};
-      if (status?.success && data) {
-        setError("");
-        login(data.token, data.user); // Update authentication state with token
-      } else {
-        setError(status?.error ?? "An error occurred during login.");
-      }
+      await authService.signInWithGoogle(response.credential, setError, login);
     }
   };
 

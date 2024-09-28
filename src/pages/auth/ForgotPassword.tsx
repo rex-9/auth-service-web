@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { api } from "../../services/api";
-import AppRoutes from "../../AppRoutes";
 import {
   AlertMessage,
   FormContainer,
@@ -9,6 +7,7 @@ import {
 } from "../../components";
 import { useCountdown } from "../../utils";
 import { PageLayout } from "..";
+import authService from "../../services/authService";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -18,22 +17,12 @@ const ForgotPassword: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await api.post<{
-      status: {
-        code: number;
-        success: boolean;
-        message: string;
-        error?: string;
-      };
-    }>(AppRoutes.server.public.FORGOT_PASSWORD, { email });
-    const { status } = response.data || {};
-    if (status?.success) {
-      setError("");
-      setMessage(status.message);
-      startCountdown();
-    } else {
-      setError(status?.error ?? "Failed to send password reset email.");
-    }
+    await authService.sendForgotPasswordMail(
+      email,
+      setError,
+      setMessage,
+      startCountdown
+    );
   };
 
   return (

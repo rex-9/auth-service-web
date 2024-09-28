@@ -6,7 +6,6 @@ class AppRoutes {
       SIGN_IN: "/signin",
       SIGN_UP: "/signup",
       CONFIRM_EMAIL: "/email/confirm",
-      VERIFY_EMAIL: "/email/verify",
       FORGOT_PASSWORD: "/password/forgot",
       RESET_PASSWORD: "/password/reset",
     },

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AppRoutes from "../../AppRoutes";
-import { api } from "../../services/api";
 import { useCountdown } from "../../utils";
 import { AlertMessage } from "../../components";
 import PageLayout from "../PageLayout";
+import authService from "../../services/authService";
 
 const ConfirmEmail: React.FC = () => {
   const location = useLocation();
@@ -15,22 +15,12 @@ const ConfirmEmail: React.FC = () => {
 
   const handleResendEmail = async () => {
     if (email && !isCooldown) {
-      const response = await api.post<{
-        status: {
-          code: number;
-          success: boolean;
-          message: string;
-          error?: string;
-        };
-      }>(`${AppRoutes.server.public.RESEND_VERIFY_EMAIL}`, { email });
-      const { status } = response.data || {};
-      if (status?.success) {
-        setError("");
-        setMessage(status.message);
-        startCountdown();
-      } else {
-        setError(status?.error ?? "An error occurred during resending email.");
-      }
+      await authService.resendConfirmationEmail(
+        email,
+        setError,
+        setMessage,
+        startCountdown
+      );
     }
   };
 

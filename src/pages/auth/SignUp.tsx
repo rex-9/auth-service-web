@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AppRoutes from "../../AppRoutes";
-import { api } from "../../services/api";
 import {
   AlertMessage,
   FormContainer,
@@ -11,6 +10,7 @@ import {
 import { PageLayout } from "..";
 import { useTranslation } from "react-i18next";
 import { LocaleKeys } from "../../locales/locales";
+import authService from "../../services/authService";
 
 const SignUp: React.FC = () => {
   const { t } = useTranslation();
@@ -22,22 +22,13 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await api.post<{ message: string }>(
-      AppRoutes.server.public.SIGN_UP,
-      {
-        user: {
-          email,
-          password,
-          password_confirmation: passwordConfirmation,
-        },
-      }
+    await authService.signUpWithEmail(
+      email,
+      password,
+      passwordConfirmation,
+      setError,
+      navigate
     );
-    if (error) {
-      setError(error);
-    } else {
-      setError("");
-      navigate(`${AppRoutes.client.public.CONFIRM_EMAIL}?email=${email}`);
-    }
   };
 
   return (

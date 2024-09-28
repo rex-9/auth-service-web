@@ -7,7 +7,6 @@ import {
   SignUp,
   SignOut,
   ConfirmEmail,
-  VerifyEmail,
   ForgotPassword,
   ResetPassword,
 } from "./pages";
@@ -27,10 +26,6 @@ const App: React.FC = () => {
               <Route
                 path={AppRoutes.client.public.CONFIRM_EMAIL}
                 element={<PublicRoute element={<ConfirmEmail />} />}
-              />
-              <Route
-                path={AppRoutes.client.public.VERIFY_EMAIL}
-                element={<PublicRoute element={<VerifyEmail />} />}
               />
               <Route
                 path={AppRoutes.client.public.FORGOT_PASSWORD}
