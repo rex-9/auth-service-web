@@ -1,5 +1,4 @@
 class AppRoutes {
-  private static readonly PUBLIC_PREFIX = "/public";
   // private static readonly PROTECTED_PREFIX = "/auth";
 
   static readonly client = {
@@ -19,14 +18,13 @@ class AppRoutes {
 
   static readonly server = {
     public: {
-      SIGN_IN_EMAIL: `${AppRoutes.PUBLIC_PREFIX}/signin/email`,
-      VERIFY_EMAIL: `${AppRoutes.PUBLIC_PREFIX}/email/verify`,
-      RESEND_VERIFY_EMAIL: `${AppRoutes.PUBLIC_PREFIX}/email/verify/resend`,
-      SIGN_IN_GOOGLE: `${AppRoutes.PUBLIC_PREFIX}/signin/google`,
-      SIGN_UP: `${AppRoutes.PUBLIC_PREFIX}/signup`,
-      FORGOT_PASSWORD: `${AppRoutes.PUBLIC_PREFIX}/password/forgot`,
-      RESET_PASSWORD: `${AppRoutes.PUBLIC_PREFIX}/password/reset`,
-      AUTH_VALIDATE: `${AppRoutes.PUBLIC_PREFIX}/validate`,
+      SIGN_UP: "/signup",
+      SIGN_IN_EMAIL: "/signin",
+      SIGN_IN_TOKEN: "/signin/token",
+      SIGN_IN_GOOGLE: "/signin/google",
+      RESEND_VERIFY_EMAIL: "/confirmation/resend",
+      FORGOT_PASSWORD: "/password/forgot",
+      RESET_PASSWORD: "/password/reset",
     },
     protected: {
       // Example: USER_PROFILE: `${AppRoutes.PROTECTED_PREFIX}/user/profile`,

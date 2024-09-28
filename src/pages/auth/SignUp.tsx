@@ -25,9 +25,11 @@ const SignUp: React.FC = () => {
     const { error } = await api.post<{ message: string }>(
       AppRoutes.server.public.SIGN_UP,
       {
-        email,
-        password,
-        password_confirmation: passwordConfirmation,
+        user: {
+          email,
+          password,
+          password_confirmation: passwordConfirmation,
+        },
       }
     );
     if (error) {

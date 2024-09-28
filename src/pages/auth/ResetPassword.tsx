@@ -9,7 +9,9 @@ import FormContainer from "../../components/FormContainer";
 const ResetPassword: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const token = new URLSearchParams(location.search).get("token");
+  const token = new URLSearchParams(location.search).get(
+    "reset_password_token"
+  );
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [message, setMessage] = useState<string | null>(null);
@@ -17,16 +19,27 @@ const ResetPassword: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data, error } = await api.post<{ message: string }>(
-      AppRoutes.server.public.RESET_PASSWORD,
-      { token, password, password_confirmation: passwordConfirmation }
-    );
-    if (error) {
-      setError(error);
-    } else {
+    const response = await api.put<{
+      status: {
+        code: number;
+        success: boolean;
+        message: string;
+        error?: string;
+      };
+    }>(AppRoutes.server.public.RESET_PASSWORD, {
+      user: {
+        reset_password_token: token,
+        password,
+        password_confirmation: passwordConfirmation,
+      },
+    });
+    const { status } = response.data || {};
+    if (status?.success) {
       setError("");
-      setMessage(data!.message);
+      setMessage(status.message);
       navigate(AppRoutes.client.public.SIGN_IN);
+    } else {
+      setError(status?.error ?? "An error occurred during resending email.");
     }
   };
 

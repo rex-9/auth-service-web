@@ -18,16 +18,21 @@ const ForgotPassword: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data, error } = await api.post<{ message: string }>(
-      AppRoutes.server.public.FORGOT_PASSWORD,
-      { email }
-    );
-    if (error) {
-      setError(error);
-    } else {
+    const response = await api.post<{
+      status: {
+        code: number;
+        success: boolean;
+        message: string;
+        error?: string;
+      };
+    }>(AppRoutes.server.public.FORGOT_PASSWORD, { email });
+    const { status } = response.data || {};
+    if (status?.success) {
       setError("");
-      setMessage(data!.message);
+      setMessage(status.message);
       startCountdown();
+    } else {
+      setError(status?.error ?? "Failed to send password reset email.");
     }
   };
 

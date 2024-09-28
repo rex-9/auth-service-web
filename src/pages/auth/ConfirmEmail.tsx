@@ -15,15 +15,21 @@ const ConfirmEmail: React.FC = () => {
 
   const handleResendEmail = async () => {
     if (email && !isCooldown) {
-      const { data, error } = await api.get<{ message: string }>(
-        `${AppRoutes.server.public.RESEND_VERIFY_EMAIL}?email=${email}`
-      );
-      if (error) {
-        setError(error);
-      } else {
+      const response = await api.post<{
+        status: {
+          code: number;
+          success: boolean;
+          message: string;
+          error?: string;
+        };
+      }>(`${AppRoutes.server.public.RESEND_VERIFY_EMAIL}`, { email });
+      const { status } = response.data || {};
+      if (status?.success) {
         setError("");
-        setMessage(data!.message);
+        setMessage(status.message);
         startCountdown();
+      } else {
+        setError(status?.error ?? "An error occurred during resending email.");
       }
     }
   };

@@ -25,7 +25,7 @@ const handleError = <T>(error: unknown): ApiResponse<T> => {
       console.error("Server Error:", error.response.data);
       return {
         data: error.response.data,
-        error: error.response.data.message || "An error occurred",
+        error: error.response.data.status.error || "An error occurred",
       };
     } else if (error.request) {
       // Request was made but no response received
