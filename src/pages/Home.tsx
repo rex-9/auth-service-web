@@ -1,13 +1,12 @@
 import { SignOutBtn } from "../components";
 import PageLayout from "./PageLayout";
-import LocalStorageService from "../services/LocalStorageService";
-import { User } from "../models";
+import { useAuth } from "../contexts";
 // import { useEffect } from "react";
 // import { api } from "../services/api";
 // import AppRoutes from "../AppRoutes";
 
 function Home() {
-  const user: User | null = LocalStorageService.getItem<User>("user");
+  const { currentUser } = useAuth();
 
   // Protected Api Call
   // useEffect(() => {
@@ -29,7 +28,7 @@ function Home() {
   return (
     <PageLayout>
       Home
-      {user && <p>Welcome, {user.email}!</p>} <SignOutBtn />
+      {currentUser && <p>Welcome, {currentUser.email}!</p>} <SignOutBtn />
     </PageLayout>
   );
 }

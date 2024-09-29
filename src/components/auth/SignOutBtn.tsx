@@ -1,30 +1,26 @@
 import React from "react";
 import { googleLogout } from "@react-oauth/google";
 import { useAuth } from "../../contexts";
-import LocalStorageService from "../../services/LocalStorageService";
-import { User } from "../../models";
 import { useTranslation } from "react-i18next";
 import { LocaleKeys } from "../../locales/locales";
+import authService from "../../services/authService";
 
 const SignOutBtn: React.FC = () => {
-  const { logout } = useAuth();
+  const { logout, currentUser } = useAuth();
   const { t } = useTranslation();
-  const user: User | null = LocalStorageService.getItem<User>("user");
 
-  const handleGoogleLogout = () => {
-    googleLogout();
+  const handleLogout = async () => {
+    await authService.signOut();
+    if (currentUser?.provider === "google") {
+      googleLogout();
+    }
     logout();
-  };
-
-  const handleNormalLogout = () => {
-    logout();
+    console.log("logged out successfully.");
   };
 
   return (
     <button
-      onClick={
-        user?.provider === "google" ? handleGoogleLogout : handleNormalLogout
-      }
+      onClick={handleLogout}
       className="text-primary-light dark:text-primary-dark"
     >
       {t(LocaleKeys.SignOutButton)}

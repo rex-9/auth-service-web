@@ -200,6 +200,21 @@ class AuthService {
       setError(`An error occurred during resetting password. error: ${error}`);
     }
   }
+
+  async signOut(): Promise<void> {
+    try {
+      const response = await api.delete<ApiAuthResponse<null>>(
+        AppRoutes.server.protected.SIGN_OUT
+      );
+      if (response.data?.status.success) {
+        console.log("user signed out from server successfully.");
+      } else {
+        console.log("server signout failed.");
+      }
+    } catch (error) {
+      console.log(`An error occurred during server sign out. error: ${error}`);
+    }
+  }
 }
 
 export default new AuthService();
