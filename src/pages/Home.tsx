@@ -1,6 +1,8 @@
 import { SignOutBtn } from "../components";
 import PageLayout from "./PageLayout";
 import { useAuth } from "../contexts";
+import assets from "../assets";
+import { Asset } from "../components";
 // import { useEffect } from "react";
 // import { api } from "../services/api";
 // import AppRoutes from "../AppRoutes";
@@ -25,9 +27,13 @@ function Home() {
   //   getCurrentUser();
   // }, []);
 
+  // console.log("currentUser ===>", currentUser);
+
   return (
     <PageLayout>
+      {<Asset asset={assets.icons.insta} className="w-8" />}
       Home
+      {<Asset asset={assets.images.banner} className="w-96" />}
       {currentUser && <p>Welcome, {currentUser.email}!</p>} <SignOutBtn />
     </PageLayout>
   );

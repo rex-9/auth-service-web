@@ -9,3 +9,4 @@ export { default as AlertMessage } from "./AlertMessage";
 export { default as ThemeToggle } from "./ThemeToggle";
 export { default as LanguageSwitcher } from "./LanguageSwitcher";
 export { default as LoadingOverlay } from "./LoadingOverlay";
+export { default as Asset } from "./Asset";
