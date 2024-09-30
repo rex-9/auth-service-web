@@ -10,3 +10,4 @@ export { default as ThemeToggle } from "./ThemeToggle";
 export { default as LanguageSwitcher } from "./LanguageSwitcher";
 export { default as LoadingOverlay } from "./LoadingOverlay";
 export { default as Asset } from "./Asset";
+export { default as VideoPlayer } from "./VideoPlayer";

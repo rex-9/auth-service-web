@@ -1,8 +1,7 @@
-import { SignOutBtn } from "../components";
+import { SignOutBtn, VideoPlayer, Asset } from "../components";
 import PageLayout from "./PageLayout";
 import { useAuth } from "../contexts";
 import assets from "../assets";
-import { Asset } from "../components";
 // import { useEffect } from "react";
 // import { api } from "../services/api";
 // import AppRoutes from "../AppRoutes";
@@ -10,7 +9,7 @@ import { Asset } from "../components";
 function Home() {
   const { currentUser } = useAuth();
 
-  // Protected Api Call
+  // Protected Api Call just for testing
   // useEffect(() => {
   //   const getCurrentUser = async () => {
   //     const response = await api.get<{
@@ -32,9 +31,19 @@ function Home() {
   return (
     <PageLayout>
       {<Asset asset={assets.icons.insta} className="w-8" />}
-      Home
       {<Asset asset={assets.images.banner} className="w-96" />}
-      {currentUser && <p>Welcome, {currentUser.email}!</p>} <SignOutBtn />
+      Home
+      {currentUser && <p>Welcome, {currentUser.email}!</p>}
+      <VideoPlayer
+        video={assets.videos.sample}
+        controls={true}
+        autoplay={false}
+        muted={false}
+        className="w-96"
+        // width="640px"
+        // height="360px"
+      />
+      <SignOutBtn />
     </PageLayout>
   );
 }
