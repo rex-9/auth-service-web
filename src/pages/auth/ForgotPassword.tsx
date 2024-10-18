@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   AlertMessage,
   FormContainer,
-  PrimaryBtn,
+  Button,
   TextInput,
 } from "../../components";
 import { useCountdown } from "../../utils";
@@ -38,9 +38,9 @@ const ForgotPassword: React.FC = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <PrimaryBtn type="submit" disabled={isCooldown}>
+        <Button type="submit" disabled={isCooldown}>
           {isCooldown ? `Re-send (${countdown}s)` : "Submit"}
-        </PrimaryBtn>
+        </Button>
       </FormContainer>
     </PageLayout>
   );

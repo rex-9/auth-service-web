@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AlertMessage, PrimaryBtn, TextInput } from "../../components";
+import { AlertMessage, Button, TextInput } from "../../components";
 import { PageLayout } from "../../pages";
 import FormContainer from "../../components/FormContainer";
 import authService from "../../services/authService";
@@ -53,7 +53,7 @@ const ResetPassword: React.FC = () => {
           onChange={(e) => setPasswordConfirmation(e.target.value)}
           required
         />
-        <PrimaryBtn type="submit">Submit</PrimaryBtn>
+        <Button type="submit">Submit</Button>
       </FormContainer>
     </PageLayout>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PrimaryBtn from "./PrimaryBtn";
+import Button from "./Button";
 import LocalStorageService from "../services/LocalStorageService";
 
 const ThemeToggle: React.FC = () => {
@@ -21,9 +21,9 @@ const ThemeToggle: React.FC = () => {
   };
 
   return (
-    <PrimaryBtn onClick={toggleTheme}>
+    <Button onClick={toggleTheme}>
       {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-    </PrimaryBtn>
+    </Button>
   );
 };
 

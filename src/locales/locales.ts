@@ -18,4 +18,6 @@ export enum LocaleKeys {
   SignUpSignInLink = "sign_up_sign_in_link",
 
   SignOutButton = "sign_out_button",
+
+  Home = "home",
 }

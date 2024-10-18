@@ -4,7 +4,7 @@ import AppRoutes from "../../AppRoutes";
 import {
   AlertMessage,
   FormContainer,
-  PrimaryBtn,
+  Button,
   TextInput,
 } from "../../components";
 import { PageLayout } from "..";
@@ -59,7 +59,7 @@ const SignUp: React.FC = () => {
           onChange={(e) => setPasswordConfirmation(e.target.value)}
           required
         />
-        <PrimaryBtn type="submit">{t(LocaleKeys.SignUpButton)}</PrimaryBtn>
+        <Button type="submit">{t(LocaleKeys.SignUpButton)}</Button>
         <p className="mt-4 text-gray-600 dark:text-gray-400">
           {t(LocaleKeys.SignUpSignInPrompt)}{" "}
           <Link

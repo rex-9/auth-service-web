@@ -17,5 +17,7 @@
   "sign_up_sign_in_prompt": "Already have an account?",
   "sign_up_sign_in_link": "Sign In",
 
-  "sign_out_button": "Sign Out"
+  "sign_out_button": "Sign Out",
+
+  "home": "Home"
 }

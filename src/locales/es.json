@@ -17,5 +17,8 @@
   "sign_up_sign_in_prompt": "¿Ya tienes una cuenta?",
   "sign_up_sign_in_link": "Iniciar sesión",
 
-  "sign_out_button": "Cerrar sesión"
+  "sign_out_button": "Cerrar sesión",
+
+  "home": "Inicio"
+
 }

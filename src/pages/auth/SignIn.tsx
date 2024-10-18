@@ -6,7 +6,7 @@ import {
   GoogleSignIn,
   TextInput,
   AlertMessage,
-  PrimaryBtn,
+  Button,
   FormContainer,
 } from "../../components";
 import PageLayout from "../PageLayout";
@@ -71,7 +71,7 @@ const SignIn: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <PrimaryBtn type="submit">{t(LocaleKeys.SignInButton)}</PrimaryBtn>
+        <Button type="submit">{t(LocaleKeys.SignInButton)}</Button>
         <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
           {t(LocaleKeys.SignInSignUpPrompt)}{" "}
           <Link
