@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts";
 import { useTranslation } from "react-i18next";
 import { LocaleKeys } from "../../locales/locales";
 import authService from "../../services/authService";
+import { Button } from "..";
 
 const SignOutBtn: React.FC = () => {
   const { logout, currentUser } = useAuth();
@@ -18,14 +19,7 @@ const SignOutBtn: React.FC = () => {
     console.log("logged out successfully.");
   };
 
-  return (
-    <button
-      onClick={handleLogout}
-      className="text-primary-light dark:text-primary-dark"
-    >
-      {t(LocaleKeys.SignOutButton)}
-    </button>
-  );
+  return <Button onClick={handleLogout}>{t(LocaleKeys.SignOutButton)}</Button>;
 };
 
 export default SignOutBtn;

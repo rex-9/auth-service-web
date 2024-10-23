@@ -12,3 +12,4 @@ export { default as LoadingOverlay } from "./LoadingOverlay";
 export { default as Asset } from "./Asset";
 export { default as VideoPlayer } from "./VideoPlayer";
 export { default as Typography } from "./Typography";
+export { default as LinkText } from "./LinkText";

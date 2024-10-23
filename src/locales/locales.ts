@@ -20,4 +20,5 @@ export enum LocaleKeys {
   SignOutButton = "sign_out_button",
 
   Home = "home",
+  GoBack = "go_back",
 }

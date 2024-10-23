@@ -18,7 +18,7 @@ const FormContainer: React.FC<FormContainerProps> = ({
     <form
       onSubmit={onSubmit}
       className={clsx(
-        "bg-white dark:bg-gray-800 p-6 rounded shadow-md",
+        "w-96 flex flex-col justify-center items-center bg-white dark:bg-gray-800 p-6 rounded shadow-md",
         className
       )}
     >

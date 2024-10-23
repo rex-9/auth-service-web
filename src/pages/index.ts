@@ -4,6 +4,7 @@ export { default as ConfirmEmail } from "./auth/ConfirmEmail";
 export { default as SignIn } from "./auth/SignIn";
 export { default as SignOut } from "./auth/SignOut";
 export { default as SignUp } from "./auth/SignUp";
+export { default as Root } from "./Root";
 export { default as Home } from "./Home";
 export { default as PageLayout } from "./PageLayout";
 export { default as NotFound } from "./NotFound";

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import AppRoutes from "../../AppRoutes";
 import { useCountdown } from "../../utils";
-import { AlertMessage } from "../../components";
+import { AlertMessage, LinkText } from "../../components";
 import PageLayout from "../PageLayout";
 import authService from "../../services/authService";
+import { LocaleKeys } from "../../locales/locales";
 
 const ConfirmEmail: React.FC = () => {
   const location = useLocation();
@@ -49,12 +50,10 @@ const ConfirmEmail: React.FC = () => {
         </p>
         <p>
           Did you enter your email address incorrectly?{" "}
-          <Link
+          <LinkText
             to={AppRoutes.client.public.SIGN_UP}
-            className="text-primary-light dark:text-primary-dark hover:underline"
-          >
-            Go back
-          </Link>
+            label={LocaleKeys.GoBack}
+          />
         </p>
       </div>
     </PageLayout>

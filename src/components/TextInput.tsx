@@ -23,7 +23,7 @@ const TextInput: React.FC<TextInputProps> = ({
   inputClassName,
 }) => {
   return (
-    <div className={clsx("mb-4", containerClassName)}>
+    <div className={clsx("mb-4 w-full", containerClassName)}>
       <label
         htmlFor={id}
         className="block text-sm font-medium text-text-light dark:text-text-dark"

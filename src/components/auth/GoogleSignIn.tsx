@@ -26,7 +26,9 @@ const GoogleSignIn: React.FC<GoogleSignInProps> = ({
             type="error"
             message="It looks like an ad blocker or privacy extension is blocking the Google login. Please disable it and try again."
           />
-          <Button onClick={() => window.location.reload()}>Retry</Button>
+          <Button variant="primary" onClick={() => window.location.reload()}>
+            Retry
+          </Button>
         </div>
       ) : (
         <GoogleLogin onSuccess={onSuccess} onError={handleLoginError} />

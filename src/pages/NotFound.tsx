@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
 import AppRoutes from "../AppRoutes";
+import { LinkText } from "../components";
 import { useAuth } from "../contexts";
 import PageLayout from "./PageLayout";
+import { LocaleKeys } from "../locales/locales";
 
 const NotFound = () => {
   const { token } = useAuth();
@@ -9,15 +10,14 @@ const NotFound = () => {
   return (
     <PageLayout>
       404 Not Found
-      <Link
+      <LinkText
         to={
           token
             ? AppRoutes.client.protected.HOME
             : AppRoutes.client.public.SIGN_IN
         }
-      >
-        Go Back
-      </Link>
+        label={LocaleKeys.GoBack}
+      />
     </PageLayout>
   );
 };

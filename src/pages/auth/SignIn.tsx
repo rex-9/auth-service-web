@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import AppRoutes from "../../AppRoutes";
 import { useAuth } from "../../contexts";
 import {
@@ -8,6 +7,7 @@ import {
   AlertMessage,
   Button,
   FormContainer,
+  LinkText,
 } from "../../components";
 import PageLayout from "../PageLayout";
 import { useTranslation } from "react-i18next";
@@ -71,24 +71,22 @@ const SignIn: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <Button type="submit">{t(LocaleKeys.SignInButton)}</Button>
+        <Button variant="primary" type="submit">
+          {t(LocaleKeys.SignInButton)}
+        </Button>
         <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
           {t(LocaleKeys.SignInSignUpPrompt)}{" "}
-          <Link
+          <LinkText
             to={AppRoutes.client.public.SIGN_UP}
-            className="text-primary-light dark:text-primary-dark hover:underline"
-          >
-            {t(LocaleKeys.SignInSignUpLink)}
-          </Link>
+            label={LocaleKeys.SignInSignUpLink}
+          />
         </p>
         <p className="mt-2 text-center text-gray-600 dark:text-gray-400">
           {t(LocaleKeys.SignInForgotPasswordPrompt)}{" "}
-          <Link
+          <LinkText
             to={AppRoutes.client.public.FORGOT_PASSWORD}
-            className="text-primary-light dark:text-primary-dark hover:underline"
-          >
-            {t(LocaleKeys.SignInForgotPasswordLink)}
-          </Link>
+            label={LocaleKeys.SignInForgotPasswordLink}
+          />
         </p>
         <div className="mt-6">
           <GoogleSignIn

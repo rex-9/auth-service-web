@@ -8,10 +8,11 @@ class AppRoutes {
       CONFIRM_EMAIL: "/email/confirm",
       FORGOT_PASSWORD: "/password/forgot",
       RESET_PASSWORD: "/password/reset",
+      ROOT: "/",
     },
     protected: {
       SIGN_OUT: "/signout",
-      HOME: "/",
+      HOME: "/home",
     },
   };
 

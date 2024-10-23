@@ -53,7 +53,9 @@ const ResetPassword: React.FC = () => {
           onChange={(e) => setPasswordConfirmation(e.target.value)}
           required
         />
-        <Button type="submit">Submit</Button>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
       </FormContainer>
     </PageLayout>
   );

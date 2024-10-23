@@ -4,10 +4,13 @@ import {
   FormContainer,
   Button,
   TextInput,
+  LinkText,
 } from "../../components";
 import { useCountdown } from "../../utils";
 import { PageLayout } from "..";
 import authService from "../../services/authService";
+import AppRoutes from "../../AppRoutes";
+import { LocaleKeys } from "../../locales/locales";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -38,9 +41,14 @@ const ForgotPassword: React.FC = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <Button type="submit" disabled={isCooldown}>
+        <Button variant="primary" type="submit" disabled={isCooldown}>
           {isCooldown ? `Re-send (${countdown}s)` : "Submit"}
         </Button>
+        <LinkText
+          className="mt-4"
+          to={AppRoutes.client.public.SIGN_IN}
+          label={LocaleKeys.GoBack}
+        />
       </FormContainer>
     </PageLayout>
   );

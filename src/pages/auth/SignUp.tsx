@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AppRoutes from "../../AppRoutes";
 import {
   AlertMessage,
   FormContainer,
   Button,
   TextInput,
+  LinkText,
 } from "../../components";
 import { PageLayout } from "..";
 import { useTranslation } from "react-i18next";
@@ -59,15 +60,16 @@ const SignUp: React.FC = () => {
           onChange={(e) => setPasswordConfirmation(e.target.value)}
           required
         />
-        <Button type="submit">{t(LocaleKeys.SignUpButton)}</Button>
+        <Button variant="primary" type="submit">
+          {t(LocaleKeys.SignUpButton)}
+        </Button>
         <p className="mt-4 text-gray-600 dark:text-gray-400">
           {t(LocaleKeys.SignUpSignInPrompt)}{" "}
-          <Link
+          <LinkText
+            className="mt-4"
             to={AppRoutes.client.public.SIGN_IN}
-            className="text-primary-light dark:text-primary-dark hover:underline"
-          >
-            {t(LocaleKeys.SignUpSignInLink)}
-          </Link>
+            label={LocaleKeys.SignUpSignInLink}
+          />
         </p>
       </FormContainer>
     </PageLayout>

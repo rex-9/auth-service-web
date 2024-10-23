@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { Home } from "./pages";
 import AppRoutes from "./AppRoutes";
 import {
   SignIn,
@@ -9,7 +8,9 @@ import {
   ConfirmEmail,
   ForgotPassword,
   ResetPassword,
-  NotFound, // Import NotFound component
+  NotFound,
+  Home,
+  Root,
 } from "./pages";
 import { PublicRoute, ProtectedRoute, LoadingOverlay } from "./components";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -24,6 +25,7 @@ const App: React.FC = () => {
           <LoadingOverlay />
           <Router>
             <Routes>
+              <Route path={AppRoutes.client.public.ROOT} element={<Root />} />
               <Route
                 path={AppRoutes.client.public.CONFIRM_EMAIL}
                 element={<PublicRoute element={<ConfirmEmail />} />}

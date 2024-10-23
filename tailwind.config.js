@@ -14,6 +14,10 @@ export default {
         },
         bg: {
           light: '#ffffff',
+          dark: '#000000',
+        },
+        hover: {
+          light: '#E5E7EB',
           dark: '#1f2937',
         },
         text: {

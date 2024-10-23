@@ -10,7 +10,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   disabled,
   className,
-  variant = "primary",
+  variant = "flat",
   ...props
 }) => {
   const baseClasses = "py-2 px-4 rounded-lg shadow";

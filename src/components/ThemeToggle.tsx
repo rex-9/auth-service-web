@@ -21,7 +21,7 @@ const ThemeToggle: React.FC = () => {
   };
 
   return (
-    <Button onClick={toggleTheme}>
+    <Button variant="primary" onClick={toggleTheme}>
       {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
     </Button>
   );
