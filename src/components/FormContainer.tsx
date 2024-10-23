@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 
 interface FormContainerProps {
   title: string;
@@ -14,6 +15,8 @@ const FormContainer: React.FC<FormContainerProps> = ({
   onSubmit,
   className,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <form
       onSubmit={onSubmit}
@@ -22,7 +25,7 @@ const FormContainer: React.FC<FormContainerProps> = ({
         className
       )}
     >
-      <h2 className="text-2xl mb-4">{title}</h2>
+      <h2 className="text-2xl mb-4">{t(title)}</h2>
       {children}
     </form>
   );

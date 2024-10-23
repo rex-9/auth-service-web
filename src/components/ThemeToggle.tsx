@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Button from "./Button";
+import TextButton from "./TextButton";
 import LocalStorageService from "../services/LocalStorageService";
 
 const ThemeToggle: React.FC = () => {
@@ -21,9 +21,11 @@ const ThemeToggle: React.FC = () => {
   };
 
   return (
-    <Button variant="primary" onClick={toggleTheme}>
-      {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-    </Button>
+    <TextButton
+      variant="primary"
+      onClick={toggleTheme}
+      label={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+    />
   );
 };
 

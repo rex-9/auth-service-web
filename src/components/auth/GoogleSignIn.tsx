@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
-import { AlertMessage, Button } from "../../components";
+import { AlertMessage, TextButton } from "../../components";
 
 interface GoogleSignInProps {
   onSuccess: (response: any) => void;
@@ -26,9 +26,11 @@ const GoogleSignIn: React.FC<GoogleSignInProps> = ({
             type="error"
             message="It looks like an ad blocker or privacy extension is blocking the Google login. Please disable it and try again."
           />
-          <Button variant="primary" onClick={() => window.location.reload()}>
-            Retry
-          </Button>
+          <TextButton
+            variant="primary"
+            onClick={() => window.location.reload()}
+            label="Retry"
+          />
         </div>
       ) : (
         <GoogleLogin onSuccess={onSuccess} onError={handleLoginError} />

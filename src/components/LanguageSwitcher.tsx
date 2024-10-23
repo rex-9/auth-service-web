@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Button from "./Button";
+import TextButton from "./TextButton";
 
 const LanguageSwitcher: React.FC = () => {
   const { i18n } = useTranslation();
@@ -11,20 +11,18 @@ const LanguageSwitcher: React.FC = () => {
 
   return (
     <div className="flex">
-      <Button
+      <TextButton
         variant="primary"
         className="m-2"
         onClick={() => changeLanguage("en")}
-      >
-        English
-      </Button>
-      <Button
+        label="English"
+      />
+      <TextButton
         variant="primary"
         className="m-2"
         onClick={() => changeLanguage("es")}
-      >
-        Español
-      </Button>
+        label="Español"
+      />
     </div>
   );
 };

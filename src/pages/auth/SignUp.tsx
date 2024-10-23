@@ -4,7 +4,7 @@ import AppRoutes from "../../AppRoutes";
 import {
   AlertMessage,
   FormContainer,
-  Button,
+  TextButton,
   TextInput,
   TextLink,
 } from "../../components";
@@ -34,11 +34,11 @@ const SignUp: React.FC = () => {
 
   return (
     <PageLayout>
-      <FormContainer title={t(AppLocales.SignUpTitle)} onSubmit={handleSubmit}>
+      <FormContainer title={AppLocales.SignUpTitle} onSubmit={handleSubmit}>
         {error && <AlertMessage type="error" message={error} />}
         <TextInput
           id="email"
-          label={t(AppLocales.SignUpEmailLabel)}
+          label={AppLocales.SignUpEmailLabel}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -46,7 +46,7 @@ const SignUp: React.FC = () => {
         />
         <TextInput
           id="password"
-          label={t(AppLocales.SignUpPasswordLabel)}
+          label={AppLocales.SignUpPasswordLabel}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -54,15 +54,17 @@ const SignUp: React.FC = () => {
         />
         <TextInput
           id="passwordConfirmation"
-          label={t(AppLocales.SignUpPasswordConfirmationLabel)}
+          label={AppLocales.SignUpPasswordConfirmationLabel}
           type="password"
           value={passwordConfirmation}
           onChange={(e) => setPasswordConfirmation(e.target.value)}
           required
         />
-        <Button variant="primary" type="submit">
-          {t(AppLocales.SignUpButton)}
-        </Button>
+        <TextButton
+          variant="primary"
+          type="submit"
+          label={AppLocales.SignUpButton}
+        />
         <p className="mt-4 text-gray-600 dark:text-gray-400">
           {t(AppLocales.SignUpSignInPrompt)}{" "}
           <TextLink

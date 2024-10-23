@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 
 interface TextInputProps {
   id: string;
@@ -22,13 +23,15 @@ const TextInput: React.FC<TextInputProps> = ({
   containerClassName,
   inputClassName,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={clsx("mb-4 w-full", containerClassName)}>
       <label
         htmlFor={id}
         className="block text-sm font-medium text-text-light dark:text-text-dark"
       >
-        {label}
+        {t(label)}
       </label>
       <input
         type={type}

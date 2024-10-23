@@ -1,14 +1,12 @@
 import React from "react";
 import { googleLogout } from "@react-oauth/google";
 import { useAuth } from "../../contexts";
-import { useTranslation } from "react-i18next";
 import { AppLocales } from "../../locales/app_locales";
 import authService from "../../services/authService";
-import { Button } from "..";
+import { TextButton } from "..";
 
 const SignOutBtn: React.FC = () => {
   const { logout, currentUser } = useAuth();
-  const { t } = useTranslation();
 
   const handleLogout = async () => {
     await authService.signOut();
@@ -19,7 +17,7 @@ const SignOutBtn: React.FC = () => {
     console.log("logged out successfully.");
   };
 
-  return <Button onClick={handleLogout}>{t(AppLocales.SignOutButton)}</Button>;
+  return <TextButton onClick={handleLogout} label={AppLocales.SignOutButton} />;
 };
 
 export default SignOutBtn;

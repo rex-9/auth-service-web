@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   AlertMessage,
   FormContainer,
-  Button,
+  TextButton,
   TextInput,
   TextLink,
 } from "../../components";
@@ -43,9 +43,12 @@ const ForgotPassword: React.FC = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <Button variant="primary" type="submit" disabled={isCooldown}>
-          {isCooldown ? `Re-send (${countdown}s)` : t(AppLocales.Submit)}
-        </Button>
+        <TextButton
+          variant="primary"
+          type="submit"
+          disabled={isCooldown}
+          label={isCooldown ? `Re-send (${countdown}s)` : t(AppLocales.Submit)}
+        />
         <TextLink
           className="mt-4"
           to={AppRoutes.client.public.SIGN_IN}

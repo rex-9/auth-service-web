@@ -5,7 +5,7 @@ import {
   GoogleSignIn,
   TextInput,
   AlertMessage,
-  Button,
+  TextButton,
   FormContainer,
   TextLink,
 } from "../../components";
@@ -53,11 +53,11 @@ const SignIn: React.FC = () => {
 
   return (
     <PageLayout>
-      <FormContainer title={t(AppLocales.SignInTitle)} onSubmit={handleSubmit}>
+      <FormContainer title={AppLocales.SignInTitle} onSubmit={handleSubmit}>
         {error && <AlertMessage type="error" message={error} />}
         <TextInput
           id="email"
-          label={t(AppLocales.SignInEmailLabel)}
+          label={AppLocales.SignInEmailLabel}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -65,15 +65,17 @@ const SignIn: React.FC = () => {
         />
         <TextInput
           id="password"
-          label={t(AppLocales.SignInPasswordLabel)}
+          label={AppLocales.SignInPasswordLabel}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <Button variant="primary" type="submit">
-          {t(AppLocales.SignInButton)}
-        </Button>
+        <TextButton
+          variant="primary"
+          type="submit"
+          label={AppLocales.SignInButton}
+        />
         <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
           {t(AppLocales.SignInSignUpPrompt)}{" "}
           <TextLink

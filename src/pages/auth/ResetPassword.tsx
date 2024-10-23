@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AlertMessage, Button, TextInput } from "../../components";
+import { AlertMessage, TextButton, TextInput } from "../../components";
 import { PageLayout } from "../../pages";
 import FormContainer from "../../components/FormContainer";
 import authService from "../../services/authService";
 import { AppLocales } from "../../locales/app_locales";
-import { useTranslation } from "react-i18next";
 
 const ResetPassword: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const token = new URLSearchParams(location.search).get(
     "reset_password_token"
@@ -57,9 +55,7 @@ const ResetPassword: React.FC = () => {
           onChange={(e) => setPasswordConfirmation(e.target.value)}
           required
         />
-        <Button variant="primary" type="submit">
-          {t(AppLocales.Submit)}
-        </Button>
+        <TextButton variant="primary" type="submit" label={AppLocales.Submit} />
       </FormContainer>
     </PageLayout>
   );

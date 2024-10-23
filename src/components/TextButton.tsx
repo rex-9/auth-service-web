@@ -1,18 +1,22 @@
 import React from "react";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+interface TextButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  label: string;
   variant?: "primary" | "flat";
 }
 
-const Button: React.FC<ButtonProps> = ({
-  children,
+const TextButton: React.FC<TextButtonProps> = ({
+  label,
   disabled,
   className,
   variant = "flat",
   ...props
 }) => {
+  const { t } = useTranslation();
+
   const baseClasses = "py-2 px-4 rounded-lg shadow";
   const primaryEnabledClasses =
     "w-full cursor-pointer bg-primary-light text-text-light hover:bg-primary-dark dark:bg-primary-dark dark:text-text-dark dark:hover:bg-primary-light";
@@ -39,9 +43,9 @@ const Button: React.FC<ButtonProps> = ({
         className
       )}
     >
-      {children}
+      {t(label)}
     </button>
   );
 };
 
-export default Button;
+export default TextButton;
