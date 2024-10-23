@@ -158,14 +158,10 @@ class AuthService {
     startCountdown: () => void
   ): Promise<void> {
     try {
-      const response = await api.post<{
-        status: {
-          code: number;
-          success: boolean;
-          message: string;
-          error?: string;
-        };
-      }>(`${AppRoutes.server.public.RESEND_VERIFY_EMAIL}`, { email });
+      const response = await api.post<ApiAuthResponse<undefined>>(
+        `${AppRoutes.server.public.RESEND_VERIFY_EMAIL}`,
+        { email }
+      );
       const { status } = response.data || {};
       if (status?.success) {
         setError("");
