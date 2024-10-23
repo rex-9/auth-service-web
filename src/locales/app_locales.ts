@@ -21,4 +21,5 @@ export enum AppLocales {
 
   Home = "home",
   GoBack = "go_back",
+  Submit = "submit",
 }

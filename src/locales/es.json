@@ -20,5 +20,6 @@
   "sign_out_button": "Cerrar sesión",
 
   "home": "Inicio",
-  "go_back": "Volver"
+  "go_back": "Volver",
+  "submit": "Enviar"
 }

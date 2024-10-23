@@ -7,7 +7,7 @@ import {
   AlertMessage,
   Button,
   FormContainer,
-  LinkText,
+  TextLink,
 } from "../../components";
 import PageLayout from "../PageLayout";
 import { useTranslation } from "react-i18next";
@@ -76,14 +76,14 @@ const SignIn: React.FC = () => {
         </Button>
         <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
           {t(AppLocales.SignInSignUpPrompt)}{" "}
-          <LinkText
+          <TextLink
             to={AppRoutes.client.public.SIGN_UP}
             label={AppLocales.SignInSignUpLink}
           />
         </p>
         <p className="mt-2 text-center text-gray-600 dark:text-gray-400">
           {t(AppLocales.SignInForgotPasswordPrompt)}{" "}
-          <LinkText
+          <TextLink
             to={AppRoutes.client.public.FORGOT_PASSWORD}
             label={AppLocales.SignInForgotPasswordLink}
           />

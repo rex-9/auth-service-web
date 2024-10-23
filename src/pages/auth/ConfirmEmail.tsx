@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import AppRoutes from "../../AppRoutes";
 import { useCountdown } from "../../utils";
-import { AlertMessage, LinkText } from "../../components";
+import { AlertMessage, TextLink } from "../../components";
 import PageLayout from "../PageLayout";
 import authService from "../../services/authService";
 import { AppLocales } from "../../locales/app_locales";
@@ -50,7 +50,7 @@ const ConfirmEmail: React.FC = () => {
         </p>
         <p>
           Did you enter your email address incorrectly?{" "}
-          <LinkText
+          <TextLink
             to={AppRoutes.client.public.SIGN_UP}
             label={AppLocales.GoBack}
           />

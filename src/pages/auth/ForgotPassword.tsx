@@ -4,15 +4,17 @@ import {
   FormContainer,
   Button,
   TextInput,
-  LinkText,
+  TextLink,
 } from "../../components";
 import { useCountdown } from "../../utils";
 import { PageLayout } from "..";
 import authService from "../../services/authService";
 import AppRoutes from "../../AppRoutes";
 import { AppLocales } from "../../locales/app_locales";
+import { useTranslation } from "react-i18next";
 
 const ForgotPassword: React.FC = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -42,9 +44,9 @@ const ForgotPassword: React.FC = () => {
           required
         />
         <Button variant="primary" type="submit" disabled={isCooldown}>
-          {isCooldown ? `Re-send (${countdown}s)` : "Submit"}
+          {isCooldown ? `Re-send (${countdown}s)` : t(AppLocales.Submit)}
         </Button>
-        <LinkText
+        <TextLink
           className="mt-4"
           to={AppRoutes.client.public.SIGN_IN}
           label={AppLocales.GoBack}

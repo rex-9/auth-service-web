@@ -2,13 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
-interface LinkTextProps {
+interface TextLinkProps {
   label: string;
   to: string;
   className?: string;
 }
 
-const LinkText: React.FC<LinkTextProps> = ({ label, to, className }) => {
+const LinkText: React.FC<TextLinkProps> = ({ label, to, className }) => {
   const { t } = useTranslation();
 
   return (
