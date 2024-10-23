@@ -2,7 +2,7 @@ import AppRoutes from "../AppRoutes";
 import { LinkText } from "../components";
 import { useAuth } from "../contexts";
 import PageLayout from "./PageLayout";
-import { LocaleKeys } from "../locales/locales";
+import { AppLocales } from "../locales/app_locales";
 
 const NotFound = () => {
   const { token } = useAuth();
@@ -16,7 +16,7 @@ const NotFound = () => {
             ? AppRoutes.client.protected.HOME
             : AppRoutes.client.public.SIGN_IN
         }
-        label={LocaleKeys.GoBack}
+        label={AppLocales.GoBack}
       />
     </PageLayout>
   );

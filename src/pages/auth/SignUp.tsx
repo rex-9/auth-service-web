@@ -10,7 +10,7 @@ import {
 } from "../../components";
 import { PageLayout } from "..";
 import { useTranslation } from "react-i18next";
-import { LocaleKeys } from "../../locales/locales";
+import { AppLocales } from "../../locales/app_locales";
 import authService from "../../services/authService";
 
 const SignUp: React.FC = () => {
@@ -34,11 +34,11 @@ const SignUp: React.FC = () => {
 
   return (
     <PageLayout>
-      <FormContainer title={t(LocaleKeys.SignUpTitle)} onSubmit={handleSubmit}>
+      <FormContainer title={t(AppLocales.SignUpTitle)} onSubmit={handleSubmit}>
         {error && <AlertMessage type="error" message={error} />}
         <TextInput
           id="email"
-          label={t(LocaleKeys.SignUpEmailLabel)}
+          label={t(AppLocales.SignUpEmailLabel)}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -46,7 +46,7 @@ const SignUp: React.FC = () => {
         />
         <TextInput
           id="password"
-          label={t(LocaleKeys.SignUpPasswordLabel)}
+          label={t(AppLocales.SignUpPasswordLabel)}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -54,21 +54,21 @@ const SignUp: React.FC = () => {
         />
         <TextInput
           id="passwordConfirmation"
-          label={t(LocaleKeys.SignUpPasswordConfirmationLabel)}
+          label={t(AppLocales.SignUpPasswordConfirmationLabel)}
           type="password"
           value={passwordConfirmation}
           onChange={(e) => setPasswordConfirmation(e.target.value)}
           required
         />
         <Button variant="primary" type="submit">
-          {t(LocaleKeys.SignUpButton)}
+          {t(AppLocales.SignUpButton)}
         </Button>
         <p className="mt-4 text-gray-600 dark:text-gray-400">
-          {t(LocaleKeys.SignUpSignInPrompt)}{" "}
+          {t(AppLocales.SignUpSignInPrompt)}{" "}
           <LinkText
             className="mt-4"
             to={AppRoutes.client.public.SIGN_IN}
-            label={LocaleKeys.SignUpSignInLink}
+            label={AppLocales.SignUpSignInLink}
           />
         </p>
       </FormContainer>

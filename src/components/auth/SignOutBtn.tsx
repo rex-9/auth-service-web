@@ -2,7 +2,7 @@ import React from "react";
 import { googleLogout } from "@react-oauth/google";
 import { useAuth } from "../../contexts";
 import { useTranslation } from "react-i18next";
-import { LocaleKeys } from "../../locales/locales";
+import { AppLocales } from "../../locales/app_locales";
 import authService from "../../services/authService";
 import { Button } from "..";
 
@@ -19,7 +19,7 @@ const SignOutBtn: React.FC = () => {
     console.log("logged out successfully.");
   };
 
-  return <Button onClick={handleLogout}>{t(LocaleKeys.SignOutButton)}</Button>;
+  return <Button onClick={handleLogout}>{t(AppLocales.SignOutButton)}</Button>;
 };
 
 export default SignOutBtn;

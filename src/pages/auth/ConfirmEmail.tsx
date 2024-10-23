@@ -5,7 +5,7 @@ import { useCountdown } from "../../utils";
 import { AlertMessage, LinkText } from "../../components";
 import PageLayout from "../PageLayout";
 import authService from "../../services/authService";
-import { LocaleKeys } from "../../locales/locales";
+import { AppLocales } from "../../locales/app_locales";
 
 const ConfirmEmail: React.FC = () => {
   const location = useLocation();
@@ -52,7 +52,7 @@ const ConfirmEmail: React.FC = () => {
           Did you enter your email address incorrectly?{" "}
           <LinkText
             to={AppRoutes.client.public.SIGN_UP}
-            label={LocaleKeys.GoBack}
+            label={AppLocales.GoBack}
           />
         </p>
       </div>

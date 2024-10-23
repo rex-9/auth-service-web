@@ -10,7 +10,7 @@ import { useCountdown } from "../../utils";
 import { PageLayout } from "..";
 import authService from "../../services/authService";
 import AppRoutes from "../../AppRoutes";
-import { LocaleKeys } from "../../locales/locales";
+import { AppLocales } from "../../locales/app_locales";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -47,7 +47,7 @@ const ForgotPassword: React.FC = () => {
         <LinkText
           className="mt-4"
           to={AppRoutes.client.public.SIGN_IN}
-          label={LocaleKeys.GoBack}
+          label={AppLocales.GoBack}
         />
       </FormContainer>
     </PageLayout>

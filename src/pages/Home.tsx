@@ -2,7 +2,7 @@ import { SignOutBtn, VideoPlayer, Asset, Typography } from "../components";
 import PageLayout from "./PageLayout";
 import { useAuth } from "../contexts";
 import assets from "../assets";
-import { LocaleKeys } from "../locales/locales";
+import { AppLocales } from "../locales/app_locales";
 import { useTranslation } from "react-i18next";
 // import { useEffect } from "react";
 // import { api } from "../services/api";
@@ -36,7 +36,7 @@ function Home() {
       {<Asset asset={assets.icons.insta} className="w-8" />}
       {<Asset asset={assets.images.banner} className="w-96" />}
       <Typography className="text-xl font-bold" variant="primary">
-        {t(LocaleKeys.Home)}
+        {t(AppLocales.Home)}
       </Typography>
       {currentUser && <p>Welcome, {currentUser.email}!</p>}
       <VideoPlayer

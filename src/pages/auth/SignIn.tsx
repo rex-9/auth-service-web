@@ -11,7 +11,7 @@ import {
 } from "../../components";
 import PageLayout from "../PageLayout";
 import { useTranslation } from "react-i18next";
-import { LocaleKeys } from "../../locales/locales";
+import { AppLocales } from "../../locales/app_locales";
 import authService from "../../services/authService";
 
 const SignIn: React.FC = () => {
@@ -48,16 +48,16 @@ const SignIn: React.FC = () => {
   };
 
   const handleGoogleFailure = () => {
-    setError(t(LocaleKeys.SignInGoogleFailure));
+    setError(t(AppLocales.SignInGoogleFailure));
   };
 
   return (
     <PageLayout>
-      <FormContainer title={t(LocaleKeys.SignInTitle)} onSubmit={handleSubmit}>
+      <FormContainer title={t(AppLocales.SignInTitle)} onSubmit={handleSubmit}>
         {error && <AlertMessage type="error" message={error} />}
         <TextInput
           id="email"
-          label={t(LocaleKeys.SignInEmailLabel)}
+          label={t(AppLocales.SignInEmailLabel)}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -65,27 +65,27 @@ const SignIn: React.FC = () => {
         />
         <TextInput
           id="password"
-          label={t(LocaleKeys.SignInPasswordLabel)}
+          label={t(AppLocales.SignInPasswordLabel)}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
         <Button variant="primary" type="submit">
-          {t(LocaleKeys.SignInButton)}
+          {t(AppLocales.SignInButton)}
         </Button>
         <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
-          {t(LocaleKeys.SignInSignUpPrompt)}{" "}
+          {t(AppLocales.SignInSignUpPrompt)}{" "}
           <LinkText
             to={AppRoutes.client.public.SIGN_UP}
-            label={LocaleKeys.SignInSignUpLink}
+            label={AppLocales.SignInSignUpLink}
           />
         </p>
         <p className="mt-2 text-center text-gray-600 dark:text-gray-400">
-          {t(LocaleKeys.SignInForgotPasswordPrompt)}{" "}
+          {t(AppLocales.SignInForgotPasswordPrompt)}{" "}
           <LinkText
             to={AppRoutes.client.public.FORGOT_PASSWORD}
-            label={LocaleKeys.SignInForgotPasswordLink}
+            label={AppLocales.SignInForgotPasswordLink}
           />
         </p>
         <div className="mt-6">

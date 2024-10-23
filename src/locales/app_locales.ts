@@ -1,4 +1,4 @@
-export enum LocaleKeys {
+export enum AppLocales {
   SignInTitle = "sign_in_title",
   SignInEmailLabel = "sign_in_email_label",
   SignInPasswordLabel = "sign_in_password_label",
