@@ -13,11 +13,14 @@ import PageLayout from "../PageLayout";
 import { useTranslation } from "react-i18next";
 import { AppLocales } from "../../locales/app_locales";
 import authService from "../../services/authService";
+import { useNavigate } from "react-router-dom";
 
 const SignIn: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
 
@@ -38,7 +41,14 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await authService.signInWithEmail(email, password, setError, login);
+    await authService.signInWithEmail(
+      email,
+      password,
+      setError,
+      setMessage,
+      login,
+      navigate
+    );
   };
 
   const handleGoogleSuccess = async (response: any) => {
@@ -54,6 +64,7 @@ const SignIn: React.FC = () => {
   return (
     <PageLayout>
       <FormContainer title={AppLocales.SignInTitle} onSubmit={handleSubmit}>
+        {message && <AlertMessage type="success" message={message} />}
         {error && <AlertMessage type="error" message={error} />}
         <TextInput
           id="email"

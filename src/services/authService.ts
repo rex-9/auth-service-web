@@ -40,18 +40,28 @@ class AuthService {
     email: string,
     password: string,
     setError: (message: string) => void,
-    login: (token: string, user: User) => void
+    setMessage: (message: string) => void,
+    login: (token: string, user: User) => void,
+    navigate: (url: string) => void
   ): Promise<void> {
     try {
       const response = await api.post<
         ApiAuthResponse<{ user: User; token: string }>
       >(AppRoutes.server.public.SIGN_IN_EMAIL, { user: { email, password } });
       const { status, data } = response.data || {};
-      if (status?.success && data) {
+      if (status?.success) {
+        setMessage(status.message);
         setError("");
-        login(data.token, data.user); // Update authentication state with token
+        if (data) {
+          login(data.token, data.user); // Update authentication state with token
+        }
+        navigate(AppRoutes.client.public.CONFIRM_EMAIL + `?email=${email}`);
       } else {
-        setError(status?.error ?? "An error occurred during email login.");
+        setError(
+          status?.error ??
+            status?.message ??
+            "An error occurred during email login."
+        );
       }
     } catch (error) {
       setError(`An error occurred during email login. error: ${error}`);
@@ -107,6 +117,37 @@ class AuthService {
       }
     } catch (error) {
       setError(`An error occurred during email signup. error: ${error}`);
+    }
+  }
+
+  async confirmEmailWithCode(
+    email: string,
+    confirmationCode: string,
+    setError: (message: string) => void,
+    setMessage: (message: string) => void,
+    login: (token: string, user: User) => void
+  ): Promise<void> {
+    try {
+      const response = await api.post<
+        ApiAuthResponse<{ user: User; token: string }>
+      >(`${AppRoutes.server.public.CONFIRM_WITH_CODE}`, {
+        email,
+        confirmation_code: confirmationCode,
+      });
+      console.log("response ===> ", response);
+      const { status, data } = response.data || {};
+      if (status?.success) {
+        setError("");
+        setMessage(status.message);
+        if (data) login(data.token, data.user); // Update authentication state with token
+      } else {
+        setError(status?.error ?? "An error occurred during resending email.");
+        setMessage("");
+      }
+    } catch (error) {
+      setError(
+        `An error occurred during confirming email with code. error: ${error}`
+      );
     }
   }
 

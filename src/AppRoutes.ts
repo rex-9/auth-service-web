@@ -23,6 +23,7 @@ class AppRoutes {
       SIGN_IN_TOKEN: "/signin/token",
       SIGN_IN_GOOGLE: "/signin/google",
       RESEND_VERIFY_EMAIL: "/confirmation/resend",
+      CONFIRM_WITH_CODE: "/confirmation/confirm_with_code",
       FORGOT_PASSWORD: "/password/forgot",
       RESET_PASSWORD: "/password/reset",
     },
