@@ -1,5 +1,5 @@
 import AppRoutes from "../AppRoutes";
-import AuthService from "../services/authService"; // Add this line to import AuthService
+import { authService } from "../services";
 import { IUser } from "../types";
 
 class AuthController {
@@ -9,7 +9,7 @@ class AuthController {
     login: (token: string, user: IUser) => void
   ): Promise<void> {
     try {
-      const response = await AuthService.signInWithToken(token);
+      const response = await authService.signInWithToken(token);
       const { status, data } = response.data || {};
       if (status?.success && data) {
         setError("");
@@ -31,7 +31,7 @@ class AuthController {
     navigate: (url: string) => void
   ): Promise<void> {
     try {
-      const response = await AuthService.signInWithEmail(email, password);
+      const response = await authService.signInWithEmail(email, password);
       const { status, data } = response.data || {};
       if (status?.success) {
         setMessage(status.message);
@@ -58,7 +58,7 @@ class AuthController {
     login: (token: string, user: IUser) => void
   ): Promise<void> {
     try {
-      const response = await AuthService.signInWithGoogle(token);
+      const response = await authService.signInWithGoogle(token);
       const { status, data } = response.data || {};
       if (status?.success && data) {
         setError("");
@@ -79,7 +79,7 @@ class AuthController {
     navigate: (url: string) => void
   ): Promise<void> {
     try {
-      const response = await AuthService.signUpWithEmail(
+      const response = await authService.signUpWithEmail(
         email,
         password,
         passwordConfirmation
@@ -103,7 +103,7 @@ class AuthController {
     login: (token: string, user: IUser) => void
   ): Promise<void> {
     try {
-      const response = await AuthService.confirmEmailWithCode(
+      const response = await authService.confirmEmailWithCode(
         email,
         confirmationCode
       );
@@ -130,7 +130,7 @@ class AuthController {
     startCountdown: () => void
   ): Promise<void> {
     try {
-      const response = await AuthService.resendConfirmationEmail(email);
+      const response = await authService.resendConfirmationEmail(email);
       const { status } = response.data || {};
       if (status?.success) {
         setError("");
@@ -151,7 +151,7 @@ class AuthController {
     startCountdown: () => void
   ): Promise<void> {
     try {
-      const response = await AuthService.sendForgotPasswordMail(email);
+      const response = await authService.sendForgotPasswordMail(email);
       const { status } = response.data || {};
       if (status?.success) {
         setError("");
@@ -179,7 +179,7 @@ class AuthController {
     navigate: (url: string) => void
   ): Promise<void> {
     try {
-      const response = await AuthService.resetPassword(
+      const response = await authService.resetPassword(
         token,
         password,
         passwordConfirmation
@@ -201,7 +201,7 @@ class AuthController {
 
   async signOut(): Promise<void> {
     try {
-      const response = await AuthService.signOut();
+      const response = await authService.signOut();
       const { status } = response.data || {};
       if (status?.success) {
         console.log("user signed out from server successfully.");

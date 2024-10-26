@@ -6,6 +6,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   token: string | null;
   currentUser: IUser | null;
+  setCurrentUser: (user: IUser | null) => void;
   login: (token: string, user: IUser) => void;
   logout: () => void;
 }
@@ -46,7 +47,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, token, currentUser, login, logout }}
+      value={{
+        isAuthenticated,
+        token,
+        currentUser,
+        setCurrentUser,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

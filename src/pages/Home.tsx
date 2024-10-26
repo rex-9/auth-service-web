@@ -4,32 +4,17 @@ import { useAuth } from "../contexts";
 import assets from "../assets";
 import { AppLocales } from "../locales/app_locales";
 import { useTranslation } from "react-i18next";
-// import { useEffect } from "react";
-// import { api } from "../services/api";
-// import AppRoutes from "../AppRoutes";
+import { useEffect } from "react";
+import { userController } from "../controllers";
 
-function Home() {
-  const { currentUser } = useAuth();
+const Home = () => {
+  const { currentUser, setCurrentUser } = useAuth();
   const { t } = useTranslation();
 
-  // Protected Api Call just for testing
-  // useEffect(() => {
-  //   const getCurrentUser = async () => {
-  //     const response = await api.get<{
-  //       status: {
-  //         code: number;
-  //         success: boolean;
-  //         message: string;
-  //         error?: string;
-  //       };
-  //       data: { user: User; token: string };
-  //     }>(AppRoutes.server.protected.GET_CURRENT_USER);
-  //     console.log("response ===>", response);
-  //   };
-  //   getCurrentUser();
-  // }, []);
-
-  // console.log("currentUser ===>", currentUser);
+  // No need just for the sample
+  useEffect(() => {
+    userController.getCurrentUser(setCurrentUser);
+  }, [setCurrentUser]);
 
   return (
     <PageLayout>
@@ -51,6 +36,6 @@ function Home() {
       <SignOutBtn />
     </PageLayout>
   );
-}
+};
 
 export default Home;
