@@ -36,8 +36,8 @@ class AuthService {
     email: string,
     password: string,
     passwordConfirmation: string
-  ): Promise<IApiResponse<{ message: string }>> {
-    const response = await api.post<{ message: string }>(
+  ): Promise<IApiResponse<IApiAuthResponse<undefined>>> {
+    const response = await api.post<IApiAuthResponse<undefined>>(
       AppRoutes.server.public.SIGN_UP,
       { user: { email, password, password_confirmation: passwordConfirmation } }
     );

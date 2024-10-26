@@ -4,6 +4,7 @@ import AppRoutes from "../../AppRoutes";
 import {
   AlertMessage,
   FormContainer,
+  GoogleSignIn,
   TextButton,
   TextInput,
   TextLink,
@@ -12,8 +13,10 @@ import { PageLayout } from "..";
 import { useTranslation } from "react-i18next";
 import { AppLocales } from "../../locales/app_locales";
 import authController from "../../controllers/authController";
+import { useAuth } from "../../contexts";
 
 const SignUp: React.FC = () => {
+  const { login } = useAuth();
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -73,6 +76,9 @@ const SignUp: React.FC = () => {
             label={AppLocales.SignUpSignInLink}
           />
         </p>
+        <div className="mt-6">
+          <GoogleSignIn setError={setError} login={login} />
+        </div>
       </FormContainer>
     </PageLayout>
   );

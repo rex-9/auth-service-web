@@ -51,20 +51,6 @@ const SignIn: React.FC = () => {
     );
   };
 
-  const handleGoogleSuccess = async (response: any) => {
-    if (response.credential) {
-      await authController.signInWithGoogle(
-        response.credential,
-        setError,
-        login
-      );
-    }
-  };
-
-  const handleGoogleFailure = () => {
-    setError(t(AppLocales.SignInGoogleFailure));
-  };
-
   return (
     <PageLayout>
       <FormContainer title={AppLocales.SignInTitle} onSubmit={handleSubmit}>
@@ -106,10 +92,7 @@ const SignIn: React.FC = () => {
           />
         </p>
         <div className="mt-6">
-          <GoogleSignIn
-            onSuccess={handleGoogleSuccess}
-            onFailure={handleGoogleFailure}
-          />
+          <GoogleSignIn setError={setError} login={login} />
         </div>
       </FormContainer>
     </PageLayout>

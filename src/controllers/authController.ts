@@ -1,6 +1,7 @@
 import AppRoutes from "../AppRoutes";
 import { authService } from "../services";
 import { IUser } from "../types";
+import { apiCall } from "../utils/api";
 
 class AuthController {
   async signInWithToken(
@@ -8,18 +9,12 @@ class AuthController {
     setError: (message: string) => void,
     login: (token: string, user: IUser) => void
   ): Promise<void> {
-    try {
-      const response = await authService.signInWithToken(token);
-      const { status, data } = response.data || {};
-      if (status?.success && data) {
-        setError("");
-        login(data.token, data.user);
-      } else {
-        setError(status?.error ?? "An error occurred during token login.");
-      }
-    } catch (error) {
-      setError(`An error occurred during token login. error: ${error}`);
-    }
+    await apiCall(
+      "signing in with token",
+      () => authService.signInWithToken(token),
+      setError,
+      (data) => login(data.data!.token, data.data!.user)
+    );
   }
 
   async signInWithEmail(
@@ -30,26 +25,16 @@ class AuthController {
     login: (token: string, user: IUser) => void,
     navigate: (url: string) => void
   ): Promise<void> {
-    try {
-      const response = await authService.signInWithEmail(email, password);
-      const { status, data } = response.data || {};
-      if (status?.success) {
-        setMessage(status.message);
-        setError("");
-        if (data) {
-          login(data.token, data.user);
-        }
+    await apiCall(
+      "signing in with email",
+      () => authService.signInWithEmail(email, password),
+      setError,
+      (data) => {
+        setMessage(data.status.message);
+        login(data.data!.token, data.data!.user);
         navigate(AppRoutes.client.public.CONFIRM_EMAIL + `?email=${email}`);
-      } else {
-        setError(
-          status?.error ??
-            status?.message ??
-            "An error occurred during email login."
-        );
       }
-    } catch (error) {
-      setError(`An error occurred during email login. error: ${error}`);
-    }
+    );
   }
 
   async signInWithGoogle(
@@ -57,18 +42,12 @@ class AuthController {
     setError: (message: string) => void,
     login: (token: string, user: IUser) => void
   ): Promise<void> {
-    try {
-      const response = await authService.signInWithGoogle(token);
-      const { status, data } = response.data || {};
-      if (status?.success && data) {
-        setError("");
-        login(data.token, data.user);
-      } else {
-        setError(status?.error ?? "An error occurred during google login.");
-      }
-    } catch (error) {
-      setError(`An error occurred during google login. error: ${error}`);
-    }
+    await apiCall(
+      "signing in with google",
+      () => authService.signInWithGoogle(token),
+      setError,
+      (data) => login(data.data!.token, data.data!.user)
+    );
   }
 
   async signUpWithEmail(
@@ -78,21 +57,12 @@ class AuthController {
     setError: (message: string) => void,
     navigate: (url: string) => void
   ): Promise<void> {
-    try {
-      const response = await authService.signUpWithEmail(
-        email,
-        password,
-        passwordConfirmation
-      );
-      if (response?.error) {
-        setError(response.error);
-      } else {
-        setError("");
-        navigate(`${AppRoutes.client.public.CONFIRM_EMAIL}?email=${email}`);
-      }
-    } catch (error) {
-      setError(`An error occurred during email signup. error: ${error}`);
-    }
+    await apiCall(
+      "signing up with email",
+      () => authService.signUpWithEmail(email, password, passwordConfirmation),
+      setError,
+      () => navigate(`${AppRoutes.client.public.CONFIRM_EMAIL}?email=${email}`)
+    );
   }
 
   async confirmEmailWithCode(
@@ -102,25 +72,16 @@ class AuthController {
     setMessage: (message: string) => void,
     login: (token: string, user: IUser) => void
   ): Promise<void> {
-    try {
-      const response = await authService.confirmEmailWithCode(
-        email,
-        confirmationCode
-      );
-      const { status, data } = response.data || {};
-      if (status?.success) {
-        setError("");
-        setMessage(status.message);
-        if (data) login(data.token, data.user);
-      } else {
-        setError(status?.error ?? "An error occurred during resending email.");
-        setMessage("");
-      }
-    } catch (error) {
-      setError(
-        `An error occurred during confirming email with code. error: ${error}`
-      );
-    }
+    await apiCall(
+      "confirming email with code",
+      () => authService.confirmEmailWithCode(email, confirmationCode),
+      setError,
+      (data) => {
+        setMessage(data.status.message);
+        login(data.data!.token, data.data!.user);
+      },
+      () => setMessage("")
+    );
   }
 
   async resendConfirmationEmail(
@@ -129,19 +90,15 @@ class AuthController {
     setMessage: (message: string) => void,
     startCountdown: () => void
   ): Promise<void> {
-    try {
-      const response = await authService.resendConfirmationEmail(email);
-      const { status } = response.data || {};
-      if (status?.success) {
-        setError("");
-        setMessage(status.message);
+    await apiCall(
+      "resending confirmation email",
+      () => authService.resendConfirmationEmail(email),
+      setError,
+      (data) => {
+        setMessage(data.status.message);
         startCountdown();
-      } else {
-        setError(status?.error ?? "An error occurred during resending email.");
       }
-    } catch (error) {
-      setError(`An error occurred during resending email. error: ${error}`);
-    }
+    );
   }
 
   async sendForgotPasswordMail(
@@ -150,24 +107,15 @@ class AuthController {
     setMessage: (message: string) => void,
     startCountdown: () => void
   ): Promise<void> {
-    try {
-      const response = await authService.sendForgotPasswordMail(email);
-      const { status } = response.data || {};
-      if (status?.success) {
-        setError("");
-        setMessage(status.message);
+    await apiCall(
+      "sending forgot password email",
+      () => authService.sendForgotPasswordMail(email),
+      setError,
+      (data) => {
+        setMessage(data.status.message);
         startCountdown();
-      } else {
-        setError(
-          status?.error ??
-            "An error occurred during resending email to reset password."
-        );
       }
-    } catch (error) {
-      setError(
-        `An error occurred during resending email to reset password. error: ${error}`
-      );
-    }
+    );
   }
 
   async resetPassword(
@@ -178,25 +126,15 @@ class AuthController {
     setMessage: (message: string) => void,
     navigate: (url: string) => void
   ): Promise<void> {
-    try {
-      const response = await authService.resetPassword(
-        token,
-        password,
-        passwordConfirmation
-      );
-      const { status } = response.data || {};
-      if (status?.success) {
-        setError("");
-        setMessage(status.message);
+    await apiCall(
+      "resetting password",
+      () => authService.resetPassword(token, password, passwordConfirmation),
+      setError,
+      (data) => {
+        setMessage(data.status.message);
         navigate(AppRoutes.client.public.SIGN_IN);
-      } else {
-        setError(
-          status?.error ?? "An error occurred during resetting password."
-        );
       }
-    } catch (error) {
-      setError(`An error occurred during resetting password. error: ${error}`);
-    }
+    );
   }
 
   async signOut(): Promise<void> {

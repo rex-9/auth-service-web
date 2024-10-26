@@ -1,21 +1,37 @@
 import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { AlertMessage, TextButton } from "../../components";
+import { useTranslation } from "react-i18next";
+import { AppLocales } from "../../locales/app_locales";
+import authController from "../../controllers/authController";
+import { IUser } from "../../types";
 
 interface GoogleSignInProps {
-  onSuccess: (response: any) => void;
-  onFailure: () => void;
+  setError: (message: string) => void;
+  login: (token: string, user: IUser) => void;
 }
 
-const GoogleSignIn: React.FC<GoogleSignInProps> = ({
-  onSuccess,
-  onFailure,
-}) => {
+const GoogleSignIn: React.FC<GoogleSignInProps> = ({ setError, login }) => {
+  const { t } = useTranslation();
   const [isBlocked, setIsBlocked] = useState(false);
+
+  const handleGoogleSuccess = async (response: any) => {
+    if (response.credential) {
+      await authController.signInWithGoogle(
+        response.credential,
+        setError,
+        login
+      );
+    }
+  };
+
+  const handleGoogleFailure = () => {
+    setError(t(AppLocales.SignInGoogleFailure));
+  };
 
   const handleLoginError = () => {
     setIsBlocked(true);
-    onFailure();
+    handleGoogleFailure();
   };
 
   return (
@@ -33,7 +49,10 @@ const GoogleSignIn: React.FC<GoogleSignInProps> = ({
           />
         </div>
       ) : (
-        <GoogleLogin onSuccess={onSuccess} onError={handleLoginError} />
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={handleLoginError}
+        />
       )}
     </div>
   );

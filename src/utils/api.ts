@@ -3,7 +3,7 @@ import AppConfig from "../AppConfig";
 import { useLoading } from "../contexts/LoadingContext";
 import { useEffect } from "react";
 import { useAuth } from "../contexts";
-import { IApiResponse } from "../types";
+import { IApiAuthResponse, IApiResponse } from "../types";
 
 // Create an axios instance
 const axiosInstance = axios.create({
@@ -99,4 +99,27 @@ export const useAxiosInterceptor = () => {
       axiosInstance.interceptors.response.eject(responseInterceptor);
     };
   }, [setLoading, token]);
+};
+
+export const apiCall = async <T>(
+  label: string,
+  apiFunction: () => Promise<IApiResponse<IApiAuthResponse<T>>>,
+  setError: (message: string) => void,
+  onSuccess: (data: IApiAuthResponse<T>) => void,
+  onFailure?: () => void
+): Promise<void> => {
+  try {
+    const response = await apiFunction();
+    const { status, data } = response.data || {};
+    if (status?.success) {
+      setError("");
+      onSuccess({ status, data });
+    } else {
+      setError(status?.error ?? `An error occurred when ${label}.`);
+      onFailure?.();
+    }
+  } catch (error) {
+    setError(`An error occurred when ${label}. error: ${error}`);
+    onFailure?.();
+  }
 };
