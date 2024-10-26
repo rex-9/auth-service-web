@@ -101,8 +101,8 @@ export const useAxiosInterceptor = () => {
   }, [setLoading, token]);
 };
 
-export const apiCall = async <T>(
-  label: string,
+export const apiHandler = async <T>(
+  operation: string,
   apiFunction: () => Promise<IApiResponse<IApiAuthResponse<T>>>,
   setError: (message: string) => void,
   onSuccess: (data: IApiAuthResponse<T>) => void,
@@ -115,11 +115,11 @@ export const apiCall = async <T>(
       setError("");
       onSuccess({ status, data });
     } else {
-      setError(status?.error ?? `An error occurred when ${label}.`);
+      setError(status?.error ?? `An error occurred when ${operation}.`);
       onFailure?.();
     }
   } catch (error) {
-    setError(`An error occurred when ${label}. error: ${error}`);
+    setError(`An error occurred when ${operation}. error: ${error}`);
     onFailure?.();
   }
 };

@@ -1,7 +1,7 @@
 import AppRoutes from "../AppRoutes";
 import { authService } from "../services";
 import { IUser } from "../types";
-import { apiCall } from "../utils/api";
+import { apiHandler } from "../utils/api";
 
 class AuthController {
   async signInWithToken(
@@ -9,7 +9,7 @@ class AuthController {
     setError: (message: string) => void,
     login: (token: string, user: IUser) => void
   ): Promise<void> {
-    await apiCall(
+    await apiHandler(
       "signing in with token",
       () => authService.signInWithToken(token),
       setError,
@@ -25,7 +25,7 @@ class AuthController {
     login: (token: string, user: IUser) => void,
     navigate: (url: string) => void
   ): Promise<void> {
-    await apiCall(
+    await apiHandler(
       "signing in with email",
       () => authService.signInWithEmail(email, password),
       setError,
@@ -42,7 +42,7 @@ class AuthController {
     setError: (message: string) => void,
     login: (token: string, user: IUser) => void
   ): Promise<void> {
-    await apiCall(
+    await apiHandler(
       "signing in with google",
       () => authService.signInWithGoogle(token),
       setError,
@@ -57,7 +57,7 @@ class AuthController {
     setError: (message: string) => void,
     navigate: (url: string) => void
   ): Promise<void> {
-    await apiCall(
+    await apiHandler(
       "signing up with email",
       () => authService.signUpWithEmail(email, password, passwordConfirmation),
       setError,
@@ -72,7 +72,7 @@ class AuthController {
     setMessage: (message: string) => void,
     login: (token: string, user: IUser) => void
   ): Promise<void> {
-    await apiCall(
+    await apiHandler(
       "confirming email with code",
       () => authService.confirmEmailWithCode(email, confirmationCode),
       setError,
@@ -90,7 +90,7 @@ class AuthController {
     setMessage: (message: string) => void,
     startCountdown: () => void
   ): Promise<void> {
-    await apiCall(
+    await apiHandler(
       "resending confirmation email",
       () => authService.resendConfirmationEmail(email),
       setError,
@@ -107,7 +107,7 @@ class AuthController {
     setMessage: (message: string) => void,
     startCountdown: () => void
   ): Promise<void> {
-    await apiCall(
+    await apiHandler(
       "sending forgot password email",
       () => authService.sendForgotPasswordMail(email),
       setError,
@@ -126,7 +126,7 @@ class AuthController {
     setMessage: (message: string) => void,
     navigate: (url: string) => void
   ): Promise<void> {
-    await apiCall(
+    await apiHandler(
       "resetting password",
       () => authService.resetPassword(token, password, passwordConfirmation),
       setError,
