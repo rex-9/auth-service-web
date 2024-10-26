@@ -10,7 +10,7 @@ import {
   FormContainer,
 } from "../../components";
 import PageLayout from "../PageLayout";
-import authService from "../../services/authService";
+import authController from "../../controllers/authController";
 import { AppLocales } from "../../locales/app_locales";
 import { useAuth } from "../../contexts";
 
@@ -36,7 +36,7 @@ const ConfirmEmail: React.FC = () => {
 
   const handleResendEmail = async () => {
     if (email && !isCooldown) {
-      await authService.resendConfirmationEmail(
+      await authController.resendConfirmationEmail(
         email,
         setError,
         setMessage,
@@ -48,7 +48,7 @@ const ConfirmEmail: React.FC = () => {
   const handleConfirmEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email && confirmationCode) {
-      await authService.confirmEmailWithCode(
+      await authController.confirmEmailWithCode(
         email,
         confirmationCode,
         setError,

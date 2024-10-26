@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import TextButton from "./TextButton";
-import LocalStorageService from "../services/LocalStorageService";
+import { localStorageService } from "../services";
 
 const ThemeToggle: React.FC = () => {
   const [theme, setTheme] = useState<string>(
-    () => LocalStorageService.getItem<string>("theme") || "light"
+    () => localStorageService.getItem<string>("theme") || "light"
   );
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const ThemeToggle: React.FC = () => {
     } else {
       document.documentElement.classList.remove("dark");
     }
-    LocalStorageService.setItem("theme", theme);
+    localStorageService.setItem("theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {

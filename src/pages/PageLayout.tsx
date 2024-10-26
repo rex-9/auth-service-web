@@ -1,6 +1,6 @@
 import React from "react";
 import { LanguageSwitcher, ThemeToggle } from "../components";
-import { useAxiosInterceptor } from "../services/api";
+import { useAxiosInterceptor } from "../utils/api";
 
 interface PageLayoutProps {
   children: React.ReactNode;

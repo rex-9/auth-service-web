@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import LocalStorageService from "../services/LocalStorageService";
-import { User } from "../models";
+import { localStorageService } from "../services";
+import { IUser } from "../types/modelTypes";
 
 interface AuthContextType {
   isAuthenticated: boolean;
   token: string | null;
-  currentUser: User | null;
-  login: (token: string, user: User) => void;
+  currentUser: IUser | null;
+  login: (token: string, user: IUser) => void;
   logout: () => void;
 }
 
@@ -17,29 +17,29 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [token, setToken] = useState<string | null>(() => {
     // Check local storage for token
-    return LocalStorageService.getItem<string>("token");
+    return localStorageService.getItem<string>("token");
   });
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return !!token;
   });
 
-  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+  const [currentUser, setCurrentUser] = useState<IUser | null>(() => {
     // Check local storage for current user
-    return LocalStorageService.getItem<User>("user");
+    return localStorageService.getItem<IUser>("user");
   });
 
-  const login = (token: string, user: User) => {
-    LocalStorageService.setItem<string>("token", token);
-    LocalStorageService.setItem<User>("user", user);
+  const login = (token: string, user: IUser) => {
+    localStorageService.setItem<string>("token", token);
+    localStorageService.setItem<IUser>("user", user);
     setToken(token);
     setCurrentUser(user);
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    LocalStorageService.removeItem("token");
-    LocalStorageService.removeItem("user");
+    localStorageService.removeItem("token");
+    localStorageService.removeItem("user");
     setToken(null);
     setIsAuthenticated(false);
   };

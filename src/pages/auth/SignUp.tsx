@@ -11,7 +11,7 @@ import {
 import { PageLayout } from "..";
 import { useTranslation } from "react-i18next";
 import { AppLocales } from "../../locales/app_locales";
-import authService from "../../services/authService";
+import authController from "../../controllers/authController";
 
 const SignUp: React.FC = () => {
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await authService.signUpWithEmail(
+    await authController.signUpWithEmail(
       email,
       password,
       passwordConfirmation,

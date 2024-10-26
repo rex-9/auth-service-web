@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { AlertMessage, TextButton, TextInput } from "../../components";
 import { PageLayout } from "../../pages";
 import FormContainer from "../../components/FormContainer";
-import authService from "../../services/authService";
+import authController from "../../controllers/authController";
 import { AppLocales } from "../../locales/app_locales";
 
 const ResetPassword: React.FC = () => {
@@ -21,7 +21,7 @@ const ResetPassword: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (token) {
-      await authService.resetPassword(
+      await authController.resetPassword(
         token,
         password,
         passwordConfirmation,

@@ -1,5 +1,5 @@
 class LocalStorageService {
-  static getItem<T>(key: string): T | null {
+  getItem<T>(key: string): T | null {
     const item = localStorage.getItem(key);
     if (item) {
       try {
@@ -12,7 +12,7 @@ class LocalStorageService {
     return null;
   }
 
-  static setItem<T>(key: string, value: T): void {
+  setItem<T>(key: string, value: T): void {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
@@ -20,9 +20,9 @@ class LocalStorageService {
     }
   }
 
-  static removeItem(key: string): void {
+  removeItem(key: string): void {
     localStorage.removeItem(key);
   }
 }
 
-export default LocalStorageService;
+export default new LocalStorageService();

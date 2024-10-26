@@ -12,7 +12,7 @@ import {
 import PageLayout from "../PageLayout";
 import { useTranslation } from "react-i18next";
 import { AppLocales } from "../../locales/app_locales";
-import authService from "../../services/authService";
+import authController from "../../controllers/authController";
 import { useNavigate } from "react-router-dom";
 
 const SignIn: React.FC = () => {
@@ -30,7 +30,7 @@ const SignIn: React.FC = () => {
       const authToken = params.get("auth_token");
       const errorParam = params.get("error");
       if (authToken) {
-        await authService.signInWithToken(authToken, setError, login);
+        await authController.signInWithToken(authToken, setError, login);
       } else if (errorParam) {
         setError(errorParam);
       }
@@ -41,7 +41,7 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await authService.signInWithEmail(
+    await authController.signInWithEmail(
       email,
       password,
       setError,
@@ -53,7 +53,11 @@ const SignIn: React.FC = () => {
 
   const handleGoogleSuccess = async (response: any) => {
     if (response.credential) {
-      await authService.signInWithGoogle(response.credential, setError, login);
+      await authController.signInWithGoogle(
+        response.credential,
+        setError,
+        login
+      );
     }
   };
 

@@ -8,7 +8,7 @@ import {
 } from "../../components";
 import { useCountdown } from "../../utils";
 import { PageLayout } from "..";
-import authService from "../../services/authService";
+import authController from "../../controllers/authController";
 import AppRoutes from "../../AppRoutes";
 import { AppLocales } from "../../locales/app_locales";
 import { useTranslation } from "react-i18next";
@@ -22,7 +22,7 @@ const ForgotPassword: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await authService.sendForgotPasswordMail(
+    await authController.sendForgotPasswordMail(
       email,
       setError,
       setMessage,

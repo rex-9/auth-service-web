@@ -3,11 +3,7 @@ import AppConfig from "../AppConfig";
 import { useLoading } from "../contexts/LoadingContext";
 import { useEffect } from "react";
 import { useAuth } from "../contexts";
-
-interface ApiResponse<T> {
-  data: T | null;
-  error?: string;
-}
+import { IApiResponse } from "../types";
 
 // Create an axios instance
 const axiosInstance = axios.create({
@@ -19,14 +15,14 @@ const axiosInstance = axios.create({
 });
 
 // Utility function to handle errors
-const handleError = <T>(error: unknown): ApiResponse<T> => {
+const handleError = <T>(error: unknown): IApiResponse<T> => {
   if (axios.isAxiosError(error)) {
     if (error.response) {
       // Server responded with a status other than 200 range
       console.error("Server Error:", error.response.data);
       return {
         data: error.response.data,
-        error: error.response.data.status.error || "An error occurred",
+        error: error.response.data?.status?.error || "An error occurred",
       };
     } else if (error.request) {
       // Request was made but no response received
@@ -42,7 +38,7 @@ const handleError = <T>(error: unknown): ApiResponse<T> => {
 const apiRequest = async <T>(
   url: string,
   config: AxiosRequestConfig
-): Promise<ApiResponse<T>> => {
+): Promise<IApiResponse<T>> => {
   try {
     const response = await axiosInstance(url, config);
     return { data: response.data };

@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { useAuth } from "../../contexts";
 import { googleLogout } from "@react-oauth/google";
-import authService from "../../services/authService";
+import authController from "../../controllers/authController";
 
 const SignOut: React.FC = () => {
   const { logout, currentUser } = useAuth();
 
   const handleLogout = async () => {
-    await authService.signOut();
+    await authController.signOut();
     if (currentUser?.provider === "google") {
       googleLogout();
     }
