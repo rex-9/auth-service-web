@@ -25,7 +25,7 @@
 
 # 📖 Auth Service Web <a name="about-project"></a>
 
-**Auth Service Web** is the frontend web interface for [Auth Service](https://google.com/) to contribute the society.
+**Auth Service Web** serves as the frontend application for [Auth Service](https://google.com/) providing a robust foundation for diverse product development needs. You can find the corresponding backend application here: [Auth Service Api](https://github.com/rex-9/auth-service-api).
 
 ## 🛠 Built With <a name="built-with"></a>
 
