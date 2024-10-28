@@ -102,9 +102,9 @@ run the app.
 
 # ☕ Support <a name="support"></a>
 
-If you like this project, please consider giving it a star on GitHub and buying me a coffee to support its development:
+If you like this project, please consider giving it a star on GitHub and buying me a coffee to support its development: 🌟
 
-[![GitHub Stars](https://img.shields.io/github/stars/rex-9/auth-service-web.svg?style=social&label=Star)](https://github.com/your-repo-name)
+[![GitHub Stars](https://img.shields.io/github/stars/rex-9/auth-service-web.svg?style=social&label=Star)](https://github.com/rex-9/auth-service-web)
 
 <div align="center">
   <a href="https://buymeacoffee.com/rex9" target="_blank">
