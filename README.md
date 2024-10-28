@@ -13,6 +13,11 @@
 - [auth-service-web](#auth-service-web)
 - [📗 Table of Contents](#-table-of-contents)
 - [📖 Auth Service Web ](#-auth-service-web-)
+  - [🚀 Featuring!](#-featuring)
+    - [🌟 Modern Tech Stack](#-modern-tech-stack)
+    - [🗃️ State Management \& Storage](#️-state-management--storage)
+    - [🏗️ Design Patterns \& Architecture](#️-design-patterns--architecture)
+    - [🔐 Authentication \& Security](#-authentication--security)
   - [🛠 Built With ](#-built-with-)
     - [Tech Stack ](#tech-stack-)
   - [💻 Getting Started ](#-getting-started-)
@@ -25,7 +30,32 @@
 
 # 📖 Auth Service Web <a name="about-project"></a>
 
-**Auth Service Web** serves as the frontend application for [Auth Service](https://google.com/) providing a robust foundation for diverse product development needs. You can find the corresponding backend application here: [Auth Service Api](https://github.com/rex-9/auth-service-api).
+**Auth Service Web** is a robust frontend framework for authenticated web applications, offering a solid foundation for diverse product development needs. This repository also serves as an excellent learning resource for anyone looking to master frontend web development. It emphasizes best practices on the client side, enabling developers to write simple yet clean code. You can find the corresponding backend application here: [Auth Service Api](https://github.com/rex-9/auth-service-api).
+
+## 🚀 Featuring!
+
+### 🌟 Modern Tech Stack
+
+- **React with TypeScript**: Enjoy the benefits of a strongly-typed language for building robust and scalable applications.
+- **TailwindCSS for UI**: Rapidly build modern and responsive user interfaces with utility-first CSS.
+- **Vite for Hosting**: Experience fast and efficient development with Vite's lightning-fast build tool.
+
+### 🗃️ State Management & Storage
+
+- **Jotai**: Simplify state management and local storage with Jotai's atomic state management library.
+
+### 🏗️ Design Patterns & Architecture
+
+- **MVC Design Pattern**: Maintain a clean separation of concerns with the Model-View-Controller design pattern.
+- **Dockerized**: Easily deploy and manage your application with Docker.
+- **Clean Architecture**: Ensure maintainability and scalability with a clean and modular architecture.
+
+### 🔐 Authentication & Security
+
+- **Email-Password Authentication**: Securely authenticate users with email and password.
+- **Google Authentication**: Provide a seamless login experience with Google OAuth.
+- **Forgot Password & Reset Password**: Allow users to recover their accounts with ease.
+- **Email Confirmation**: Verify user email addresses to enhance security.
 
 ## 🛠 Built With <a name="built-with"></a>
 
@@ -38,6 +68,7 @@
     <li><a href="https://tailwindcss.com/">TailwindCSS</a></li>
     <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
     <li><a href="https://vitejs.dev/">Vite</a></li>
+    <li><a href="https://jotai.org/">Jotai</a></li>
   </ul>
 </details>
 
