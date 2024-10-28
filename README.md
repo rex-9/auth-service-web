@@ -19,6 +19,7 @@
     - [Prerequisites](#prerequisites)
     - [Setup](#setup)
     - [Run](#run)
+- [☕ Support ](#-support-)
 
 <!-- PROJECT DESCRIPTION -->
 
@@ -98,5 +99,17 @@ run the app.
 ```sh
 > sh run_dev.sh
 ```
+
+# ☕ Support <a name="support"></a>
+
+If you like this project, please consider giving it a star on GitHub and buying me a coffee to support its development:
+
+[![GitHub Stars](https://img.shields.io/github/stars/rex-9/auth-service-web.svg?style=social&label=Star)](https://github.com/your-repo-name)
+
+<div align="center">
+  <a href="https://buymeacoffee.com/rex9" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
+  </a>
+</div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
