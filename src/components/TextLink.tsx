@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import clsx from "clsx";
+import { clsx } from "ts-clsx";
 import { useTranslation } from "react-i18next";
+
 interface TextLinkProps {
   label: string;
   to: string;

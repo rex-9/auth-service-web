@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import TextButton from "./TextButton";
-import { localStorageService } from "../services";
+import React, { useEffect } from "react";
+import { useAtom } from "jotai";
+import { TextButton } from "../components";
+import atoms from "../atoms";
 
 const ThemeToggle: React.FC = () => {
-  const [theme, setTheme] = useState<string>(
-    () => localStorageService.getItem<string>("theme") || "light"
-  );
+  const [theme, setTheme] = useAtom(atoms.themeAtom);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -13,11 +12,10 @@ const ThemeToggle: React.FC = () => {
     } else {
       document.documentElement.classList.remove("dark");
     }
-    localStorageService.setItem("theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+    setTheme((prevTheme: string) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   return (
