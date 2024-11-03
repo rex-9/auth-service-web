@@ -18,10 +18,10 @@ import { useNavigate } from "react-router-dom";
 const SignIn: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [loginKey, setLoginKey] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const { login } = useAuth();
 
   useEffect(() => {
@@ -41,8 +41,8 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await authController.signInWithEmail(
-      email,
+    await authController.signInWithEmailOrUsername(
+      loginKey,
       password,
       setError,
       setMessage,
@@ -57,11 +57,11 @@ const SignIn: React.FC = () => {
         {message && <AlertMessage type="success" message={message} />}
         {error && <AlertMessage type="error" message={error} />}
         <TextInput
-          id="email"
-          label={AppLocales.SignInEmailLabel}
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          id="email-or-username"
+          label={AppLocales.SignInEmailOrUsernameLabel}
+          type="text"
+          value={loginKey}
+          onChange={(e) => setLoginKey(e.target.value.toLowerCase())}
           required
         />
         <TextInput

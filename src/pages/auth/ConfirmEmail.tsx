@@ -16,7 +16,7 @@ import { useAuth } from "../../contexts";
 
 const ConfirmEmail: React.FC = () => {
   const location = useLocation();
-  const email = new URLSearchParams(location.search).get("email");
+  const emailOrUsername = new URLSearchParams(location.search).get("login_key");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [confirmationCode, setConfirmationCode] = useState<string>("");
@@ -35,26 +35,30 @@ const ConfirmEmail: React.FC = () => {
   }, [location]);
 
   const handleResendEmail = async () => {
-    if (email && !isCooldown) {
+    if (emailOrUsername && !isCooldown) {
       await authController.resendConfirmationEmail(
-        email,
+        emailOrUsername,
         setError,
         setMessage,
         startCountdown
       );
+    } else {
+      setError("Please wait for the cooldown to finish.");
     }
   };
 
   const handleConfirmEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && confirmationCode) {
+    if (emailOrUsername && confirmationCode) {
       await authController.confirmEmailWithCode(
-        email,
+        emailOrUsername,
         confirmationCode,
         setError,
         setMessage,
         login
       );
+    } else {
+      setError("Either login key or confirmation code is missing.");
     }
   };
 
@@ -65,7 +69,7 @@ const ConfirmEmail: React.FC = () => {
           {message && <AlertMessage type="success" message={message} />}
           {error && <AlertMessage type="error" message={error} />}
           <p className="mb-4">
-            We have sent a verification email to {email}. Follow the
+            We have sent a verification email to {emailOrUsername}. Follow the
             instructions in your email to verify your account. If you can't find
             the email, check your spam folder or{" "}
             <a

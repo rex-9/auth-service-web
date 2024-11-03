@@ -18,15 +18,17 @@ import { useAuth } from "../../contexts";
 const SignUp: React.FC = () => {
   const { login } = useAuth();
   const { t } = useTranslation();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await authController.signUpWithEmail(
+      username,
       email,
       password,
       passwordConfirmation,
@@ -39,6 +41,14 @@ const SignUp: React.FC = () => {
     <PageLayout>
       <FormContainer title={AppLocales.SignUpTitle} onSubmit={handleSubmit}>
         {error && <AlertMessage type="error" message={error} />}
+        <TextInput
+          id="username"
+          label={AppLocales.SignUpUsernameLabel}
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value.toLowerCase())}
+          required
+        />
         <TextInput
           id="email"
           label={AppLocales.SignUpEmailLabel}

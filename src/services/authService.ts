@@ -4,13 +4,17 @@ import { IApiAuthResponse, IApiResponse } from "../types/apiTypes";
 import { IUser } from "../types";
 
 class AuthService {
-  async signInWithEmail(
-    email: string,
+  async signInWithEmailOrUsername(
+    loginKey: string,
     password: string
-  ): Promise<IApiResponse<IApiAuthResponse<{ user: IUser; token: string }>>> {
+  ): Promise<
+    IApiResponse<IApiAuthResponse<{ user: IUser; token: string } | undefined>>
+  > {
     const response = await api.post<
       IApiAuthResponse<{ user: IUser; token: string }>
-    >(AppRoutes.server.public.SIGN_IN_EMAIL, { user: { email, password } });
+    >(AppRoutes.server.public.SIGN_IN_EMAIL, {
+      user: { login_key: loginKey, password },
+    });
     return response;
   }
 
@@ -33,36 +37,44 @@ class AuthService {
   }
 
   async signUpWithEmail(
+    username: string,
     email: string,
     password: string,
     passwordConfirmation: string
   ): Promise<IApiResponse<IApiAuthResponse<undefined>>> {
     const response = await api.post<IApiAuthResponse<undefined>>(
       AppRoutes.server.public.SIGN_UP,
-      { user: { email, password, password_confirmation: passwordConfirmation } }
+      {
+        user: {
+          username,
+          email,
+          password,
+          password_confirmation: passwordConfirmation,
+        },
+      }
     );
     return response;
   }
 
   async confirmEmailWithCode(
-    email: string,
+    emailOrUsername: string,
     confirmationCode: string
   ): Promise<IApiResponse<IApiAuthResponse<{ user: IUser; token: string }>>> {
     const response = await api.post<
       IApiAuthResponse<{ user: IUser; token: string }>
     >(`${AppRoutes.server.public.CONFIRM_WITH_CODE}`, {
-      email,
+      login_key: emailOrUsername,
       confirmation_code: confirmationCode,
     });
     return response;
   }
 
   async resendConfirmationEmail(
-    email: string
+    emailOrUsername: string
   ): Promise<IApiResponse<IApiAuthResponse<undefined>>> {
     const response = await api.post<IApiAuthResponse<undefined>>(
       `${AppRoutes.server.public.RESEND_VERIFY_EMAIL}`,
-      { email }
+      { login_key: emailOrUsername }
     );
     return response;
   }

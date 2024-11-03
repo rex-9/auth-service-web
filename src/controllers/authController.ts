@@ -17,8 +17,8 @@ class AuthController {
     );
   }
 
-  async signInWithEmail(
-    email: string,
+  async signInWithEmailOrUsername(
+    loginKey: string,
     password: string,
     setError: (message: string) => void,
     setMessage: (message: string) => void,
@@ -26,13 +26,15 @@ class AuthController {
     navigate: (url: string) => void
   ): Promise<void> {
     await apiHandler(
-      "signing in with email",
-      () => authService.signInWithEmail(email, password),
+      "signing in with email or username",
+      () => authService.signInWithEmailOrUsername(loginKey, password),
       setError,
       (data) => {
         setMessage(data.status.message);
-        login(data.data!.token, data.data!.user);
-        navigate(AppRoutes.client.public.CONFIRM_EMAIL + `?email=${email}`);
+        if (data.data) login(data.data!.token, data.data!.user);
+        navigate(
+          AppRoutes.client.public.CONFIRM_EMAIL + `?login_key=${loginKey}`
+        );
       }
     );
   }
@@ -51,6 +53,7 @@ class AuthController {
   }
 
   async signUpWithEmail(
+    username: string,
     email: string,
     password: string,
     passwordConfirmation: string,
@@ -59,14 +62,21 @@ class AuthController {
   ): Promise<void> {
     await apiHandler(
       "signing up with email",
-      () => authService.signUpWithEmail(email, password, passwordConfirmation),
+      () =>
+        authService.signUpWithEmail(
+          username,
+          email,
+          password,
+          passwordConfirmation
+        ),
       setError,
-      () => navigate(`${AppRoutes.client.public.CONFIRM_EMAIL}?email=${email}`)
+      () =>
+        navigate(`${AppRoutes.client.public.CONFIRM_EMAIL}?login_key=${email}`)
     );
   }
 
   async confirmEmailWithCode(
-    email: string,
+    emailOrUsername: string,
     confirmationCode: string,
     setError: (message: string) => void,
     setMessage: (message: string) => void,
@@ -74,7 +84,7 @@ class AuthController {
   ): Promise<void> {
     await apiHandler(
       "confirming email with code",
-      () => authService.confirmEmailWithCode(email, confirmationCode),
+      () => authService.confirmEmailWithCode(emailOrUsername, confirmationCode),
       setError,
       (data) => {
         setMessage(data.status.message);
@@ -85,14 +95,14 @@ class AuthController {
   }
 
   async resendConfirmationEmail(
-    email: string,
+    emailOrUsername: string,
     setError: (message: string) => void,
     setMessage: (message: string) => void,
     startCountdown: () => void
   ): Promise<void> {
     await apiHandler(
       "resending confirmation email",
-      () => authService.resendConfirmationEmail(email),
+      () => authService.resendConfirmationEmail(emailOrUsername),
       setError,
       (data) => {
         setMessage(data.status.message);

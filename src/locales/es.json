@@ -1,6 +1,6 @@
 {
   "sign_in_title": "Iniciar sesión",
-  "sign_in_email_label": "Correo electrónico",
+  "sign_in_email_or_username_label": "Correo electrónico o nombre de usuario",
   "sign_in_password_label": "Contraseña",
   "sign_in_button": "Iniciar sesión",
   "sign_in_sign_up_prompt": "¿No tienes una cuenta?",
@@ -10,6 +10,7 @@
   "sign_in_google_failure": "¡La autenticación de Google falló!",
 
   "sign_up_title": "Registrarse",
+  "sign_up_username_label": "Nombre de usuario",
   "sign_up_email_label": "Correo electrónico",
   "sign_up_password_label": "Contraseña",
   "sign_up_password_confirmation_label": "Confirmación de contraseña",
