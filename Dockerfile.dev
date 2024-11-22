@@ -7,13 +7,17 @@ ENV NODE_ENV development
 # Setting up the work directory
 WORKDIR /web
 
-# Installing dependencies
-COPY ./package*.json /web
+# Copy package.json and lock file
+COPY package*.json ./
 
+# Install all the dependencies
 RUN npm install
 
 # Copying all the files in our project
 COPY . .
 
-# Starting our application
-CMD ["npm", "run", "dev", "--", "--host"]
+# Expose the development server port
+EXPOSE 5173
+
+# Start the development server
+CMD ["npm", "run", "dev"]
