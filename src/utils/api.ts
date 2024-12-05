@@ -12,6 +12,7 @@ const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true, // Include credentials in requests
 });
 
 // Utility function to handle errors
