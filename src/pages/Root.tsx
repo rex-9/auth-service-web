@@ -13,7 +13,7 @@ const Root: React.FC = () => {
   return (
     <PageLayout>
       Landing Page
-      <div className="w-48">
+      <div className="w-48 flex flex-col justify-center items-center">
         {isAuthenticated ? (
           <SignOutBtn />
         ) : (

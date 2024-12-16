@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import TextButton from "./TextButton";
+import { DropdownPicker } from ".";
 
 const LanguageSwitcher: React.FC = () => {
   const { i18n } = useTranslation();
@@ -9,21 +9,18 @@ const LanguageSwitcher: React.FC = () => {
     i18n.changeLanguage(lng);
   };
 
+  const languageOptions = [
+    { value: "en", label: "🇺🇸 English" },
+    { value: "es", label: "🇪🇸 Español" },
+    // Add more languages as needed
+  ];
+
   return (
-    <div className="flex">
-      <TextButton
-        variant="primary"
-        className="m-2"
-        onClick={() => changeLanguage("en")}
-        label="English"
-      />
-      <TextButton
-        variant="primary"
-        className="m-2"
-        onClick={() => changeLanguage("es")}
-        label="Español"
-      />
-    </div>
+    <DropdownPicker
+      options={languageOptions}
+      value={i18n.language}
+      onChange={changeLanguage}
+    />
   );
 };
 

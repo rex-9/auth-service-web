@@ -4,7 +4,7 @@ import { useAuth } from "../contexts";
 import PageLayout from "./PageLayout";
 import { AppLocales } from "../locales/app_locales";
 
-const NotFound = () => {
+const NotFound: React.FC = () => {
   const { token } = useAuth();
 
   return (

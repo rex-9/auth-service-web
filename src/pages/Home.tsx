@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { userController } from "../controllers";
 
-const Home = () => {
+const Home: React.FC = () => {
   const { currentUser, setCurrentUser } = useAuth();
   const { t } = useTranslation();
 
@@ -18,7 +18,7 @@ const Home = () => {
 
   return (
     <PageLayout>
-      {<Asset asset={assets.icons.insta} className="w-8" />}
+      {<Asset asset={assets.icons.asset.insta} className="w-8" />}
       {<Asset asset={assets.images.banner} className="w-96" />}
       <Typography className="text-xl font-bold" variant="primary">
         {t(AppLocales.Home)}

@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useAtom } from "jotai";
-import { TextButton } from "../components";
+import { IconButton } from "../components";
 import atoms from "../atoms";
+import assets from "../assets";
 
 const ThemeToggle: React.FC = () => {
   const [theme, setTheme] = useAtom(atoms.themeAtom);
@@ -19,11 +20,18 @@ const ThemeToggle: React.FC = () => {
   };
 
   return (
-    <TextButton
-      variant="primary"
-      onClick={toggleTheme}
-      label={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-    />
+    <>
+      <IconButton
+        onClick={toggleTheme}
+        icon={
+          theme === "light" ? (
+            <assets.icons.lib.moon />
+          ) : (
+            <assets.icons.lib.sun />
+          )
+        }
+      />
+    </>
   );
 };
 

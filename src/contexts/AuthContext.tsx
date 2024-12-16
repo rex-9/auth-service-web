@@ -20,7 +20,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [token, setToken] = useAtom(atoms.tokenAtom);
   const [currentUser, setCurrentUser] = useAtom(atoms.currentUserAtom);
 
-  const isAuthenticated = !!token;
+  let isAuthenticated = !!token;
 
   const login = (token: string, user: IUser) => {
     setToken(token);

@@ -1,21 +1,10 @@
 import React from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import AppRoutes from "./AppRoutes";
-import {
-  SignIn,
-  SignUp,
-  SignOut,
-  ConfirmEmail,
-  ForgotPassword,
-  ResetPassword,
-  NotFound,
-  Home,
-  Root,
-} from "./pages";
-import { PublicRoute, ProtectedRoute, LoadingOverlay } from "./components";
+
+import { LoadingOverlay } from "./components";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import AppConfig from "./AppConfig";
 import { AuthProvider, LoadingProvider } from "./contexts";
+import { RouteManager } from "./routes";
 
 const App: React.FC = () => {
   return (
@@ -23,40 +12,7 @@ const App: React.FC = () => {
       <AuthProvider>
         <LoadingProvider>
           <LoadingOverlay />
-          <Router>
-            <Routes>
-              <Route path={AppRoutes.client.public.ROOT} element={<Root />} />
-              <Route
-                path={AppRoutes.client.public.CONFIRM_EMAIL}
-                element={<PublicRoute element={<ConfirmEmail />} />}
-              />
-              <Route
-                path={AppRoutes.client.public.FORGOT_PASSWORD}
-                element={<PublicRoute element={<ForgotPassword />} />}
-              />
-              <Route
-                path={AppRoutes.client.public.RESET_PASSWORD}
-                element={<PublicRoute element={<ResetPassword />} />}
-              />
-              <Route
-                path={AppRoutes.client.public.SIGN_IN}
-                element={<PublicRoute element={<SignIn />} />}
-              />
-              <Route
-                path={AppRoutes.client.public.SIGN_UP}
-                element={<PublicRoute element={<SignUp />} />}
-              />
-              <Route
-                path={AppRoutes.client.protected.SIGN_OUT}
-                element={<ProtectedRoute element={<SignOut />} />}
-              />
-              <Route
-                path={AppRoutes.client.protected.HOME}
-                element={<ProtectedRoute element={<Home />} />}
-              />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Router>
+          <RouteManager />
         </LoadingProvider>
       </AuthProvider>
     </GoogleOAuthProvider>

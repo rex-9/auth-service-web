@@ -1,11 +1,12 @@
 // Import images
 import banner from "./images/banner.png";
 
-// Import icons
-import insta from "./icons/instagram.svg";
-
 // Import videos
 import sample from "./videos/sample.mp4";
+
+// Import icons
+import insta from "./icons/instagram.svg"; // Asset icons
+import { MoonIcon, SunIcon } from "./icons"; // Lib icons
 
 // Define TypeScript interfaces
 interface AssetProps {
@@ -23,11 +24,20 @@ const images: Record<string, AssetProps> = {
   },
 };
 
-const icons: Record<string, AssetProps> = {
-  insta: {
-    src: insta,
-    alt: "instagram icon alt",
-    title: "instagram icon title",
+const icons: {
+  asset: Record<string, AssetProps>;
+  lib: Record<string, React.ComponentType>;
+} = {
+  asset: {
+    insta: {
+      src: insta,
+      alt: "instagram icon alt",
+      title: "instagram icon title",
+    },
+  },
+  lib: {
+    sun: SunIcon,
+    moon: MoonIcon,
   },
 };
 

@@ -9,9 +9,6 @@ import { IApiAuthResponse, IApiResponse } from "../types";
 const axiosInstance = axios.create({
   baseURL: AppConfig.SERVER_BASE_URL,
   timeout: 10000, // Set a timeout for requests
-  headers: {
-    "Content-Type": "application/json",
-  },
   withCredentials: true, // Include credentials in requests
 });
 
@@ -54,10 +51,18 @@ export const api = {
     return apiRequest<T>(url, { ...config, method: "GET" });
   },
   post: async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
-    return apiRequest<T>(url, { ...config, method: "POST", data });
+    const headers =
+      data instanceof FormData
+        ? { "Content-Type": "multipart/form-data" }
+        : { "Content-Type": "application/json" };
+    return apiRequest<T>(url, { ...config, method: "POST", data, headers });
   },
   put: async <T>(url: string, data?: any, config?: AxiosRequestConfig) => {
-    return apiRequest<T>(url, { ...config, method: "PUT", data });
+    const headers =
+      data instanceof FormData
+        ? { "Content-Type": "multipart/form-data" }
+        : { "Content-Type": "application/json" };
+    return apiRequest<T>(url, { ...config, method: "PUT", data, headers });
   },
   delete: async <T>(url: string, config?: AxiosRequestConfig) => {
     return apiRequest<T>(url, { ...config, method: "DELETE" });
@@ -67,7 +72,7 @@ export const api = {
 // Custom hook to set up axios interceptor
 export const useAxiosInterceptor = () => {
   const { setLoading } = useLoading();
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
 
   useEffect(() => {
     const requestInterceptor = axiosInstance.interceptors.request.use(
@@ -90,6 +95,18 @@ export const useAxiosInterceptor = () => {
         return response;
       },
       (error) => {
+        console.log("interceptor response error ===>", error);
+        if (
+          error.response &&
+          error.response.status === 401 &&
+          (error.response.data.status.error === "Signature has expired" ||
+            error.response.data.status.error ===
+              "No verification key available")
+        ) {
+          // Token has expired, prompt the user to re-authenticate
+          alert("Your session has expired. Please log in again.");
+          logout();
+        }
         setLoading(false);
         return Promise.reject(error);
       }
