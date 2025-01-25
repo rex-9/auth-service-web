@@ -6,10 +6,12 @@ class AtomStorageService {
 
   constructor() {
     this.atoms = Object.keys(localStorage).reduce((acc, key) => {
-      acc[key] = atomWithStorage<any>(
-        key,
-        JSON.parse(localStorage.getItem(key) as string)
-      );
+      try {
+        const value = JSON.parse(localStorage.getItem(key) as string);
+        acc[key] = atomWithStorage<any>(key, value);
+      } catch (error) {
+        console.error(`Error parsing localStorage key "${key}":`, error);
+      }
       return acc;
     }, {} as Record<string, WritableAtom<any, any, void>>);
   }
