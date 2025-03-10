@@ -9,7 +9,7 @@ const NavBar: React.FC = () => {
       <div>
         <ProfileAvatar className="ml-auto" />
       </div>
-      <div className="flex gap-2 items-center px-2">
+      <div className="flex gap-4 items-center px-2">
         <ThemeToggle />
         <LanguageSwitcher />
       </div>

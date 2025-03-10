@@ -5,8 +5,8 @@ import { useCountdown } from "../../hooks";
 import {
   AlertMessage,
   TextLink,
-  TextInput,
-  TextButton,
+  FormInput,
+  Button,
   FormContainer,
 } from "../../components";
 import PageLayout from "../PageLayout";
@@ -90,11 +90,11 @@ const ConfirmEmailPage: React.FC = () => {
             Did you enter your email address incorrectly?{" "}
             <TextLink
               to={AppRoutes.client.public.SIGN_UP}
-              label={AppLocales.GoBack}
+              label={AppLocales.COMMON.GO_BACK}
             />
           </p>
           <div className="mt-4">
-            <TextInput
+            <FormInput
               id="confirmation-code"
               label="Confirmation Code"
               type="text"
@@ -102,11 +102,11 @@ const ConfirmEmailPage: React.FC = () => {
               onChange={(e) => setConfirmationCode(e.target.value)}
               placeholder="Enter 6-digit confirmation code"
             />
-            <TextButton
+            <Button
               variant="primary"
               onClick={handleConfirmEmail}
               className="mt-2"
-              label={AppLocales.Submit}
+              label={AppLocales.COMMON.SUBMIT}
               disabled={confirmationCode.length !== 6}
             />
           </div>

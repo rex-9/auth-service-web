@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AlertMessage, TextButton, TextInput } from "../../components";
+import {
+  AlertMessage,
+  Button,
+  FormInput,
+  FormContainer,
+} from "../../components";
 import { PageLayout } from "../../pages";
-import FormContainer from "../../components/FormContainer";
 import { authController } from "../../controllers";
 import { useLocalization } from "../../hooks";
 
@@ -40,7 +44,7 @@ const ResetPasswordPage: React.FC = () => {
       <FormContainer title="Reset Password" onSubmit={handleSubmit}>
         {message && <AlertMessage type="success" message={message} />}
         {error && <AlertMessage type="error" message={error} />}
-        <TextInput
+        <FormInput
           id="password"
           label="Password"
           type="password"
@@ -48,7 +52,7 @@ const ResetPasswordPage: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <TextInput
+        <FormInput
           id="passwordConfirmation"
           label="Password Confirmation"
           type="password"
@@ -56,7 +60,11 @@ const ResetPasswordPage: React.FC = () => {
           onChange={(e) => setPasswordConfirmation(e.target.value)}
           required
         />
-        <TextButton variant="primary" type="submit" label={AppLocales.Submit} />
+        <Button
+          variant="primary"
+          type="submit"
+          label={AppLocales.COMMON.SUBMIT}
+        />
       </FormContainer>
     </PageLayout>
   );

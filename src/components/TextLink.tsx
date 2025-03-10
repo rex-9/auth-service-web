@@ -1,28 +1,31 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { clsx } from "ts-clsx";
+import { FC } from "react";
+import { Link, LinkProps } from "react-router-dom";
 import { useLocalization } from "../hooks";
 
-interface TextLinkProps {
-  label: string;
-  to: string;
-  className?: string;
+interface TextLinkProps extends LinkProps {
+  label?: string;
+  variant?: "default" | "ghost";
 }
 
-const LinkText: React.FC<TextLinkProps> = ({ label, to, className }) => {
+const TextLink: FC<TextLinkProps> = ({
+  label,
+  children,
+  className = "",
+  variant = "default",
+  ...props
+}) => {
   const { t } = useLocalization();
 
+  const variantClasses = {
+    default: "link link-primary",
+    ghost: "link link-hover",
+  };
+
   return (
-    <Link
-      to={to}
-      className={clsx(
-        "text-primary-light dark:text-primary-dark hover:underline",
-        className
-      )}
-    >
-      {t(label)}
+    <Link className={`${variantClasses[variant]} ${className}`} {...props}>
+      {label ? t(label) : children}
     </Link>
   );
 };
 
-export default LinkText;
+export default TextLink;

@@ -19,9 +19,10 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ className }) => {
 
   const { profile_pic_url, username } = currentUser;
 
-  const getInitialLetter = (name: string) => {
+  const getInitialLetter = (name: string): string => {
     return name.charAt(0).toUpperCase();
   };
+
   const handleImageError = () => {
     if (setImageError) {
       setImageError(true);
@@ -31,7 +32,7 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ className }) => {
 
   return (
     <div
-      className={`flex items-center justify-center ${className} cursor-pointer`}
+      className={`avatar ${className} cursor-pointer`}
       onClick={() => navigate(AppRoutes.client.protected.PROFILE)}
     >
       {profile_pic_url && !imageError ? (
@@ -41,8 +42,10 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ className }) => {
           onError={handleImageError}
         />
       ) : (
-        <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold text-primary-light dark:text-primary-dark bg-bg-dark dark:bg-bg-light hover:bg-hover-light dark:hover:bg-hover-dark">
-          {getInitialLetter(username)}
+        <div className="w-10 h-10 rounded-full bg-base-200 hover:bg-base-300">
+          <span className="text-lg font-bold w-full h-full flex items-center justify-center">
+            {getInitialLetter(username)}
+          </span>
         </div>
       )}
     </div>

@@ -1,37 +1,23 @@
-import React, { useEffect } from "react";
+import { FC } from "react";
 import { useAtom } from "jotai";
-import { IconButton } from "../components";
+import { Button } from ".";
 import atoms from "../atoms";
-import assets from "../assets";
+import { SupportedTheme } from "../constants";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 
-const ThemeToggle: React.FC = () => {
+const ThemeToggle: FC = () => {
   const [theme, setTheme] = useAtom(atoms.themeAtom);
 
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
-
   const toggleTheme = () => {
-    setTheme((prevTheme: string) => (prevTheme === "light" ? "dark" : "light"));
+    const newTheme: SupportedTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
   };
 
   return (
-    <>
-      <IconButton
-        onClick={toggleTheme}
-        icon={
-          theme === "light" ? (
-            <assets.icons.lib.moon />
-          ) : (
-            <assets.icons.lib.sun />
-          )
-        }
-      />
-    </>
+    <Button onClick={toggleTheme} variant="icon" className="w-8 h-8">
+      {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+    </Button>
   );
 };
 

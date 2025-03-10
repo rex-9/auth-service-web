@@ -17,7 +17,7 @@ const NotFoundPage: React.FC = () => {
             ? AppRoutes.client.protected.HOME
             : AppRoutes.client.public.SIGN_IN
         }
-        label={AppLocales.GoBack}
+        label={AppLocales.COMMON.GO_BACK}
       />
     </PageLayout>
   );

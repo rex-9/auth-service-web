@@ -1,30 +1,41 @@
-import React from "react";
-import { clsx } from "ts-clsx";
+import { FC, HTMLAttributes } from "react";
 
-interface TypographyProps extends React.HTMLAttributes<HTMLParagraphElement> {
-  children: React.ReactNode;
-  className?: string;
-  variant?: "primary" | "secondary";
+interface TypographyProps extends HTMLAttributes<HTMLElement> {
+  variant?: "h1" | "h2" | "h3" | "h4" | "body" | "small";
+  color?: "primary" | "secondary" | "default";
 }
 
-const Typography: React.FC<TypographyProps> = ({
+const Typography: FC<TypographyProps> = ({
+  variant = "body",
+  color = "default",
+  className = "",
   children,
-  variant = "secondary",
-  className = "text-base font-normal",
   ...props
 }) => {
-  const primaryClasses = "text-primary-light dark:text-primary-dark";
-  const secondaryClasses = "text-text-light dark:text-text-dark";
+  const colorClasses = {
+    primary: "text-primary",
+    secondary: "text-secondary",
+    default: "text-base-content",
+  };
+
+  const variantClasses = {
+    h1: "text-4xl font-bold",
+    h2: "text-3xl font-bold",
+    h3: "text-2xl font-bold",
+    h4: "text-xl font-bold",
+    body: "text-base",
+    small: "text-sm",
+  };
+
+  const Component = variant.startsWith("h") ? variant : "p";
+
   return (
-    <p
+    <Component
+      className={`${variantClasses[variant]} ${colorClasses[color]} ${className}`}
       {...props}
-      className={clsx(
-        variant === "primary" ? primaryClasses : secondaryClasses,
-        className
-      )}
     >
       {children}
-    </p>
+    </Component>
   );
 };
 

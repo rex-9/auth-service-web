@@ -1,16 +1,16 @@
 import React from "react";
+import { Button } from "..";
+import { useLocalization } from "../../hooks";
+import { authController } from "../../controllers";
 import { googleLogout } from "@react-oauth/google";
 import { useAuth } from "../../contexts";
-import authService from "../../services/auth.service";
-import { TextButton } from "..";
-import { useLocalization } from "../../hooks";
 
 const SignOutBtn: React.FC = () => {
   const { logout, currentUser } = useAuth();
   const { AppLocales } = useLocalization();
 
   const handleLogout = async () => {
-    await authService.signOut();
+    await authController.signOut();
     if (currentUser?.provider === "google") {
       googleLogout();
     }
@@ -18,7 +18,13 @@ const SignOutBtn: React.FC = () => {
     console.log("logged out successfully.");
   };
 
-  return <TextButton onClick={handleLogout} label={AppLocales.SignOutButton} />;
+  return (
+    <Button
+      variant="primary"
+      onClick={handleLogout}
+      label={AppLocales.AUTH.SIGN_OUT}
+    />
+  );
 };
 
 export default SignOutBtn;

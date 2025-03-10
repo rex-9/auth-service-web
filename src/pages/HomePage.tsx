@@ -19,8 +19,8 @@ const HomePage: React.FC = () => {
     <PageLayout>
       {<Asset asset={assets.icons.asset.insta} className="w-8" />}
       {<Asset asset={assets.images.banner} className="w-96" />}
-      <Typography className="text-xl font-bold" variant="primary">
-        {t(AppLocales.Home)}
+      <Typography className="text-xl font-bold" variant="body" color="primary">
+        {t(AppLocales.COMMON.HOME)}
       </Typography>
       {currentUser && <p>Welcome, {currentUser.email}!</p>}
       <VideoPlayer

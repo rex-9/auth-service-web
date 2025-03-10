@@ -3,9 +3,9 @@ import AppRoutes from "../../AppRoutes";
 import { useAuth } from "../../contexts";
 import {
   GoogleSignIn,
-  TextInput,
+  FormInput,
   AlertMessage,
-  TextButton,
+  Button,
   FormContainer,
   TextLink,
 } from "../../components";
@@ -52,42 +52,45 @@ const SignInPage: React.FC = () => {
 
   return (
     <PageLayout>
-      <FormContainer title={AppLocales.SignInTitle} onSubmit={handleSubmit}>
+      <FormContainer
+        title={AppLocales.AUTH.SIGN_IN.TITLE}
+        onSubmit={handleSubmit}
+      >
         {message && <AlertMessage type="success" message={message} />}
         {error && <AlertMessage type="error" message={error} />}
-        <TextInput
+        <FormInput
           id="email-or-username"
-          label={AppLocales.SignInEmailOrUsernameLabel}
+          label={AppLocales.AUTH.SIGN_IN.EMAIL_OR_USERNAME_LABEL}
           type="text"
           value={loginKey}
           onChange={(e) => setLoginKey(e.target.value.toLowerCase())}
           required
         />
-        <TextInput
+        <FormInput
           id="password"
-          label={AppLocales.SignInPasswordLabel}
+          label={AppLocales.AUTH.SIGN_IN.PASSWORD_LABEL}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <TextButton
+        <Button
           variant="primary"
           type="submit"
-          label={AppLocales.SignInButton}
+          label={AppLocales.AUTH.SIGN_IN.BUTTON}
         />
         <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
-          {t(AppLocales.SignInSignUpPrompt)}{" "}
+          {t(AppLocales.AUTH.SIGN_IN.SIGN_UP_PROMPT)}{" "}
           <TextLink
             to={AppRoutes.client.public.SIGN_UP}
-            label={AppLocales.SignInSignUpLink}
+            label={AppLocales.AUTH.SIGN_IN.SIGN_UP_LINK}
           />
         </p>
         <p className="mt-2 text-center text-gray-600 dark:text-gray-400">
-          {t(AppLocales.SignInForgotPasswordPrompt)}{" "}
+          {t(AppLocales.AUTH.SIGN_IN.FORGOT_PASSWORD_PROMPT)}{" "}
           <TextLink
             to={AppRoutes.client.public.FORGOT_PASSWORD}
-            label={AppLocales.SignInForgotPasswordLink}
+            label={AppLocales.AUTH.SIGN_IN.FORGOT_PASSWORD_LINK}
           />
         </p>
         <div className="mt-6">

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PageLayout from "./PageLayout";
-import { TextButton } from "../components";
+import { Button } from "../components";
 import userController from "../controllers/user.controller";
 
 const ProfilePage: React.FC = () => {
@@ -25,7 +25,7 @@ const ProfilePage: React.FC = () => {
     <PageLayout>
       <div>Profile</div>
       <input type="file" onChange={handleFileChange} />
-      <TextButton label="Upload" onClick={handleUploadClick} />
+      <Button label="Upload" onClick={handleUploadClick} />
     </PageLayout>
   );
 };

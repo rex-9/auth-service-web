@@ -1,7 +1,7 @@
 import React from "react";
 import PageLayout from "./PageLayout";
 import { useAuth } from "../contexts";
-import { TextButton, SignOutBtn } from "../components";
+import { Button, SignOutBtn } from "../components";
 import { useNavigate } from "react-router-dom";
 import AppRoutes from "../AppRoutes";
 import { useLocalization } from "../hooks";
@@ -18,10 +18,10 @@ const RootPage: React.FC = () => {
         {isAuthenticated ? (
           <SignOutBtn />
         ) : (
-          <TextButton
+          <Button
             variant="primary"
             onClick={() => navigate(AppRoutes.client.public.SIGN_IN)}
-            label={AppLocales.SignInButton}
+            label={AppLocales.AUTH.SIGN_IN.BUTTON}
           />
         )}
       </div>

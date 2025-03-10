@@ -6,17 +6,16 @@ import sample from "./videos/sample.mp4";
 
 // Import icons
 import insta from "./icons/instagram.svg"; // Asset icons
-import { MoonIcon, SunIcon } from "./icons"; // Lib icons
 
 // Define TypeScript interfaces
-interface AssetProps {
+export interface IAsset {
   src: string;
   alt: string;
   title: string;
 }
 
 // Add images and icons here
-const images: Record<string, AssetProps> = {
+const images: Record<string, IAsset> = {
   banner: {
     src: banner,
     alt: "banner image alt",
@@ -25,8 +24,7 @@ const images: Record<string, AssetProps> = {
 };
 
 const icons: {
-  asset: Record<string, AssetProps>;
-  lib: Record<string, React.ComponentType>;
+  asset: Record<string, IAsset>;
 } = {
   asset: {
     insta: {
@@ -35,13 +33,9 @@ const icons: {
       title: "instagram icon title",
     },
   },
-  lib: {
-    sun: SunIcon,
-    moon: MoonIcon,
-  },
 };
 
-const videos: Record<string, AssetProps> = {
+const videos: Record<string, IAsset> = {
   sample: {
     src: sample,
     alt: "sample video alt",

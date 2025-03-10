@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import {
   AlertMessage,
   FormContainer,
-  TextButton,
-  TextInput,
+  Button,
+  FormInput,
   TextLink,
 } from "../../components";
 import { useCountdown } from "../../hooks";
@@ -34,7 +34,7 @@ const ForgotPasswordPage: React.FC = () => {
       <FormContainer title="Forgot Password" onSubmit={handleSubmit}>
         {message && <AlertMessage type="success" message={message} />}
         {error && <AlertMessage type="error" message={error} />}
-        <TextInput
+        <FormInput
           id="email"
           label="Email"
           type="email"
@@ -42,16 +42,18 @@ const ForgotPasswordPage: React.FC = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <TextButton
+        <Button
           variant="primary"
           type="submit"
           disabled={isCooldown}
-          label={isCooldown ? `Re-send (${countdown}s)` : t(AppLocales.Submit)}
+          label={
+            isCooldown ? `Re-send (${countdown}s)` : t(AppLocales.COMMON.SUBMIT)
+          }
         />
         <TextLink
           className="mt-4"
           to={AppRoutes.client.public.SIGN_IN}
-          label={AppLocales.GoBack}
+          label={AppLocales.COMMON.GO_BACK}
         />
       </FormContainer>
     </PageLayout>

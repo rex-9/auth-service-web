@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
-import { AlertMessage, TextButton } from "../../components";
+import { AlertMessage, Button } from "../../components";
 import { useLocalization } from "../../hooks";
 import { authController } from "../../controllers";
 import { User } from "../../models";
@@ -25,7 +25,7 @@ const GoogleSignIn: React.FC<GoogleSignInProps> = ({ setError, login }) => {
   };
 
   const handleGoogleFailure = () => {
-    setError(t(AppLocales.SignInGoogleFailure));
+    setError(t(AppLocales.AUTH.SIGN_IN.GOOGLE_FAILURE));
   };
 
   const handleLoginError = () => {
@@ -41,7 +41,7 @@ const GoogleSignIn: React.FC<GoogleSignInProps> = ({ setError, login }) => {
             type="error"
             message="It looks like an ad blocker or privacy extension is blocking the Google login. Please disable it and try again."
           />
-          <TextButton
+          <Button
             variant="primary"
             onClick={() => window.location.reload()}
             label="Retry"

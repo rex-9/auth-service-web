@@ -15,6 +15,7 @@
     "@react-oauth/google": "^0.12.1",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
+    "daisyui": "^5.0.0",
     "i18next": "^23.15.1",
     "jotai": "^2.10.1",
     "postcss": "^8.4.47",

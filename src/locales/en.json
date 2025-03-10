@@ -1,26 +1,35 @@
 {
-  "sign_in_title": "Login",
-  "sign_in_email_or_username_label": "Email or Username",
-  "sign_in_password_label": "Password",
-  "sign_in_button": "Login",
-  "sign_in_sign_up_prompt": "Don't have an account?",
-  "sign_in_sign_up_link": "Sign Up",
-  "sign_in_forgot_password_prompt": "Forgot your password?",
-  "sign_in_forgot_password_link": "Reset Password",
-  "sign_in_google_failure": "Google authentication failed!",
-
-  "sign_up_title": "Register",
-  "sign_up_username_label": "Username",
-  "sign_up_email_label": "Email",
-  "sign_up_password_label": "Password",
-  "sign_up_password_confirmation_label": "Password Confirmation",
-  "sign_up_button": "Register",
-  "sign_up_sign_in_prompt": "Already have an account?",
-  "sign_up_sign_in_link": "Sign In",
-
-  "sign_out_button": "Sign Out",
-
-  "home": "Home",
-  "go_back": "Go Back",
-  "submit": "Submit"
+  "auth": {
+    "sign_in": {
+      "title": "Sign In",
+      "email_or_username_label": "Email or Username",
+      "password_label": "Password",
+      "button": "Sign In",
+      "sign_up_prompt": "Don't have an account?",
+      "sign_up_link": "Sign Up",
+      "forgot_password_prompt": "Forgot your password?",
+      "forgot_password_link": "Reset Password",
+      "google_failure": "Google authentication failed!"
+    },
+    "sign_up": {
+      "title": "Sign Up",
+      "username_label": "Username",
+      "email_label": "Email",
+      "password_label": "Password",
+      "password_confirmation_label": "Password Confirmation",
+      "button": "Sign Up",
+      "sign_in_prompt": "Already have an account?",
+      "sign_in_link": "Sign In"
+    },
+    "sign_out": "Sign Out"
+  },
+  "common": {
+    "home": "Home",
+    "go_back": "Go Back",
+    "submit": "Submit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "language": "Language"
+  }
 }

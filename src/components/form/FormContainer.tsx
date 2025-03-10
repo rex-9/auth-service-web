@@ -1,9 +1,9 @@
 import React from "react";
 import { clsx } from "ts-clsx";
-import { useLocalization } from "../hooks";
+import { useTranslation } from "react-i18next";
 
 interface FormContainerProps {
-  title: string;
+  title?: string;
   children: React.ReactNode;
   onSubmit: (e: React.FormEvent) => void;
   className?: string;
@@ -15,17 +15,17 @@ const FormContainer: React.FC<FormContainerProps> = ({
   onSubmit,
   className,
 }) => {
-  const { t } = useLocalization();
+  const { t } = useTranslation();
 
   return (
     <form
       onSubmit={onSubmit}
       className={clsx(
-        "w-96 flex flex-col justify-center items-center bg-white dark:bg-gray-800 p-6 rounded shadow-md",
+        "w-96 flex flex-col justify-center items-center bg-base-100 p-6 rounded shadow-md",
         className
       )}
     >
-      <h2 className="text-2xl mb-4">{t(title)}</h2>
+      {title && <h2 className="text-2xl">{t(title)}</h2>}
       {children}
     </form>
   );

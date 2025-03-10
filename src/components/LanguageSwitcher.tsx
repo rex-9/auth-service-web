@@ -1,25 +1,20 @@
-import React from "react";
-import { useLocalization } from "../hooks";
-import { DropdownPicker } from ".";
+import { FC } from "react";
+import { useLocalization } from "../hooks/useLocalization";
+import { FormSelect } from ".";
+import { languages } from "../constants";
 
-const LanguageSwitcher: React.FC = () => {
+const LanguageSwitcher: FC = () => {
   const { i18n } = useLocalization();
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  };
-
-  const languageOptions = [
-    { value: "en", label: "🇺🇸 English" },
-    { value: "es", label: "🇪🇸 Español" },
-    // Add more languages as needed
-  ];
-
   return (
-    <DropdownPicker
-      options={languageOptions}
+    <FormSelect
+      name="language"
       value={i18n.language}
-      onChange={changeLanguage}
+      onChange={(e) => i18n.changeLanguage(e.target.value)}
+      options={languages.map((lang) => ({
+        value: lang.value,
+        label: lang.label,
+      }))}
     />
   );
 };

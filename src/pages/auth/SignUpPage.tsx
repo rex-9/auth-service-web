@@ -5,8 +5,8 @@ import {
   AlertMessage,
   FormContainer,
   GoogleSignIn,
-  TextButton,
-  TextInput,
+  Button,
+  FormInput,
   TextLink,
 } from "../../components";
 import { PageLayout } from "..";
@@ -38,51 +38,54 @@ const SignUpPage: React.FC = () => {
 
   return (
     <PageLayout>
-      <FormContainer title={AppLocales.SignUpTitle} onSubmit={handleSubmit}>
+      <FormContainer
+        title={AppLocales.AUTH.SIGN_UP.TITLE}
+        onSubmit={handleSubmit}
+      >
         {error && <AlertMessage type="error" message={error} />}
-        <TextInput
+        <FormInput
           id="username"
-          label={AppLocales.SignUpUsernameLabel}
+          label={AppLocales.AUTH.SIGN_UP.USERNAME_LABEL}
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value.toLowerCase())}
           required
         />
-        <TextInput
+        <FormInput
           id="email"
-          label={AppLocales.SignUpEmailLabel}
+          label={AppLocales.AUTH.SIGN_UP.EMAIL_LABEL}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <TextInput
+        <FormInput
           id="password"
-          label={AppLocales.SignUpPasswordLabel}
+          label={AppLocales.AUTH.SIGN_UP.PASSWORD_LABEL}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <TextInput
+        <FormInput
           id="passwordConfirmation"
-          label={AppLocales.SignUpPasswordConfirmationLabel}
+          label={AppLocales.AUTH.SIGN_UP.PASSWORD_CONFIRMATION_LABEL}
           type="password"
           value={passwordConfirmation}
           onChange={(e) => setPasswordConfirmation(e.target.value)}
           required
         />
-        <TextButton
+        <Button
           variant="primary"
           type="submit"
-          label={AppLocales.SignUpButton}
+          label={AppLocales.AUTH.SIGN_UP.BUTTON}
         />
         <p className="mt-4 text-gray-600 dark:text-gray-400">
-          {t(AppLocales.SignUpSignInPrompt)}{" "}
+          {t(AppLocales.AUTH.SIGN_UP.SIGN_IN_PROMPT)}{" "}
           <TextLink
             className="mt-4"
             to={AppRoutes.client.public.SIGN_IN}
-            label={AppLocales.SignUpSignInLink}
+            label={AppLocales.AUTH.SIGN_UP.SIGN_IN_LINK}
           />
         </p>
         <div className="mt-6">
