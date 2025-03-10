@@ -1,14 +1,14 @@
 import React, { createContext, useContext, ReactNode } from "react";
 import { useAtom } from "jotai";
-import { IUser } from "../types/modelTypes";
+import { User } from "../models/user.model";
 import atoms from "../atoms";
 
 interface AuthContextType {
   isAuthenticated: boolean;
   token: string | null;
-  currentUser: IUser | null;
-  setCurrentUser: (user: IUser | null) => void;
-  login: (token: string, user: IUser) => void;
+  currentUser: User | null;
+  setCurrentUser: (user: User | null) => void;
+  login: (token: string, user: User) => void;
   logout: () => void;
 }
 
@@ -22,7 +22,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   let isAuthenticated = !!token;
 
-  const login = (token: string, user: IUser) => {
+  const login = (token: string, user: User) => {
     setToken(token);
     setCurrentUser(user);
   };

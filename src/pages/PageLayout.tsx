@@ -1,5 +1,5 @@
 import React from "react";
-import { useAxiosInterceptor } from "../utils/api";
+import { useAxiosInterceptor } from "../services/api.service";
 import { NavBar } from "../components";
 
 interface PageLayoutProps {

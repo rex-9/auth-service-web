@@ -1,9 +1,9 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useLocalization } from "../hooks";
 import { DropdownPicker } from ".";
 
 const LanguageSwitcher: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n } = useLocalization();
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);

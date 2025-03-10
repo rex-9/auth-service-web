@@ -10,14 +10,13 @@ import {
   TextLink,
 } from "../../components";
 import { PageLayout } from "..";
-import { useTranslation } from "react-i18next";
-import { AppLocales } from "../../locales/app_locales";
-import authController from "../../controllers/authController";
+import { useLocalization } from "../../hooks";
+import { authController } from "../../controllers";
 import { useAuth } from "../../contexts";
 
-const SignUp: React.FC = () => {
+const SignUpPage: React.FC = () => {
   const { login } = useAuth();
-  const { t } = useTranslation();
+  const { t, AppLocales } = useLocalization();
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -94,4 +93,4 @@ const SignUp: React.FC = () => {
   );
 };
 
-export default SignUp;
+export default SignUpPage;

@@ -2,14 +2,13 @@ import { SignOutBtn, VideoPlayer, Asset, Typography } from "../components";
 import PageLayout from "./PageLayout";
 import { useAuth } from "../contexts";
 import assets from "../assets";
-import { AppLocales } from "../locales/app_locales";
-import { useTranslation } from "react-i18next";
+import { useLocalization } from "../hooks";
 import { useEffect } from "react";
 import { userController } from "../controllers";
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
   const { currentUser, setCurrentUser } = useAuth();
-  const { t } = useTranslation();
+  const { t, AppLocales } = useLocalization();
 
   // No need just for the sample
   useEffect(() => {
@@ -38,4 +37,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default HomePage;

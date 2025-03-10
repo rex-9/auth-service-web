@@ -6,15 +6,14 @@ import {
   TextInput,
   TextLink,
 } from "../../components";
-import { useCountdown } from "../../utils";
+import { useCountdown } from "../../hooks";
 import { PageLayout } from "..";
-import authController from "../../controllers/authController";
+import { authController } from "../../controllers";
 import AppRoutes from "../../AppRoutes";
-import { AppLocales } from "../../locales/app_locales";
-import { useTranslation } from "react-i18next";
+import { useLocalization } from "../../hooks";
 
-const ForgotPassword: React.FC = () => {
-  const { t } = useTranslation();
+const ForgotPasswordPage: React.FC = () => {
+  const { t, AppLocales } = useLocalization();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -59,4 +58,4 @@ const ForgotPassword: React.FC = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgotPasswordPage;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import AppRoutes from "../../AppRoutes";
-import { useCountdown } from "../../utils";
+import { useCountdown } from "../../hooks";
 import {
   AlertMessage,
   TextLink,
@@ -10,11 +10,11 @@ import {
   FormContainer,
 } from "../../components";
 import PageLayout from "../PageLayout";
-import authController from "../../controllers/authController";
-import { AppLocales } from "../../locales/app_locales";
+import { authController } from "../../controllers";
 import { useAuth } from "../../contexts";
+import { useLocalization } from "../../hooks";
 
-const ConfirmEmail: React.FC = () => {
+const ConfirmEmailPage: React.FC = () => {
   const location = useLocation();
   const emailOrUsername = new URLSearchParams(location.search).get("login_key");
   const [message, setMessage] = useState<string | null>(null);
@@ -22,6 +22,7 @@ const ConfirmEmail: React.FC = () => {
   const [confirmationCode, setConfirmationCode] = useState<string>("");
   const { countdown, isCooldown, startCountdown } = useCountdown(30);
   const { login } = useAuth();
+  const { AppLocales } = useLocalization();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -115,4 +116,4 @@ const ConfirmEmail: React.FC = () => {
   );
 };
 
-export default ConfirmEmail;
+export default ConfirmEmailPage;

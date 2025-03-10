@@ -1,12 +1,13 @@
 import React from "react";
 import { googleLogout } from "@react-oauth/google";
 import { useAuth } from "../../contexts";
-import { AppLocales } from "../../locales/app_locales";
-import authService from "../../services/authService";
+import authService from "../../services/auth.service";
 import { TextButton } from "..";
+import { useLocalization } from "../../hooks";
 
 const SignOutBtn: React.FC = () => {
   const { logout, currentUser } = useAuth();
+  const { AppLocales } = useLocalization();
 
   const handleLogout = async () => {
     await authService.signOut();

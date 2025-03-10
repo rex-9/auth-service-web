@@ -1,6 +1,6 @@
 import React from "react";
 import { clsx } from "ts-clsx";
-import { useTranslation } from "react-i18next";
+import { useLocalization } from "../hooks";
 
 interface FormContainerProps {
   title: string;
@@ -15,7 +15,7 @@ const FormContainer: React.FC<FormContainerProps> = ({
   onSubmit,
   className,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useLocalization();
 
   return (
     <form

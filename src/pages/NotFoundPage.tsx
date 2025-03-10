@@ -2,10 +2,11 @@ import AppRoutes from "../AppRoutes";
 import { TextLink } from "../components";
 import { useAuth } from "../contexts";
 import PageLayout from "./PageLayout";
-import { AppLocales } from "../locales/app_locales";
+import { useLocalization } from "../hooks";
 
-const NotFound: React.FC = () => {
+const NotFoundPage: React.FC = () => {
   const { token } = useAuth();
+  const { AppLocales } = useLocalization();
 
   return (
     <PageLayout>
@@ -22,4 +23,4 @@ const NotFound: React.FC = () => {
   );
 };
 
-export default NotFound;
+export default NotFoundPage;

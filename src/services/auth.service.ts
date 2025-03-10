@@ -1,17 +1,17 @@
 import AppRoutes from "../AppRoutes";
-import { api } from "../utils/api";
-import { IApiAuthResponse, IApiResponse } from "../types/apiTypes";
-import { IUser } from "../types";
+import api from "./api.service";
+import { IApiAuthResponse, IApiResponse } from "../models/api.model";
+import { User } from "../models";
 
 class AuthService {
   async signInWithEmailOrUsername(
     loginKey: string,
     password: string
   ): Promise<
-    IApiResponse<IApiAuthResponse<{ user: IUser; token: string } | undefined>>
+    IApiResponse<IApiAuthResponse<{ user: User; token: string } | undefined>>
   > {
     const response = await api.post<
-      IApiAuthResponse<{ user: IUser; token: string }>
+      IApiAuthResponse<{ user: User; token: string }>
     >(AppRoutes.server.public.SIGN_IN_EMAIL, {
       user: { login_key: loginKey, password },
     });
@@ -20,18 +20,18 @@ class AuthService {
 
   async signInWithToken(
     token: string
-  ): Promise<IApiResponse<IApiAuthResponse<{ user: IUser; token: string }>>> {
+  ): Promise<IApiResponse<IApiAuthResponse<{ user: User; token: string }>>> {
     const response = await api.post<
-      IApiAuthResponse<{ user: IUser; token: string }>
+      IApiAuthResponse<{ user: User; token: string }>
     >(AppRoutes.server.public.SIGN_IN_TOKEN, { token });
     return response;
   }
 
   async signInWithGoogle(
     token: string
-  ): Promise<IApiResponse<IApiAuthResponse<{ user: IUser; token: string }>>> {
+  ): Promise<IApiResponse<IApiAuthResponse<{ user: User; token: string }>>> {
     const response = await api.post<
-      IApiAuthResponse<{ user: IUser; token: string }>
+      IApiAuthResponse<{ user: User; token: string }>
     >(AppRoutes.server.public.SIGN_IN_GOOGLE, { token });
     return response;
   }
@@ -59,9 +59,9 @@ class AuthService {
   async confirmEmailWithCode(
     emailOrUsername: string,
     confirmationCode: string
-  ): Promise<IApiResponse<IApiAuthResponse<{ user: IUser; token: string }>>> {
+  ): Promise<IApiResponse<IApiAuthResponse<{ user: User; token: string }>>> {
     const response = await api.post<
-      IApiAuthResponse<{ user: IUser; token: string }>
+      IApiAuthResponse<{ user: User; token: string }>
     >(`${AppRoutes.server.public.CONFIRM_WITH_CODE}`, {
       login_key: emailOrUsername,
       confirmation_code: confirmationCode,

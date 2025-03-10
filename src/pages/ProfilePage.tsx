@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PageLayout from "./PageLayout";
 import { TextButton } from "../components";
-import userController from "../controllers/userController";
+import userController from "../controllers/user.controller";
 
-const Profile: React.FC = () => {
+const ProfilePage: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,4 +30,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile;
+export default ProfilePage;

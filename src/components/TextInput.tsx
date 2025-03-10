@@ -1,6 +1,6 @@
 import React from "react";
 import { clsx } from "ts-clsx";
-import { useTranslation } from "react-i18next";
+import { useLocalization } from "../hooks";
 
 interface TextInputProps {
   id: string;
@@ -25,7 +25,7 @@ const TextInput: React.FC<TextInputProps> = ({
   containerClassName,
   inputClassName,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useLocalization();
 
   return (
     <div className={clsx("mb-4 w-full", containerClassName)}>

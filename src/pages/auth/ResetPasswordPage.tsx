@@ -3,12 +3,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { AlertMessage, TextButton, TextInput } from "../../components";
 import { PageLayout } from "../../pages";
 import FormContainer from "../../components/FormContainer";
-import authController from "../../controllers/authController";
-import { AppLocales } from "../../locales/app_locales";
+import { authController } from "../../controllers";
+import { useLocalization } from "../../hooks";
 
-const ResetPassword: React.FC = () => {
+const ResetPasswordPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { AppLocales } = useLocalization();
 
   const token = new URLSearchParams(location.search).get(
     "reset_password_token"
@@ -61,4 +62,4 @@ const ResetPassword: React.FC = () => {
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordPage;

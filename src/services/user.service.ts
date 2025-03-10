@@ -1,13 +1,13 @@
 import AppRoutes from "../AppRoutes";
-import { IApiAuthResponse, IApiResponse, IUser } from "../types";
-import { api } from "../utils";
+import { IApiAuthResponse, IApiResponse, User } from "../models";
+import api from "./api.service";
 
 class UserService {
   async getCurrentUser(): Promise<
-    IApiResponse<IApiAuthResponse<{ user: IUser; token: string }>>
+    IApiResponse<IApiAuthResponse<{ user: User; token: string }>>
   > {
     const response = await api.get<
-      IApiAuthResponse<{ user: IUser; token: string }>
+      IApiAuthResponse<{ user: User; token: string }>
     >(AppRoutes.server.protected.GET_CURRENT_USER);
     return response;
   }

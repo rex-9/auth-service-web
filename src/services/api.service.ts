@@ -3,7 +3,7 @@ import AppConfig from "../AppConfig";
 import { useLoading } from "../contexts/LoadingContext";
 import { useEffect } from "react";
 import { useAuth } from "../contexts";
-import { IApiAuthResponse, IApiResponse } from "../types";
+import { IApiAuthResponse, IApiResponse } from "../models";
 
 // Create an axios instance
 const axiosInstance = axios.create({
@@ -46,7 +46,7 @@ const apiRequest = async <T>(
 };
 
 // Utility functions for each HTTP method
-export const api = {
+const api = {
   get: async <T>(url: string, config?: AxiosRequestConfig) => {
     return apiRequest<T>(url, { ...config, method: "GET" });
   },
@@ -141,3 +141,5 @@ export const apiHandler = async <T>(
     onFailure?.();
   }
 };
+
+export default api;

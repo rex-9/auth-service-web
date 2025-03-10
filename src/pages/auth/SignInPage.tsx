@@ -10,13 +10,12 @@ import {
   TextLink,
 } from "../../components";
 import PageLayout from "../PageLayout";
-import { useTranslation } from "react-i18next";
-import { AppLocales } from "../../locales/app_locales";
-import authController from "../../controllers/authController";
+import { useLocalization } from "../../hooks";
+import { authController } from "../../controllers";
 import { useNavigate } from "react-router-dom";
 
-const SignIn: React.FC = () => {
-  const { t } = useTranslation();
+const SignInPage: React.FC = () => {
+  const { t, AppLocales } = useLocalization();
   const navigate = useNavigate();
   const [loginKey, setLoginKey] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -99,4 +98,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default SignInPage;

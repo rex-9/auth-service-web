@@ -1,13 +1,13 @@
 import AppRoutes from "../AppRoutes";
 import { authService } from "../services";
-import { IUser } from "../types";
-import { apiHandler } from "../utils/api";
+import { User } from "../models";
+import { apiHandler } from "../services/api.service";
 
 class AuthController {
   async signInWithToken(
     token: string,
     setError: (message: string) => void,
-    login: (token: string, user: IUser) => void
+    login: (token: string, user: User) => void
   ): Promise<void> {
     await apiHandler(
       "signing in with token",
@@ -22,7 +22,7 @@ class AuthController {
     password: string,
     setError: (message: string) => void,
     setMessage: (message: string) => void,
-    login: (token: string, user: IUser) => void,
+    login: (token: string, user: User) => void,
     navigate: (url: string) => void
   ): Promise<void> {
     await apiHandler(
@@ -42,7 +42,7 @@ class AuthController {
   async signInWithGoogle(
     token: string,
     setError: (message: string) => void,
-    login: (token: string, user: IUser) => void
+    login: (token: string, user: User) => void
   ): Promise<void> {
     await apiHandler(
       "signing in with google",
@@ -80,7 +80,7 @@ class AuthController {
     confirmationCode: string,
     setError: (message: string) => void,
     setMessage: (message: string) => void,
-    login: (token: string, user: IUser) => void
+    login: (token: string, user: User) => void
   ): Promise<void> {
     await apiHandler(
       "confirming email with code",

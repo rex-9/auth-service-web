@@ -4,11 +4,12 @@ import { useAuth } from "../contexts";
 import { TextButton, SignOutBtn } from "../components";
 import { useNavigate } from "react-router-dom";
 import AppRoutes from "../AppRoutes";
-import { AppLocales } from "../locales/app_locales";
+import { useLocalization } from "../hooks";
 
-const Root: React.FC = () => {
+const RootPage: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { AppLocales } = useLocalization();
 
   return (
     <PageLayout>
@@ -28,4 +29,4 @@ const Root: React.FC = () => {
   );
 };
 
-export default Root;
+export default RootPage;

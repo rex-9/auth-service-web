@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useAuth } from "../../contexts";
 import { googleLogout } from "@react-oauth/google";
-import authController from "../../controllers/authController";
+import authController from "../../controllers/auth.controller";
 
-const SignOut: React.FC = () => {
+const SignOutPage: React.FC = () => {
   const { logout, currentUser } = useAuth();
 
   const handleLogout = async () => {
@@ -22,4 +22,4 @@ const SignOut: React.FC = () => {
   return null; // No UI
 };
 
-export default SignOut;
+export default SignOutPage;

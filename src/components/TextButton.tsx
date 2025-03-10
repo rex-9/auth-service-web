@@ -1,6 +1,6 @@
 import React from "react";
 import { clsx } from "ts-clsx";
-import { useTranslation } from "react-i18next";
+import { useLocalization } from "../hooks";
 
 interface TextButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,7 +15,7 @@ const TextButton: React.FC<TextButtonProps> = ({
   variant = "flat",
   ...props
 }) => {
-  const { t } = useTranslation();
+  const { t } = useLocalization();
 
   const baseClasses = "py-2 px-4 rounded-lg shadow";
   const primaryEnabledClasses =

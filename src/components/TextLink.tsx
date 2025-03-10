@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { clsx } from "ts-clsx";
-import { useTranslation } from "react-i18next";
+import { useLocalization } from "../hooks";
 
 interface TextLinkProps {
   label: string;
@@ -10,7 +10,7 @@ interface TextLinkProps {
 }
 
 const LinkText: React.FC<TextLinkProps> = ({ label, to, className }) => {
-  const { t } = useTranslation();
+  const { t } = useLocalization();
 
   return (
     <Link

@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { AlertMessage, TextButton } from "../../components";
-import { useTranslation } from "react-i18next";
-import { AppLocales } from "../../locales/app_locales";
-import authController from "../../controllers/authController";
-import { IUser } from "../../types";
+import { useLocalization } from "../../hooks";
+import { authController } from "../../controllers";
+import { User } from "../../models";
 
 interface GoogleSignInProps {
   setError: (message: string) => void;
-  login: (token: string, user: IUser) => void;
+  login: (token: string, user: User) => void;
 }
 
 const GoogleSignIn: React.FC<GoogleSignInProps> = ({ setError, login }) => {
-  const { t } = useTranslation();
+  const { t, AppLocales } = useLocalization();
   const [isBlocked, setIsBlocked] = useState(false);
 
   const handleGoogleSuccess = async (response: any) => {
