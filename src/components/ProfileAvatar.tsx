@@ -19,8 +19,8 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ className }) => {
 
   const { profile_pic_url, username } = currentUser;
 
-  const getInitialLetter = (name: string): string => {
-    return name.charAt(0).toUpperCase();
+  const getInitialLetter = (username: string): string => {
+    return username.charAt(0).toUpperCase();
   };
 
   const handleImageError = () => {
@@ -38,11 +38,11 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ className }) => {
       {profile_pic_url && !imageError ? (
         <Asset
           asset={{ src: profile_pic_url, alt: `${username}'s profile` }}
-          className="w-10 h-10 rounded-full"
+          className="max-w-10 max-h-10 rounded-full"
           onError={handleImageError}
         />
       ) : (
-        <div className="w-10 h-10 rounded-full bg-base-200 hover:bg-base-300">
+        <div className="max-w-10 max-h-10 rounded-full bg-base-200 hover:bg-base-300">
           <span className="text-lg font-bold w-full h-full flex items-center justify-center">
             {getInitialLetter(username)}
           </span>
