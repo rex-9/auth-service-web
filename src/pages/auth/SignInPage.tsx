@@ -19,6 +19,7 @@ const SignInPage: React.FC = () => {
   const { t, AppLocales } = useLocalization();
   const navigate = useNavigate();
   const [loginKey, setLoginKey] = useState<string>("");
+  const [loginKeyError, setLoginKeyError] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -40,8 +41,46 @@ const SignInPage: React.FC = () => {
     handleAuthToken();
   }, [location, login]);
 
+  const validateLoginKey = (value: string) => {
+    if (value.includes("@")) {
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) {
+        setLoginKeyError(t("Invalid email format"));
+      } else {
+        setLoginKeyError("");
+      }
+    } else {
+      // Username validation matching backend requirements
+      if (value.length < 3 || value.length > 30) {
+        setLoginKeyError(t("Username must be between 3 and 30 characters"));
+      } else if (!/^[a-z0-9_]+$/.test(value)) {
+        setLoginKeyError(
+          t(
+            "Username can only contain lowercase letters, numbers, and underscores"
+          )
+        );
+      } else {
+        setLoginKeyError("");
+      }
+    }
+  };
+
+  const handleLoginKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toLowerCase();
+    setLoginKey(value);
+    if (value) {
+      validateLoginKey(value);
+    } else {
+      setLoginKeyError("");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loginKeyError) {
+      return;
+    }
     await authController.signInWithEmailOrUsername(
       loginKey,
       password,
@@ -65,8 +104,9 @@ const SignInPage: React.FC = () => {
           label={AppLocales.AUTH.SIGN_IN.EMAIL_OR_USERNAME_LABEL}
           type="text"
           value={loginKey}
-          onChange={(e) => setLoginKey(e.target.value.toLowerCase())}
+          onChange={handleLoginKeyChange}
           required
+          error={loginKeyError}
           placeholder={t("superstar@gmail.com")}
           hint={t("superstar@gmail.com")}
         />

@@ -3,6 +3,7 @@ import { clsx } from "ts-clsx";
 import { useLocalization } from "../../hooks";
 import Asset from "../Asset";
 import assets from "../../assets";
+import { XCircleIcon } from "@heroicons/react/24/outline";
 
 type BaseFormInputProps = {
   id: string;
@@ -32,7 +33,7 @@ const FormInput: FC<BaseFormInputProps> = ({
 
   return (
     <div className="form-control w-full mb-2">
-      <div className={clsx("relative", containerClassName)}>
+      <div className={clsx("relative mb-0.5", containerClassName)}>
         <input
           id={id}
           placeholder={props.placeholder}
@@ -69,12 +70,15 @@ const FormInput: FC<BaseFormInputProps> = ({
         )}
       </div>
       {error && (
-        <label className="label">
-          <span className="label-text-alt text-xs text-error">{error}</span>
+        <label className="label block">
+          <span className="label-text-alt text-xs text-error flex items-center gap-1">
+            <XCircleIcon className="w-3 h-3" />
+            {error}
+          </span>
         </label>
       )}
       {hint && (
-        <label className="label">
+        <label className="label block">
           <span className="label-text-alt text-xs text-base-content/70 flex items-center gap-1">
             <Asset
               className="w-3 h-3"
