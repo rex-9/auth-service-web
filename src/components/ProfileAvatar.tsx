@@ -42,7 +42,7 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ className }) => {
           onError={handleImageError}
         />
       ) : (
-        <div className="max-w-10 max-h-10 rounded-full bg-base-200 hover:bg-base-300">
+        <div className="w-10 h-10 rounded-full bg-base-200 hover:bg-base-300">
           <span className="text-lg font-bold w-full h-full flex items-center justify-center">
             {getInitialLetter(username)}
           </span>

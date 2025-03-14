@@ -13,6 +13,7 @@ import PageLayout from "../PageLayout";
 import { useLocalization } from "../../hooks";
 import { authController } from "../../controllers";
 import { useNavigate } from "react-router-dom";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const SignInPage: React.FC = () => {
   const { t, AppLocales } = useLocalization();
@@ -22,6 +23,7 @@ const SignInPage: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
   const { login } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const handleAuthToken = async () => {
@@ -65,14 +67,20 @@ const SignInPage: React.FC = () => {
           value={loginKey}
           onChange={(e) => setLoginKey(e.target.value.toLowerCase())}
           required
+          placeholder={t("superstar@gmail.com")}
+          hint={t("superstar@gmail.com")}
         />
         <FormInput
           id="password"
           label={AppLocales.AUTH.SIGN_IN.PASSWORD_LABEL}
-          type="password"
+          type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          placeholder={t("s0m3th!ngc0mpl3x")}
+          hint={t("s0m3th!ngc0mpl3x")}
+          suffixIcon={showPassword ? <EyeSlashIcon /> : <EyeIcon />}
+          onSuffixIconClick={() => setShowPassword(!showPassword)}
         />
         <Button
           variant="primary"

@@ -5,7 +5,8 @@ import banner from "./images/banner.png";
 import sample from "./videos/sample.mp4";
 
 // Import icons
-import insta from "./icons/instagram.svg"; // Asset icons
+import insta from "./icons/instagram.svg";
+import tipLightBulb from "./icons/tip_light_bulb.svg";
 
 // Define TypeScript interfaces
 export interface IAsset {
@@ -31,6 +32,11 @@ const icons: {
       src: insta,
       alt: "instagram icon alt",
       title: "instagram icon title",
+    },
+    tipLightBulb: {
+      src: tipLightBulb,
+      alt: "tip light bulb icon alt",
+      title: "tip light bulb icon title",
     },
   },
 };
