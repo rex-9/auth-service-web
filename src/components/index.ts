@@ -16,3 +16,4 @@ export { default as TextLink } from "./TextLink";
 export { default as Button } from "./Button";
 export { default as NavBar } from "./NavBar";
 export { default as ProfileAvatar } from "./ProfileAvatar";
+export { default as Dialog } from "./Dialog";

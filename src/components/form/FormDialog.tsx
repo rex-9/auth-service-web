@@ -1,6 +1,5 @@
 import React from "react";
-import Dialog from "../shared/Dialog";
-import { Button } from "../index";
+import { Button, Dialog } from "../index";
 import { useLoading } from "../../contexts/LoadingContext";
 import { useLocalization } from "../../hooks/useLocalization";
 
