@@ -33,7 +33,7 @@ const FormInput: FC<BaseFormInputProps> = ({
 
   return (
     <div className="form-control w-full mb-2">
-      <div className={clsx("relative mb-0.5", containerClassName)}>
+      <div className={clsx("relative", containerClassName)}>
         <input
           id={id}
           placeholder={props.placeholder}
@@ -50,7 +50,7 @@ const FormInput: FC<BaseFormInputProps> = ({
         />
         <label
           htmlFor={id}
-          className="absolute -top-3 left-3 scale-75 bg-base-100 px-1 text-sm transition-all
+          className="absolute -top-3 left-3 scale-75 bg-base-100 px-1 text-sm transition-all z-10
             peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2
             peer-placeholder-shown:scale-100 peer-focus:-top-3 peer-focus:left-0 peer-focus:-translate-y-0
             peer-focus:scale-75"
@@ -62,7 +62,7 @@ const FormInput: FC<BaseFormInputProps> = ({
           <button
             type="button"
             onClick={onSuffixIconClick}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 text-base-content/70 hover:text-base-content transition-colors
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 text-base-content/70 hover:text-base-content transition-colors z-10
               opacity-0 peer-[:not(:placeholder-shown)]:opacity-100"
           >
             {suffixIcon}
@@ -77,8 +77,8 @@ const FormInput: FC<BaseFormInputProps> = ({
           </span>
         </label>
       )}
-      {hint && (
-        <label className="label block">
+      {hint && !error && (
+        <label className="label">
           <span className="label-text-alt text-xs text-base-content/70 flex items-center gap-1">
             <Asset
               className="w-3 h-3"

@@ -2,39 +2,82 @@ import { WritableAtom } from "jotai";
 import { atomWithStorage, createJSONStorage } from "jotai/utils";
 import { SyncStorage } from "jotai/vanilla/utils/atomWithStorage";
 
+export enum StorageType {
+  LOCAL = "local", // Default
+  SESSION = "session",
+}
+
 class AtomStorageService {
   private atoms: Record<string, WritableAtom<any, any, void>>;
-  private storage = createJSONStorage(() => sessionStorage);
+  private storages: Record<StorageType, SyncStorage<any>>;
 
   constructor() {
-    this.atoms = Object.keys(sessionStorage).reduce((acc, key) => {
+    this.atoms = {};
+
+    // Create jotai storage wrappers
+    this.storages = {
+      [StorageType.LOCAL]: createJSONStorage(() => localStorage),
+      [StorageType.SESSION]: createJSONStorage(() => sessionStorage),
+    };
+
+    // Initialize atoms from both storage types
+    this.initializeFromStorage(StorageType.LOCAL);
+    this.initializeFromStorage(StorageType.SESSION);
+  }
+
+  private initializeFromStorage(type: StorageType): void {
+    const storage = this.storages[type];
+
+    Object.keys(storage).forEach((key) => {
       try {
-        const value = JSON.parse(sessionStorage.getItem(key) as string);
-        acc[key] = atomWithStorage<any>(key, value, this.storage);
+        const value = JSON.parse(storage.getItem(key, null) as string);
+        const atomKey = this.getAtomKey(key, type);
+        this.atoms[atomKey] = this.createAtom(key, value, type);
       } catch (error) {
-        console.error(`Error parsing sessionStorage key "${key}":`, error);
+        console.error(`Error parsing ${type} storage key "${key}":`, error);
       }
-      return acc;
-    }, {} as Record<string, WritableAtom<any, any, void>>);
+    });
   }
 
-  getAtom<T>(key: string, initialValue: T): WritableAtom<T, [T], void> {
-    if (!this.atoms[key]) {
-      this.atoms[key] = atomWithStorage<T>(
-        key,
-        initialValue,
-        this.storage as SyncStorage<T>
-      );
+  private getAtomKey(key: string, type: StorageType): string {
+    return `${type}:${key}`;
+  }
+
+  private createAtom<T>(
+    key: string,
+    initialValue: T,
+    type: StorageType
+  ): WritableAtom<T, [T], void> {
+    return atomWithStorage<T>(
+      key,
+      initialValue,
+      this.storages[type] as SyncStorage<T>
+    );
+  }
+
+  getAtom<T>(
+    key: string,
+    initialValue: T,
+    type: StorageType = StorageType.LOCAL
+  ): WritableAtom<T, [T], void> {
+    const atomKey = this.getAtomKey(key, type);
+
+    if (!this.atoms[atomKey]) {
+      this.atoms[atomKey] = this.createAtom(key, initialValue, type);
     }
-    return this.atoms[key] as WritableAtom<T, [T], void>;
+
+    return this.atoms[atomKey] as WritableAtom<T, [T], void>;
   }
 
-  removeAtom(key: string): void {
-    if (this.atoms[key]) {
-      sessionStorage.removeItem(key);
-      delete this.atoms[key];
+  removeAtom(key: string, type: StorageType = StorageType.LOCAL): void {
+    const atomKey = this.getAtomKey(key, type);
+    const storage = this.storages[type];
+
+    if (this.atoms[atomKey]) {
+      storage.removeItem(key);
+      delete this.atoms[atomKey];
     }
   }
 }
 
-export default AtomStorageService;
+export default new AtomStorageService();
