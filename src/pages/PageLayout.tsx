@@ -8,7 +8,6 @@ interface PageLayoutProps {
 
 const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
   useAxiosInterceptor();
-
   return (
     <div className="flex flex-col items-center justify-between min-h-screen w-screen bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark">
       <NavBar />

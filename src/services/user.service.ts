@@ -1,18 +1,16 @@
 import AppRoutes from "../AppRoutes";
-import { IApiAuthResponse, IApiResponse, User } from "../models";
+import { ApiAuthResponse, ApiGeneralResponse } from "../models";
 import api from "./api.service";
 
 class UserService {
-  async getCurrentUser(): Promise<
-    IApiResponse<IApiAuthResponse<{ user: User; token: string }>>
-  > {
-    const response = await api.get<
-      IApiAuthResponse<{ user: User; token: string }>
-    >(AppRoutes.server.protected.GET_CURRENT_USER);
+  async getCurrentUser(): Promise<ApiGeneralResponse<ApiAuthResponse>> {
+    const response = await api.get<ApiAuthResponse>(
+      AppRoutes.server.protected.GET_CURRENT_USER
+    );
     return response;
   }
 
-  async uploadImage(file: File): Promise<IApiResponse<{ url: string }>> {
+  async uploadImage(file: File): Promise<ApiGeneralResponse<{ url: string }>> {
     const formData = new FormData();
     formData.append("file", file);
 

@@ -1,5 +1,5 @@
 import { userService } from "../services";
-import { IApiResponse } from "../models";
+import { ApiGeneralResponse } from "../models";
 import { User } from "../models/user.model";
 
 class UserController {
@@ -8,7 +8,7 @@ class UserController {
   ): Promise<void> {
     try {
       const response = await userService.getCurrentUser();
-      const user = response.data?.data?.user;
+      const user = response.data?.user;
       setCurrentUser(user || null);
     } catch (error) {
       console.error("Error fetching current user:", error);
@@ -17,7 +17,7 @@ class UserController {
 
   async uploadImage(file: File): Promise<void> {
     try {
-      const response: IApiResponse<{ url: string }> =
+      const response: ApiGeneralResponse<{ url: string }> =
         await userService.uploadImage(file);
       console.log("Image uploaded:", response.data?.url);
     } catch (error) {

@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import AppRoutes from "../../AppRoutes";
-import { useCountdown } from "../../hooks";
-import {
-  AlertMessage,
-  TextLink,
-  FormInput,
-  Button,
-  FormContainer,
-} from "../../components";
+import { useCountdown, useToast } from "../../hooks";
+import { TextLink, FormInput, Button, FormContainer } from "../../components";
 import PageLayout from "../PageLayout";
 import { authController } from "../../controllers";
 import { useAuth } from "../../contexts";
@@ -16,9 +10,8 @@ import { useLocalization } from "../../hooks";
 
 const ConfirmEmailPage: React.FC = () => {
   const location = useLocation();
+  const toast = useToast();
   const emailOrUsername = new URLSearchParams(location.search).get("login_key");
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [confirmationCode, setConfirmationCode] = useState<string>("");
   const { countdown, isCooldown, startCountdown } = useCountdown(30);
   const { login } = useAuth();
@@ -29,9 +22,9 @@ const ConfirmEmailPage: React.FC = () => {
     const errorParam = params.get("error");
     const authToken = params.get("auth_token");
     if (errorParam) {
-      setError(errorParam);
+      toast.error(`Confirm email failed: ${errorParam}`);
     } else if (authToken) {
-      setMessage("Email confirmed successfully. You are now signed in.");
+      toast.success("Email confirmed successfully. You are now signed in.");
     }
   }, [location]);
 
@@ -39,12 +32,14 @@ const ConfirmEmailPage: React.FC = () => {
     if (emailOrUsername && !isCooldown) {
       await authController.resendConfirmationEmail(
         emailOrUsername,
-        setError,
-        setMessage,
-        startCountdown
+        () => {
+          startCountdown();
+          toast.success("Resend email successful");
+        },
+        (error) => toast.error(`Resend email failed: ${error}`)
       );
     } else {
-      setError("Please wait for the cooldown to finish.");
+      toast.error("Please wait for the cooldown to finish.");
     }
   };
 
@@ -54,12 +49,14 @@ const ConfirmEmailPage: React.FC = () => {
       await authController.confirmEmailWithCode(
         emailOrUsername,
         confirmationCode,
-        setError,
-        setMessage,
-        login
+        (response) => {
+          login(response.data!.token, response.data!.user);
+          toast.success("Confirm email successful");
+        },
+        (error) => toast.error(`Confirm email failed: ${error}`)
       );
     } else {
-      setError("Either login key or confirmation code is missing.");
+      toast.error("Either login key or confirmation code is missing.");
     }
   };
 
@@ -67,8 +64,6 @@ const ConfirmEmailPage: React.FC = () => {
     <PageLayout>
       <FormContainer title={"Verify Email"} onSubmit={handleConfirmEmail}>
         <div className="bg-white dark:bg-gray-800 p-6 rounded shadow-md">
-          {message && <AlertMessage type="success" message={message} />}
-          {error && <AlertMessage type="error" message={error} />}
           <p className="mb-4">
             We have sent a verification email to {emailOrUsername}. Follow the
             instructions in your email to verify your account. If you can't find
@@ -99,8 +94,14 @@ const ConfirmEmailPage: React.FC = () => {
               label="Confirmation Code"
               type="text"
               value={confirmationCode}
-              onChange={(e) => setConfirmationCode(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value.replace(/[^0-9]/g, "").slice(0, 6);
+                setConfirmationCode(value);
+              }}
               placeholder="Enter 6-digit confirmation code"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              maxLength={6}
             />
             <Button
               variant="primary"

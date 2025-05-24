@@ -1,54 +1,45 @@
-import AppRoutes from "../AppRoutes";
 import { authService } from "../services";
-import { User } from "../models";
-import { apiHandler } from "../services/api.service";
+import { handleApi } from "../services/api.service";
+import { ApiAuthResponse, ApiGeneralResponse } from "../models";
 
 class AuthController {
   async signInWithToken(
     token: string,
-    setError: (message: string) => void,
-    login: (token: string, user: User) => void
+    onSuccess: (response: ApiGeneralResponse<ApiAuthResponse>) => void,
+    onFailure?: (error: any) => void
   ): Promise<void> {
-    await apiHandler(
+    await handleApi(
       "signing in with token",
       () => authService.signInWithToken(token),
-      setError,
-      (data) => login(data.data!.token, data.data!.user)
+      onSuccess,
+      onFailure
     );
   }
 
   async signInWithEmailOrUsername(
     loginKey: string,
     password: string,
-    setError: (message: string) => void,
-    setMessage: (message: string) => void,
-    login: (token: string, user: User) => void,
-    navigate: (url: string) => void
+    onSuccess: (response: ApiGeneralResponse<ApiAuthResponse>) => void,
+    onFailure?: (error: any) => void
   ): Promise<void> {
-    await apiHandler(
+    await handleApi(
       "signing in with email or username",
       () => authService.signInWithEmailOrUsername(loginKey, password),
-      setError,
-      (data) => {
-        setMessage(data.status.message);
-        if (data.data) login(data.data!.token, data.data!.user);
-        navigate(
-          AppRoutes.client.public.CONFIRM_EMAIL + `?login_key=${loginKey}`
-        );
-      }
+      onSuccess,
+      onFailure
     );
   }
 
   async signInWithGoogle(
     token: string,
-    setError: (message: string) => void,
-    login: (token: string, user: User) => void
+    onSuccess: (response: ApiGeneralResponse<ApiAuthResponse>) => void,
+    onFailure?: (error: any) => void
   ): Promise<void> {
-    await apiHandler(
+    await handleApi(
       "signing in with google",
       () => authService.signInWithGoogle(token),
-      setError,
-      (data) => login(data.data!.token, data.data!.user)
+      onSuccess,
+      onFailure
     );
   }
 
@@ -57,10 +48,10 @@ class AuthController {
     email: string,
     password: string,
     passwordConfirmation: string,
-    setError: (message: string) => void,
-    navigate: (url: string) => void
+    onSuccess: (data: ApiGeneralResponse<undefined>) => void,
+    onFailure?: (error: any) => void
   ): Promise<void> {
-    await apiHandler(
+    await handleApi(
       "signing up with email",
       () =>
         authService.signUpWithEmail(
@@ -69,62 +60,48 @@ class AuthController {
           password,
           passwordConfirmation
         ),
-      setError,
-      () =>
-        navigate(`${AppRoutes.client.public.CONFIRM_EMAIL}?login_key=${email}`)
+      onSuccess,
+      onFailure
     );
   }
 
   async confirmEmailWithCode(
     emailOrUsername: string,
     confirmationCode: string,
-    setError: (message: string) => void,
-    setMessage: (message: string) => void,
-    login: (token: string, user: User) => void
+    onSuccess: (response: ApiGeneralResponse<ApiAuthResponse>) => void,
+    onFailure?: (error: any) => void
   ): Promise<void> {
-    await apiHandler(
+    await handleApi(
       "confirming email with code",
       () => authService.confirmEmailWithCode(emailOrUsername, confirmationCode),
-      setError,
-      (data) => {
-        setMessage(data.status.message);
-        login(data.data!.token, data.data!.user);
-      },
-      () => setMessage("")
+      onSuccess,
+      onFailure
     );
   }
 
   async resendConfirmationEmail(
     emailOrUsername: string,
-    setError: (message: string) => void,
-    setMessage: (message: string) => void,
-    startCountdown: () => void
+    onSuccess: (response: ApiGeneralResponse<undefined>) => void,
+    onFailure?: (error: any) => void
   ): Promise<void> {
-    await apiHandler(
+    await handleApi(
       "resending confirmation email",
       () => authService.resendConfirmationEmail(emailOrUsername),
-      setError,
-      (data) => {
-        setMessage(data.status.message);
-        startCountdown();
-      }
+      onSuccess,
+      onFailure
     );
   }
 
   async sendForgotPasswordMail(
     email: string,
-    setError: (message: string) => void,
-    setMessage: (message: string) => void,
-    startCountdown: () => void
+    onSuccess: (response: ApiGeneralResponse<undefined>) => void,
+    onFailure?: (error: any) => void
   ): Promise<void> {
-    await apiHandler(
+    await handleApi(
       "sending forgot password email",
       () => authService.sendForgotPasswordMail(email),
-      setError,
-      (data) => {
-        setMessage(data.status.message);
-        startCountdown();
-      }
+      onSuccess,
+      onFailure
     );
   }
 
@@ -132,33 +109,27 @@ class AuthController {
     token: string,
     password: string,
     passwordConfirmation: string,
-    setError: (message: string) => void,
-    setMessage: (message: string) => void,
-    navigate: (url: string) => void
+    onSuccess: (response: ApiGeneralResponse<undefined>) => void,
+    onFailure?: (error: any) => void
   ): Promise<void> {
-    await apiHandler(
+    await handleApi(
       "resetting password",
       () => authService.resetPassword(token, password, passwordConfirmation),
-      setError,
-      (data) => {
-        setMessage(data.status.message);
-        navigate(AppRoutes.client.public.SIGN_IN);
-      }
+      onSuccess,
+      onFailure
     );
   }
 
-  async signOut(): Promise<void> {
-    try {
-      const response = await authService.signOut();
-      const { status } = response.data || {};
-      if (status?.success) {
-        console.log("user signed out from server successfully.");
-      } else {
-        console.log("server signout failed.");
-      }
-    } catch (error) {
-      console.log(`An error occurred during server sign out. error: ${error}`);
-    }
+  async signOut(
+    onSuccess: (response: ApiGeneralResponse<undefined>) => void,
+    onFailure?: (error: any) => void
+  ): Promise<void> {
+    await handleApi(
+      "signing out",
+      () => authService.signOut(),
+      onSuccess,
+      onFailure
+    );
   }
 }
 

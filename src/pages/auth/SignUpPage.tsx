@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppRoutes from "../../AppRoutes";
 import {
-  AlertMessage,
   FormContainer,
   GoogleSignIn,
   Button,
@@ -10,7 +9,7 @@ import {
   TextLink,
 } from "../../components";
 import { PageLayout } from "..";
-import { useLocalization } from "../../hooks";
+import { useLocalization, useToast } from "../../hooks";
 import { authController } from "../../controllers";
 import { useAuth } from "../../contexts";
 
@@ -21,8 +20,8 @@ const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
-  const [error, setError] = useState<string>("");
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,8 +30,9 @@ const SignUpPage: React.FC = () => {
       email,
       password,
       passwordConfirmation,
-      setError,
-      navigate
+      () =>
+        navigate(`${AppRoutes.client.public.CONFIRM_EMAIL}?login_key=${email}`),
+      (error) => toast.error(`Sign up failed: ${error}`)
     );
   };
 
@@ -42,7 +42,6 @@ const SignUpPage: React.FC = () => {
         title={AppLocales.AUTH.SIGN_UP.TITLE}
         onSubmit={handleSubmit}
       >
-        {error && <AlertMessage type="error" message={error} />}
         <FormInput
           id="username"
           label={AppLocales.AUTH.SIGN_UP.USERNAME_LABEL}
@@ -89,7 +88,7 @@ const SignUpPage: React.FC = () => {
           />
         </p>
         <div className="mt-6">
-          <GoogleSignIn setError={setError} login={login} />
+          <GoogleSignIn login={login} />
         </div>
       </FormContainer>
     </PageLayout>

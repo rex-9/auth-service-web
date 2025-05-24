@@ -1,38 +1,38 @@
 import AppRoutes from "../AppRoutes";
 import api from "./api.service";
-import { IApiAuthResponse, IApiResponse } from "../models/api.model";
-import { User } from "../models";
+import { ApiAuthResponse, ApiGeneralResponse } from "../models";
 
 class AuthService {
   async signInWithEmailOrUsername(
     loginKey: string,
     password: string
-  ): Promise<
-    IApiResponse<IApiAuthResponse<{ user: User; token: string } | undefined>>
-  > {
-    const response = await api.post<
-      IApiAuthResponse<{ user: User; token: string }>
-    >(AppRoutes.server.public.SIGN_IN_EMAIL, {
-      user: { login_key: loginKey, password },
-    });
+  ): Promise<ApiGeneralResponse<ApiAuthResponse>> {
+    const response = await api.post<ApiAuthResponse>(
+      AppRoutes.server.public.SIGN_IN_EMAIL,
+      {
+        user: { login_key: loginKey, password },
+      }
+    );
     return response;
   }
 
   async signInWithToken(
     token: string
-  ): Promise<IApiResponse<IApiAuthResponse<{ user: User; token: string }>>> {
-    const response = await api.post<
-      IApiAuthResponse<{ user: User; token: string }>
-    >(AppRoutes.server.public.SIGN_IN_TOKEN, { token });
+  ): Promise<ApiGeneralResponse<ApiAuthResponse>> {
+    const response = await api.post<ApiAuthResponse>(
+      AppRoutes.server.public.SIGN_IN_TOKEN,
+      { token }
+    );
     return response;
   }
 
   async signInWithGoogle(
     token: string
-  ): Promise<IApiResponse<IApiAuthResponse<{ user: User; token: string }>>> {
-    const response = await api.post<
-      IApiAuthResponse<{ user: User; token: string }>
-    >(AppRoutes.server.public.SIGN_IN_GOOGLE, { token });
+  ): Promise<ApiGeneralResponse<ApiAuthResponse>> {
+    const response = await api.post<ApiAuthResponse>(
+      AppRoutes.server.public.SIGN_IN_GOOGLE,
+      { token }
+    );
     return response;
   }
 
@@ -41,8 +41,8 @@ class AuthService {
     email: string,
     password: string,
     passwordConfirmation: string
-  ): Promise<IApiResponse<IApiAuthResponse<undefined>>> {
-    const response = await api.post<IApiAuthResponse<undefined>>(
+  ): Promise<ApiGeneralResponse<undefined>> {
+    const response = await api.post<undefined>(
       AppRoutes.server.public.SIGN_UP,
       {
         user: {
@@ -59,20 +59,21 @@ class AuthService {
   async confirmEmailWithCode(
     emailOrUsername: string,
     confirmationCode: string
-  ): Promise<IApiResponse<IApiAuthResponse<{ user: User; token: string }>>> {
-    const response = await api.post<
-      IApiAuthResponse<{ user: User; token: string }>
-    >(`${AppRoutes.server.public.CONFIRM_WITH_CODE}`, {
-      login_key: emailOrUsername,
-      confirmation_code: confirmationCode,
-    });
+  ): Promise<ApiGeneralResponse<ApiAuthResponse>> {
+    const response = await api.post<ApiAuthResponse>(
+      `${AppRoutes.server.public.CONFIRM_WITH_CODE}`,
+      {
+        login_key: emailOrUsername,
+        confirmation_code: confirmationCode,
+      }
+    );
     return response;
   }
 
   async resendConfirmationEmail(
     emailOrUsername: string
-  ): Promise<IApiResponse<IApiAuthResponse<undefined>>> {
-    const response = await api.post<IApiAuthResponse<undefined>>(
+  ): Promise<ApiGeneralResponse<undefined>> {
+    const response = await api.post<undefined>(
       `${AppRoutes.server.public.RESEND_VERIFY_EMAIL}`,
       { login_key: emailOrUsername }
     );
@@ -81,8 +82,8 @@ class AuthService {
 
   async sendForgotPasswordMail(
     email: string
-  ): Promise<IApiResponse<IApiAuthResponse<undefined>>> {
-    const response = await api.post<IApiAuthResponse<undefined>>(
+  ): Promise<ApiGeneralResponse<undefined>> {
+    const response = await api.post<undefined>(
       AppRoutes.server.public.FORGOT_PASSWORD,
       { email }
     );
@@ -93,8 +94,8 @@ class AuthService {
     token: string,
     password: string,
     passwordConfirmation: string
-  ): Promise<IApiResponse<IApiAuthResponse<undefined>>> {
-    const response = await api.put<IApiAuthResponse<undefined>>(
+  ): Promise<ApiGeneralResponse<undefined>> {
+    const response = await api.put<undefined>(
       AppRoutes.server.public.RESET_PASSWORD,
       {
         user: {
@@ -107,8 +108,8 @@ class AuthService {
     return response;
   }
 
-  async signOut(): Promise<IApiResponse<IApiAuthResponse<null>>> {
-    const response = await api.delete<IApiAuthResponse<null>>(
+  async signOut(): Promise<ApiGeneralResponse<undefined>> {
+    const response = await api.delete<undefined>(
       AppRoutes.server.protected.SIGN_OUT
     );
     return response;

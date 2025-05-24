@@ -3,7 +3,7 @@ import AppConfig from "../AppConfig";
 import { useLoading } from "../contexts/LoadingContext";
 import { useEffect } from "react";
 import { useAuth } from "../contexts";
-import { IApiAuthResponse, IApiResponse } from "../models";
+import { ApiGeneralResponse } from "../models";
 
 // Create an axios instance
 const axiosInstance = axios.create({
@@ -13,33 +13,42 @@ const axiosInstance = axios.create({
 });
 
 // Utility function to handle errors
-const handleError = <T>(error: unknown): IApiResponse<T> => {
+const handleError = <T>(error: unknown): ApiGeneralResponse<T> => {
   if (axios.isAxiosError(error)) {
     if (error.response) {
       // Server responded with a status other than 200 range
       console.error("Server Error:", error.response.data);
       return {
+        success: false,
+        message: error.response.data?.message || "An error occurred",
         data: error.response.data,
-        error: error.response.data?.status?.error || "An error occurred",
       };
     } else if (error.request) {
       // Request was made but no response received
       console.error("Network Error:", error.request);
-      return { data: null, error: "Network error, please try again later" };
+      return {
+        success: false,
+        message: "Network error, please try again later",
+        data: null,
+      };
     }
   }
   // Something else happened while setting up the request
   console.error("Error:", (error as Error).message);
-  return { data: null, error: "An error occurred, please try again" };
+  return {
+    success: false,
+    message: "An error occurred, please try again",
+    data: null,
+  };
 };
 
 const apiRequest = async <T>(
   url: string,
   config: AxiosRequestConfig
-): Promise<IApiResponse<T>> => {
+): Promise<ApiGeneralResponse<T>> => {
   try {
     const response = await axiosInstance(url, config);
-    return { data: response.data };
+    return response.data;
   } catch (error: unknown) {
     return handleError(error);
   }
@@ -99,9 +108,10 @@ export const useAxiosInterceptor = () => {
         if (
           error.response &&
           error.response.status === 401 &&
-          (error.response.data.status.error === "Signature has expired" ||
-            error.response.data.status.error ===
-              "No verification key available")
+          error.response.data?.success === false &&
+          (error.response.data?.message === "Signature has expired" ||
+            error.response.data?.message === "No verification key available" ||
+            error.response.data?.message === "Active session not found.")
         ) {
           // Token has expired, prompt the user to re-authenticate
           alert("Your session has expired. Please log in again.");
@@ -119,26 +129,25 @@ export const useAxiosInterceptor = () => {
   }, [setLoading, token]);
 };
 
-export const apiHandler = async <T>(
+export const handleApi = async <T>(
   operation: string,
-  apiFunction: () => Promise<IApiResponse<IApiAuthResponse<T>>>,
-  setError: (message: string) => void,
-  onSuccess: (data: IApiAuthResponse<T>) => void,
-  onFailure?: () => void
+  func: () => Promise<ApiGeneralResponse<T>>,
+  onSuccess: (data: ApiGeneralResponse<T>) => void,
+  onFailure?: (error?: any) => void
 ): Promise<void> => {
   try {
-    const response = await apiFunction();
-    const { status, data } = response.data || {};
-    if (status?.success) {
-      setError("");
-      onSuccess({ status, data });
+    const response = await func();
+    if (response.success) {
+      onSuccess(response);
     } else {
-      setError(status?.error ?? `An error occurred when ${operation}.`);
-      onFailure?.();
+      onFailure?.(response.message);
     }
-  } catch (error) {
-    setError(`An error occurred when ${operation}. error: ${error}`);
-    onFailure?.();
+  } catch (err: unknown) {
+    const errorMessage =
+      err instanceof Error
+        ? err.message
+        : `Error on ${operation}: ${String(err)}`;
+    onFailure?.(errorMessage);
   }
 };
 

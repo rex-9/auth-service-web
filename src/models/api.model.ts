@@ -1,14 +1,12 @@
-export interface IApiResponse<T> {
-  data: T | null;
-  error?: string;
+import { User } from "./user.model";
+
+export interface ApiGeneralResponse<T> {
+  success: boolean;
+  message: string;
+  data?: T | null;
 }
 
-export interface IApiAuthResponse<T> {
-  status: {
-    code: number;
-    success: boolean;
-    message: string;
-    error?: string;
-  };
-  data?: T | null;
+export interface ApiAuthResponse {
+  user: User;
+  token: string;
 }

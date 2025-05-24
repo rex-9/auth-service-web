@@ -4,7 +4,6 @@ import { useAuth } from "../../contexts";
 import {
   GoogleSignIn,
   FormInput,
-  AlertMessage,
   Button,
   FormContainer,
   TextLink,
@@ -14,15 +13,14 @@ import { useLocalization } from "../../hooks";
 import { authController } from "../../controllers";
 import { useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-
+import { useToast } from "../../hooks/useToast";
 const SignInPage: React.FC = () => {
   const { t, AppLocales } = useLocalization();
   const navigate = useNavigate();
+  const toast = useToast();
   const [loginKey, setLoginKey] = useState<string>("");
   const [loginKeyError, setLoginKeyError] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
-  const [error, setError] = useState<string>("");
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -32,9 +30,17 @@ const SignInPage: React.FC = () => {
       const authToken = params.get("auth_token");
       const errorParam = params.get("error");
       if (authToken) {
-        await authController.signInWithToken(authToken, setError, login);
+        await authController.signInWithToken(
+          authToken,
+          (response) => {
+            login(response.data!.token, response.data!.user);
+            navigate(AppRoutes.client.protected.HOME);
+            toast.success("Sign in successful");
+          },
+          (error) => toast.error(`Sign in failed: ${error}`)
+        );
       } else if (errorParam) {
-        setError(errorParam);
+        toast.error(`Sign in failed: ${errorParam}`);
       }
     };
 
@@ -84,10 +90,12 @@ const SignInPage: React.FC = () => {
     await authController.signInWithEmailOrUsername(
       loginKey,
       password,
-      setError,
-      setMessage,
-      login,
-      navigate
+      (response) => {
+        login(response.data!.token, response.data!.user);
+        navigate(AppRoutes.client.protected.HOME);
+        toast.success("Sign in successful");
+      },
+      (error) => toast.error(`Sign in failed: ${error}`)
     );
   };
 
@@ -97,8 +105,6 @@ const SignInPage: React.FC = () => {
         title={AppLocales.AUTH.SIGN_IN.TITLE}
         onSubmit={handleSubmit}
       >
-        {message && <AlertMessage type="success" message={message} />}
-        {error && <AlertMessage type="error" message={error} />}
         <FormInput
           id="email-or-username"
           label={AppLocales.AUTH.SIGN_IN.EMAIL_OR_USERNAME_LABEL}
@@ -142,7 +148,7 @@ const SignInPage: React.FC = () => {
           />
         </p>
         <div className="mt-6">
-          <GoogleSignIn setError={setError} login={login} />
+          <GoogleSignIn login={login} />
         </div>
       </FormContainer>
     </PageLayout>

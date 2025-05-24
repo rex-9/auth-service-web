@@ -8,13 +8,23 @@ export const useToast = () => {
   const showToast = (
     message: string,
     type: ToastType = "info",
-    duration = 3000
+    duration = 3000,
+    logDetails?: any
   ) => {
     const id = Date.now().toString();
     const newToast: Toast = { id, message, type, duration };
 
-    setToasts((prev) => [...prev, newToast]);
+    // Log to console based on toast type
+    if (type === "error") {
+      console.error(`[ERROR] ${message}`, logDetails || "");
+    } else if (type === "warning") {
+      console.warn(`[WARNING] ${message}`, logDetails || "");
+    } else if (process.env.NODE_ENV !== "production") {
+      // Only log info and success in development
+      console.log(`[${type.toUpperCase()}] ${message}`, logDetails || "");
+    }
 
+    setToasts((prev) => [...prev, newToast]);
     return id;
   };
 
@@ -28,14 +38,14 @@ export const useToast = () => {
 
   return {
     showToast,
-    success: (message: string, duration?: number) =>
-      showToast(message, "success", duration),
-    error: (message: string, duration?: number) =>
-      showToast(message, "error", duration),
-    info: (message: string, duration?: number) =>
-      showToast(message, "info", duration),
-    warning: (message: string, duration?: number) =>
-      showToast(message, "warning", duration),
+    success: (message: string, duration?: number, logDetails?: any) =>
+      showToast(message, "success", duration, logDetails),
+    error: (message: string, duration?: number, logDetails?: any) =>
+      showToast(message, "error", duration, logDetails),
+    info: (message: string, duration?: number, logDetails?: any) =>
+      showToast(message, "info", duration, logDetails),
+    warning: (message: string, duration?: number, logDetails?: any) =>
+      showToast(message, "warning", duration, logDetails),
     dismissToast,
     dismissAllToasts,
   };
