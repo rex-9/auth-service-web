@@ -1,11 +1,11 @@
 import { authService } from "../services";
 import { handleApi } from "../services/api.service";
-import { ApiAuthResponse, ApiGeneralResponse } from "../models";
+import { AuthApiResponse, GeneralApiResponse } from "../models";
 
 class AuthController {
   async signInWithToken(
     token: string,
-    onSuccess: (response: ApiGeneralResponse<ApiAuthResponse>) => void,
+    onSuccess: (response: GeneralApiResponse<AuthApiResponse>) => void,
     onFailure?: (error: any) => void
   ): Promise<void> {
     await handleApi(
@@ -19,7 +19,7 @@ class AuthController {
   async signInWithEmailOrUsername(
     loginKey: string,
     password: string,
-    onSuccess: (response: ApiGeneralResponse<ApiAuthResponse>) => void,
+    onSuccess: (response: GeneralApiResponse<AuthApiResponse>) => void,
     onFailure?: (error: any) => void
   ): Promise<void> {
     await handleApi(
@@ -32,7 +32,7 @@ class AuthController {
 
   async signInWithGoogle(
     token: string,
-    onSuccess: (response: ApiGeneralResponse<ApiAuthResponse>) => void,
+    onSuccess: (response: GeneralApiResponse<AuthApiResponse>) => void,
     onFailure?: (error: any) => void
   ): Promise<void> {
     await handleApi(
@@ -48,7 +48,7 @@ class AuthController {
     email: string,
     password: string,
     passwordConfirmation: string,
-    onSuccess: (data: ApiGeneralResponse<undefined>) => void,
+    onSuccess: (data: GeneralApiResponse<undefined>) => void,
     onFailure?: (error: any) => void
   ): Promise<void> {
     await handleApi(
@@ -68,7 +68,7 @@ class AuthController {
   async confirmEmailWithCode(
     emailOrUsername: string,
     confirmationCode: string,
-    onSuccess: (response: ApiGeneralResponse<ApiAuthResponse>) => void,
+    onSuccess: (response: GeneralApiResponse<AuthApiResponse>) => void,
     onFailure?: (error: any) => void
   ): Promise<void> {
     await handleApi(
@@ -81,7 +81,7 @@ class AuthController {
 
   async resendConfirmationEmail(
     emailOrUsername: string,
-    onSuccess: (response: ApiGeneralResponse<undefined>) => void,
+    onSuccess: (response: GeneralApiResponse<undefined>) => void,
     onFailure?: (error: any) => void
   ): Promise<void> {
     await handleApi(
@@ -94,7 +94,7 @@ class AuthController {
 
   async sendForgotPasswordMail(
     email: string,
-    onSuccess: (response: ApiGeneralResponse<undefined>) => void,
+    onSuccess: (response: GeneralApiResponse<undefined>) => void,
     onFailure?: (error: any) => void
   ): Promise<void> {
     await handleApi(
@@ -109,7 +109,7 @@ class AuthController {
     token: string,
     password: string,
     passwordConfirmation: string,
-    onSuccess: (response: ApiGeneralResponse<undefined>) => void,
+    onSuccess: (response: GeneralApiResponse<undefined>) => void,
     onFailure?: (error: any) => void
   ): Promise<void> {
     await handleApi(
@@ -121,7 +121,7 @@ class AuthController {
   }
 
   async signOut(
-    onSuccess: (response: ApiGeneralResponse<undefined>) => void,
+    onSuccess: (response: GeneralApiResponse<undefined>) => void,
     onFailure?: (error: any) => void
   ): Promise<void> {
     await handleApi(

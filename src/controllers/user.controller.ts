@@ -1,5 +1,5 @@
 import { userService } from "../services";
-import { ApiGeneralResponse } from "../models";
+import { GeneralApiResponse } from "../models";
 import { User } from "../models/user.model";
 
 class UserController {
@@ -17,7 +17,7 @@ class UserController {
 
   async uploadImage(file: File): Promise<void> {
     try {
-      const response: ApiGeneralResponse<{ url: string }> =
+      const response: GeneralApiResponse<{ url: string }> =
         await userService.uploadImage(file);
       console.log("Image uploaded:", response.data?.url);
     } catch (error) {

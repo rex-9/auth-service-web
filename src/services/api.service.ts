@@ -3,7 +3,7 @@ import AppConfig from "../AppConfig";
 import { useLoading } from "../contexts/LoadingContext";
 import { useEffect } from "react";
 import { useAuth } from "../contexts";
-import { ApiGeneralResponse } from "../models";
+import { GeneralApiResponse } from "../models";
 
 // Create an axios instance
 const axiosInstance = axios.create({
@@ -13,7 +13,7 @@ const axiosInstance = axios.create({
 });
 
 // Utility function to handle errors
-const handleError = <T>(error: unknown): ApiGeneralResponse<T> => {
+const handleError = <T>(error: unknown): GeneralApiResponse<T> => {
   if (axios.isAxiosError(error)) {
     if (error.response) {
       // Server responded with a status other than 200 range
@@ -45,7 +45,7 @@ const handleError = <T>(error: unknown): ApiGeneralResponse<T> => {
 const apiRequest = async <T>(
   url: string,
   config: AxiosRequestConfig
-): Promise<ApiGeneralResponse<T>> => {
+): Promise<GeneralApiResponse<T>> => {
   try {
     const response = await axiosInstance(url, config);
     return response.data;
@@ -131,8 +131,8 @@ export const useAxiosInterceptor = () => {
 
 export const handleApi = async <T>(
   operation: string,
-  func: () => Promise<ApiGeneralResponse<T>>,
-  onSuccess: (data: ApiGeneralResponse<T>) => void,
+  func: () => Promise<GeneralApiResponse<T>>,
+  onSuccess: (data: GeneralApiResponse<T>) => void,
   onFailure?: (error?: any) => void
 ): Promise<void> => {
   try {

@@ -1,13 +1,13 @@
 import AppRoutes from "../AppRoutes";
 import api from "./api.service";
-import { ApiAuthResponse, ApiGeneralResponse } from "../models";
+import { AuthApiResponse, GeneralApiResponse } from "../models";
 
 class AuthService {
   async signInWithEmailOrUsername(
     loginKey: string,
     password: string
-  ): Promise<ApiGeneralResponse<ApiAuthResponse>> {
-    const response = await api.post<ApiAuthResponse>(
+  ): Promise<GeneralApiResponse<AuthApiResponse>> {
+    const response = await api.post<AuthApiResponse>(
       AppRoutes.server.public.SIGN_IN_EMAIL,
       {
         user: { login_key: loginKey, password },
@@ -18,8 +18,8 @@ class AuthService {
 
   async signInWithToken(
     token: string
-  ): Promise<ApiGeneralResponse<ApiAuthResponse>> {
-    const response = await api.post<ApiAuthResponse>(
+  ): Promise<GeneralApiResponse<AuthApiResponse>> {
+    const response = await api.post<AuthApiResponse>(
       AppRoutes.server.public.SIGN_IN_TOKEN,
       { token }
     );
@@ -28,8 +28,8 @@ class AuthService {
 
   async signInWithGoogle(
     token: string
-  ): Promise<ApiGeneralResponse<ApiAuthResponse>> {
-    const response = await api.post<ApiAuthResponse>(
+  ): Promise<GeneralApiResponse<AuthApiResponse>> {
+    const response = await api.post<AuthApiResponse>(
       AppRoutes.server.public.SIGN_IN_GOOGLE,
       { token }
     );
@@ -41,7 +41,7 @@ class AuthService {
     email: string,
     password: string,
     passwordConfirmation: string
-  ): Promise<ApiGeneralResponse<undefined>> {
+  ): Promise<GeneralApiResponse<undefined>> {
     const response = await api.post<undefined>(
       AppRoutes.server.public.SIGN_UP,
       {
@@ -59,8 +59,8 @@ class AuthService {
   async confirmEmailWithCode(
     emailOrUsername: string,
     confirmationCode: string
-  ): Promise<ApiGeneralResponse<ApiAuthResponse>> {
-    const response = await api.post<ApiAuthResponse>(
+  ): Promise<GeneralApiResponse<AuthApiResponse>> {
+    const response = await api.post<AuthApiResponse>(
       `${AppRoutes.server.public.CONFIRM_WITH_CODE}`,
       {
         login_key: emailOrUsername,
@@ -72,7 +72,7 @@ class AuthService {
 
   async resendConfirmationEmail(
     emailOrUsername: string
-  ): Promise<ApiGeneralResponse<undefined>> {
+  ): Promise<GeneralApiResponse<undefined>> {
     const response = await api.post<undefined>(
       `${AppRoutes.server.public.RESEND_VERIFY_EMAIL}`,
       { login_key: emailOrUsername }
@@ -82,7 +82,7 @@ class AuthService {
 
   async sendForgotPasswordMail(
     email: string
-  ): Promise<ApiGeneralResponse<undefined>> {
+  ): Promise<GeneralApiResponse<undefined>> {
     const response = await api.post<undefined>(
       AppRoutes.server.public.FORGOT_PASSWORD,
       { email }
@@ -94,7 +94,7 @@ class AuthService {
     token: string,
     password: string,
     passwordConfirmation: string
-  ): Promise<ApiGeneralResponse<undefined>> {
+  ): Promise<GeneralApiResponse<undefined>> {
     const response = await api.put<undefined>(
       AppRoutes.server.public.RESET_PASSWORD,
       {
@@ -108,7 +108,7 @@ class AuthService {
     return response;
   }
 
-  async signOut(): Promise<ApiGeneralResponse<undefined>> {
+  async signOut(): Promise<GeneralApiResponse<undefined>> {
     const response = await api.delete<undefined>(
       AppRoutes.server.protected.SIGN_OUT
     );
