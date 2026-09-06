@@ -11,3 +11,4 @@ export { PageHeader } from "./PageHeader";
 export type { IPageHeaderProps } from "./PageHeader";
 export { Tabs, TabVariants } from "./Tabs";
 export type { ITabItem, ITabsProps, TabVariant } from "./Tabs";
+export { ProgressBar } from "./ProgressBar";

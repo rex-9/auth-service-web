@@ -13,6 +13,7 @@ import { useToast, useLoading } from "../../../contexts";
 import { DialogAuthSteps, TAuthStep } from "..";
 import { AuthController } from "..";
 import { AppLocales } from "../../../locales/app_locales";
+import { ButtonVariants } from "../../../design";
 
 interface IForgotPasswordDialogProps {
   email: string;
@@ -84,7 +85,7 @@ export const ForgotPasswordDialog: React.FC<IForgotPasswordDialogProps> = ({
           disabled={isLoading}
         />
         <Button
-          variant="primary"
+          variant={ButtonVariants.PRIMARY}
           type="submit"
           fullWidth
           disabled={isLoading || isCooldown}

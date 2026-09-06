@@ -1,3 +1,4 @@
+// src/modules/admin/chat/pages/AdminChatRoomEditPage.tsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AppRoutes from "../../../../AppRoutes";
@@ -16,11 +17,11 @@ import {
   FormContainer,
   TextInput,
 } from "../../components";
-import { ADMIN_CHAT_PAGE_TITLES } from "../constants";
-import { ADMIN_COMMON_LABELS } from "../../constants";
+import { useTranslate, AppLocales } from "../../../../locales";
 
 export const AdminChatRoomEditPage: React.FC = () => {
-  useDocumentTitle(ADMIN_CHAT_PAGE_TITLES.ROOM_EDIT);
+  const t = useTranslate();
+  useDocumentTitle(`${t(AppLocales.Admin.Chat.RoomEditTitle)} | Admin`);
 
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -43,12 +44,12 @@ export const AdminChatRoomEditPage: React.FC = () => {
         setRoom(result.room);
         setTitle(result.room.title || "");
       } else {
-        setError(result.error || "Unable to load chat room");
+        setError(result.error || t(AppLocales.Admin.Chat.Errors.LoadRoom));
       }
     };
 
     void loadRoom();
-  }, [id, setLoading]);
+  }, [id, setLoading, t]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -64,10 +65,10 @@ export const AdminChatRoomEditPage: React.FC = () => {
     setLoading(false, { overlay: false });
 
     if (result.success) {
-      toast.success("Chat room updated");
+      toast.success(t(AppLocales.Admin.Chat.Toasts.RoomUpdateSuccess));
       navigate(AppRoutes.client.protected.admin.CHAT_ROOMS);
     } else {
-      setAlertMessage(result.error || "Failed to update chat room");
+      setAlertMessage(result.error || t(AppLocales.Admin.Chat.Errors.UpdateRoom));
     }
   };
 
@@ -78,25 +79,26 @@ export const AdminChatRoomEditPage: React.FC = () => {
         message={alertMessage}
         onClose={() => setAlertMessage("")}
       />
-      { error && !room ? (
-        <AdminState title="Unable to load chat room" message={error} />
-      ) : room? (
+      {error && !room ? (
+        <AdminState title={t(AppLocales.Admin.Common.State.ErrorTitle)} message={error} />
+      ) : room ? (
         <FormContainer onSubmit={handleSubmit}>
-            <TextInput
-              label="Title"
-              value={title}
-              required
-              onChange={(event) => setTitle(event.target.value)}
-            />
-            <FormActionRow
-              cancelLabel={ADMIN_COMMON_LABELS.CANCEL}
-              submitLabel="Save changes"
-              onCancel={() =>
-                navigate(AppRoutes.client.protected.admin.CHAT_ROOMS)
-              }
-            />
-          </FormContainer>
+          <TextInput
+            label={t(AppLocales.Admin.Chat.RoomForm.TitleLabel)}
+            value={title}
+            required
+            onChange={(event) => setTitle(event.target.value)}
+          />
+          <FormActionRow
+            cancelLabel={t(AppLocales.Admin.Common.Actions.Cancel)}
+            submitLabel={t(AppLocales.Admin.Chat.RoomForm.SaveRoom)}
+            onCancel={() =>
+              navigate(AppRoutes.client.protected.admin.CHAT_ROOMS)
+            }
+          />
+        </FormContainer>
       ) : null}
     </>
   );
 };
+

@@ -12,7 +12,7 @@ import type {
   IUpdateFeedbackPayload,
 } from "./types";
 
-class AdminFeedbackService {
+class FeedbackService {
   async getFeedbacks(
     params?: IAdminFeedbackFilters,
   ): Promise<IApiResponse<IApiEnvelope<IJsonApiResource<IAdminFeedback>[]>>> {
@@ -41,4 +41,4 @@ class AdminFeedbackService {
   }
 }
 
-export default new AdminFeedbackService();
+export default new FeedbackService();

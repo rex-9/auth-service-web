@@ -1,26 +1,25 @@
 import { AnalyticsController, AnalyticsService } from "./analytics";
 import { ChatController, ChatService } from "./chat";
-import { NotificationController, NotificationService } from "./notifications";
-import { ProductController, ProductService } from "./products";
-import { RoleController, RoleService } from "./roles";
-import UserController from "./users/user.controller";
-import UserService from "./users/user.service";
-import AdminAccessesController from "./accesses/accesses.controller";
-import AdminAccessesService from "./accesses/accesses.service";
-import AdminFeedbackController from "./feedback/feedback.controller";
-import AdminFeedbackService from "./feedback/feedback.service";
-import AdminLogsController from "./log/logs.controller";
-import AdminLogsService from "./log/logs.service";
+import { NotificationController, NotificationService } from "./notification";
+import { ProductController, ProductService } from "./product";
+import { RoleController, RoleService } from "./role";
+import UserController from "./user/user.controller";
+import UserService from "./user/user.service";
+import { FeedbackController, FeedbackService } from "./feedback";
+import { LogController, LogService } from "./log";
+import { AccessController, AccessService } from "./access";
+import { AssetController, AssetService } from "./asset";
 
 export * from "./analytics";
 export * from "./chat";
-export * from "./notifications";
-export * from "./products";
-export * from "./accesses";
+export * from "./notification";
+export * from "./product";
+export * from "./access";
 export * from "./feedback";
 export * from "./log";
-export * from "./roles";
-export * from "./users";
+export * from "./role";
+export * from "./user";
+export * from "./asset";
 export * from "./components";
 export * from "./helpers/admin.helper";
 export * from "./constants";
@@ -38,10 +37,12 @@ export const Admin = {
   RoleService,
   UserController,
   UserService,
-  AdminAccessesController,
-  AdminAccessesService,
-  AdminFeedbackController,
-  AdminFeedbackService,
-  AdminLogsController,
-  AdminLogsService,
+  AccessController,
+  AccessService,
+  FeedbackController,
+  FeedbackService,
+  LogController,
+  LogService,
+  AssetController,
+  AssetService,
 };

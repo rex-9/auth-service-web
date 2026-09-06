@@ -1,5 +1,4 @@
 // src/modules/admin/feedback/feedback.controller.ts
-import AdminFeedbackService from "./feedback.service";
 import { parsePagyList, getApiError } from "../../../services/api.service";
 import type { IApiPagination } from "../../../models";
 import type {
@@ -7,15 +6,16 @@ import type {
   IAdminFeedbackFilters,
   IUpdateFeedbackPayload,
 } from "./types";
+import { Admin } from "..";
 
-class AdminFeedbackController {
+class FeedbackController {
   async getFeedbacks(params?: IAdminFeedbackFilters): Promise<{
     success: boolean;
     feedbacks: IAdminFeedback[];
     pagination: IApiPagination | null;
     error?: string;
   }> {
-    const response = await AdminFeedbackService.getFeedbacks(params);
+    const response = await Admin.FeedbackService.getFeedbacks(params);
     const { status } = response.data || {};
 
     if (status?.success) {
@@ -36,7 +36,7 @@ class AdminFeedbackController {
     feedback?: IAdminFeedback;
     error?: string;
   }> {
-    const response = await AdminFeedbackService.getFeedback(id);
+    const response = await Admin.FeedbackService.getFeedback(id);
     const { status, data: body } = response.data || {};
 
     if (status?.success && body) {
@@ -57,7 +57,7 @@ class AdminFeedbackController {
     feedback?: IAdminFeedback;
     error?: string;
   }> {
-    const response = await AdminFeedbackService.updateFeedback(id, data);
+    const response = await Admin.FeedbackService.updateFeedback(id, data);
     const { status, data: body } = response.data || {};
 
     if (status?.success && body) {
@@ -71,4 +71,4 @@ class AdminFeedbackController {
   }
 }
 
-export default new AdminFeedbackController();
+export default new FeedbackController();

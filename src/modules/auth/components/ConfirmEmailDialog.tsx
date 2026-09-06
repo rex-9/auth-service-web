@@ -115,6 +115,7 @@ export const ConfirmEmailDialog: React.FC<IConfirmEmailDialogProps> = ({
             error={error}
             helperText={t(AppLocales.Auth.ConfirmEmail.FieldHelper)}
             disabled={isLoading}
+            mask={false}
           />
           <Button
             variant="primary"

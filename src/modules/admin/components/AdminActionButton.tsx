@@ -1,5 +1,5 @@
 import React from "react";
-import type { AdminAction, AdminResource } from "../roles";
+import type { AdminAction, AdminResource } from "../role";
 import { Button, IButtonProps } from "../../../design/components/button/Button";
 import { usePermissions } from "../../../hooks";
 

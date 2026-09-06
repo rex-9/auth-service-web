@@ -3,19 +3,18 @@ import { NavLink } from "react-router-dom";
 import AppRoutes from "../../../AppRoutes";
 import { useAuth } from "../../../contexts";
 import { usePermissions } from "../../../hooks";
-import { ADMIN_ROLE_NAMES, hasAdminRole } from "../roles";
-import type { AdminResource } from "../roles";
+import { ADMIN_ROLE_NAMES, hasAdminRole } from "../role";
+import type { AdminResource } from "../role";
 import {
   ADMIN_ACTIONS,
-  ADMIN_NAV_LABELS,
-  ADMIN_NAV_SECTION_LABELS,
   ADMIN_RESOURCES,
 } from "../constants";
 import { cn } from "../../../design/helpers";
 import { iconsLib } from "../../../assets";
+import { useTranslate, AppLocales } from "../../../locales";
 
 interface IAdminNavItem {
-  label: string;
+  labelKey: string;
   to: string;
   resource: AdminResource;
   action?: typeof ADMIN_ACTIONS.READ | typeof ADMIN_ACTIONS.CREATE;
@@ -25,7 +24,7 @@ interface IAdminNavItem {
 
 interface IAdminNavSection {
   id: string;
-  label: string;
+  labelKey: string;
   items: IAdminNavItem[];
 }
 
@@ -37,10 +36,10 @@ interface IAdminSidebarNavProps {
 const navSections: IAdminNavSection[] = [
   {
     id: "overview",
-    label: ADMIN_NAV_SECTION_LABELS.OVERVIEW,
+    labelKey: AppLocales.Admin.Nav.Sections.Overview,
     items: [
       {
-        label: ADMIN_NAV_LABELS.ANALYTICS,
+        labelKey: AppLocales.Admin.Nav.Items.Analytics,
         to: AppRoutes.client.protected.admin.ANALYTICS,
         resource: ADMIN_RESOURCES.ANALYTICS,
         icon: iconsLib.chartBar,
@@ -49,16 +48,16 @@ const navSections: IAdminNavSection[] = [
   },
   {
     id: "commerce",
-    label: ADMIN_NAV_SECTION_LABELS.COMMERCE,
+    labelKey: AppLocales.Admin.Nav.Sections.Commerce,
     items: [
       {
-        label: ADMIN_NAV_LABELS.PRODUCTS,
+        labelKey: AppLocales.Admin.Nav.Items.Products,
         to: AppRoutes.client.protected.admin.PRODUCTS,
         resource: ADMIN_RESOURCES.PRODUCTS,
         icon: iconsLib.cube,
       },
       {
-        label: ADMIN_NAV_LABELS.ACCESSES,
+        labelKey: AppLocales.Admin.Nav.Items.Accesses,
         to: AppRoutes.client.protected.admin.ACCESSES,
         resource: ADMIN_RESOURCES.ACCESSES,
         icon: iconsLib.shieldCheck,
@@ -67,22 +66,22 @@ const navSections: IAdminNavSection[] = [
   },
   {
     id: "communication",
-    label: ADMIN_NAV_SECTION_LABELS.COMMUNICATION,
+    labelKey: AppLocales.Admin.Nav.Sections.Communication,
     items: [
       {
-        label: ADMIN_NAV_LABELS.NOTIFICATIONS,
+        labelKey: AppLocales.Admin.Nav.Items.Notifications,
         to: AppRoutes.client.protected.admin.NOTIFICATIONS,
         resource: ADMIN_RESOURCES.NOTIFICATIONS,
         icon: iconsLib.bellAlert,
       },
       {
-        label: ADMIN_NAV_LABELS.CHAT_ROOMS,
+        labelKey: AppLocales.Admin.Nav.Items.ChatRooms,
         to: AppRoutes.client.protected.admin.CHAT_ROOMS,
         resource: ADMIN_RESOURCES.ROOMS,
         icon: iconsLib.chatBubbleLeftRight,
       },
       {
-        label: ADMIN_NAV_LABELS.CHAT_MESSAGES,
+        labelKey: AppLocales.Admin.Nav.Items.ChatMessages,
         to: AppRoutes.client.protected.admin.CHAT_MESSAGES,
         resource: ADMIN_RESOURCES.MESSAGES,
         icon: iconsLib.inboxStack,
@@ -91,17 +90,17 @@ const navSections: IAdminNavSection[] = [
   },
   {
     id: "access",
-    label: ADMIN_NAV_SECTION_LABELS.IAM,
+    labelKey: AppLocales.Admin.Nav.Sections.Iam,
     items: [
       {
-        label: ADMIN_NAV_LABELS.USERS,
+        labelKey: AppLocales.Admin.Nav.Items.Users,
         to: AppRoutes.client.protected.admin.USERS,
         resource: ADMIN_RESOURCES.USERS,
         icon: iconsLib.userGroup,
         superAdminOnly: true,
       },
       {
-        label: ADMIN_NAV_LABELS.ROLES,
+        labelKey: AppLocales.Admin.Nav.Items.Roles,
         to: AppRoutes.client.protected.admin.ROLES,
         resource: ADMIN_RESOURCES.ROLES,
         icon: iconsLib.key,
@@ -110,11 +109,23 @@ const navSections: IAdminNavSection[] = [
     ],
   },
   {
-    id: "support",
-    label: ADMIN_NAV_SECTION_LABELS.SUPPORT,
+    id: "media",
+    labelKey: AppLocales.Admin.Nav.Sections.Media,
     items: [
       {
-        label: ADMIN_NAV_LABELS.FEEDBACK,
+        labelKey: AppLocales.Admin.Nav.Items.Assets,
+        to: AppRoutes.client.protected.admin.ASSETS,
+        resource: ADMIN_RESOURCES.ASSETS,
+        icon: iconsLib.photo,
+      },
+    ],
+  },
+  {
+    id: "support",
+    labelKey: AppLocales.Admin.Nav.Sections.Support,
+    items: [
+      {
+        labelKey: AppLocales.Admin.Nav.Items.Feedback,
         to: AppRoutes.client.protected.admin.FEEDBACK,
         resource: ADMIN_RESOURCES.FEEDBACKS,
         icon: iconsLib.mail,
@@ -123,10 +134,10 @@ const navSections: IAdminNavSection[] = [
   },
   {
     id: "observability",
-    label: ADMIN_NAV_SECTION_LABELS.OBSERVABILITY,
+    labelKey: AppLocales.Admin.Nav.Sections.Observability,
     items: [
       {
-        label: ADMIN_NAV_LABELS.LOGS,
+        labelKey: AppLocales.Admin.Nav.Items.Logs,
         to: AppRoutes.client.protected.admin.LOGS,
         resource: ADMIN_RESOURCES.CLIENTS,
         icon: iconsLib.document,
@@ -139,6 +150,7 @@ export const AdminSidebarNav: React.FC<IAdminSidebarNavProps> = ({
   onNavigate,
   isSidebarOpen = false,
 }) => {
+  const t = useTranslate();
   const [collapsedSections, setCollapsedSections] = useState<
     Record<string, boolean>
   >({});
@@ -201,7 +213,7 @@ export const AdminSidebarNav: React.FC<IAdminSidebarNavProps> = ({
                   isSidebarOpen ? "flex" : "hidden lg:flex",
                 )}
               >
-                <span>{section.label}</span>
+                <span>{t(section.labelKey)}</span>
                 <iconsLib.chevronDown
                   className={cn(
                     "h-4 w-4 transition-transform",
@@ -226,13 +238,14 @@ export const AdminSidebarNav: React.FC<IAdminSidebarNavProps> = ({
                   <div className="space-y-1">
                     {section.items.map((item) => {
                       const Icon = item.icon;
+                      const label = t(item.labelKey);
                       return (
                         <NavLink
                           key={item.to}
                           to={item.to}
                           onClick={onNavigate}
-                          title={item.label}
-                          aria-label={item.label}
+                          title={label}
+                          aria-label={label}
                           className={({ isActive }) =>
                             cn(
                               "flex items-center rounded-md font-medium transition-colors",
@@ -251,7 +264,7 @@ export const AdminSidebarNav: React.FC<IAdminSidebarNavProps> = ({
                               isSidebarOpen ? "inline" : "hidden lg:inline"
                             }
                           >
-                            {item.label}
+                            {label}
                           </span>
                         </NavLink>
                       );

@@ -10,8 +10,9 @@ export interface IAsset {
   size_bytes?: number | null;
   duration_secs?: number | null;
   source: string;
-  resource_model?: string | null;
-  resource_id?: string | null;
+  status?: string | null;
+  assetable_type?: string | null;
+  assetable_id?: string | null;
   created_by_id?: string | null;
   created_at: string;
   updated_at: string;
@@ -28,8 +29,8 @@ export interface IAssetUploadResponse {
 
 export interface IAssetUploadOptions {
   type?: string;
-  resource_model?: string;
-  resource_id?: string;
+  assetable_type?: string;
+  assetable_id?: string;
   duration_secs?: number;
   folder?: string;
 }

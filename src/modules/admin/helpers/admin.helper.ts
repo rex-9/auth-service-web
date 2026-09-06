@@ -1,9 +1,9 @@
 import { IAdminPageMeta } from "../constants";
 import { ADMIN_CHAT_PAGE_META } from "../chat/constants";
-import { ADMIN_NOTIFICATION_PAGE_META } from "../notifications/constants";
-import { ADMIN_PRODUCT_PAGE_META } from "../products/constants";
-import { ADMIN_ROLE_PAGE_META } from "../roles/constants";
-import { ADMIN_USER_PAGE_META } from "../users/constants";
+import { ADMIN_NOTIFICATION_PAGE_META } from "../notification/constants";
+import { ADMIN_PRODUCT_PAGE_META } from "../product/constants";
+import { ADMIN_ROLE_PAGE_META } from "../role/constants";
+import { ADMIN_USER_PAGE_META } from "../user/constants";
 
 export { formatAdminDate, formatDateTime } from "../../../helpers/date.helper";
 

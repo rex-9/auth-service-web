@@ -19,7 +19,11 @@ import {
   Badge,
   Asset,
 } from "./components";
-import { ButtonVariants, ComponentSizes, TypographyVariants } from "./constants";
+import {
+  ButtonVariants,
+  ComponentSizes,
+  TypographyVariants,
+} from "./constants";
 import { icons } from "../assets";
 
 // ============================================================
@@ -31,7 +35,10 @@ export const ColorExamples = () => {
     <div className="space-y-6">
       {/* Brand Colors */}
       <div className="space-y-2">
-        <Typography variant={TypographyVariants.H4} className="text-base font-semibold text-base-content">
+        <Typography
+          variant={TypographyVariants.H4}
+          className="text-base font-semibold text-base-content"
+        >
           Brand Colors
         </Typography>
         <div className="flex gap-4 flex-wrap">
@@ -49,7 +56,10 @@ export const ColorExamples = () => {
 
       {/* Semantic Colors */}
       <div className="space-y-2">
-        <Typography variant={TypographyVariants.H4} className="text-base font-semibold text-base-content">
+        <Typography
+          variant={TypographyVariants.H4}
+          className="text-base font-semibold text-base-content"
+        >
           Semantic Colors
         </Typography>
         <div className="flex gap-4 flex-wrap">
@@ -62,7 +72,10 @@ export const ColorExamples = () => {
 
       {/* Theme Surfaces */}
       <div className="space-y-2">
-        <Typography variant={TypographyVariants.H4} className="text-base font-semibold text-base-content">
+        <Typography
+          variant={TypographyVariants.H4}
+          className="text-base font-semibold text-base-content"
+        >
           Theme Base Surfaces
         </Typography>
         <div className="flex gap-4 flex-wrap">
@@ -88,25 +101,46 @@ export const ColorExamples = () => {
 export const TypographyExamples = () => {
   return (
     <div className="space-y-4">
-      <Typography variant={TypographyVariants.H1} className="text-display-l font-display text-base-content">
+      <Typography
+        variant={TypographyVariants.H1}
+        className="text-display-l font-display text-base-content"
+      >
         Display Large (40px)
       </Typography>
-      <Typography variant={TypographyVariants.H1} className="text-heading-l font-bold text-base-content">
+      <Typography
+        variant={TypographyVariants.H1}
+        className="text-heading-l font-bold text-base-content"
+      >
         Heading 1 (28px)
       </Typography>
-      <Typography variant={TypographyVariants.H2} className="text-heading-m font-bold text-base-content">
+      <Typography
+        variant={TypographyVariants.H2}
+        className="text-heading-m font-bold text-base-content"
+      >
         Heading 2 (24px)
       </Typography>
-      <Typography variant={TypographyVariants.H3} className="text-heading-s font-semibold text-base-content">
+      <Typography
+        variant={TypographyVariants.H3}
+        className="text-heading-s font-semibold text-base-content"
+      >
         Heading 3 (20px)
       </Typography>
-      <Typography variant={TypographyVariants.BODY_L} className="text-body-l text-base-content">
+      <Typography
+        variant={TypographyVariants.BODY_L}
+        className="text-body-l text-base-content"
+      >
         Body Large (16px)
       </Typography>
-      <Typography variant={TypographyVariants.BODY_M} className="text-body-m text-base-content">
+      <Typography
+        variant={TypographyVariants.BODY_M}
+        className="text-body-m text-base-content"
+      >
         Body Medium (14px)
       </Typography>
-      <Typography variant={TypographyVariants.CAPTION} className="text-caption text-base-content opacity-70">
+      <Typography
+        variant={TypographyVariants.CAPTION}
+        className="text-caption text-base-content opacity-70"
+      >
         Caption (12px)
       </Typography>
     </div>
@@ -121,7 +155,10 @@ export const SpacingExamples = () => {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Typography variant={TypographyVariants.H4} className="text-base font-semibold text-base-content">
+        <Typography
+          variant={TypographyVariants.H4}
+          className="text-base font-semibold text-base-content"
+        >
           Standard Tailwind Spacing Scale (8px Grid)
         </Typography>
         <div className="flex items-center gap-4 flex-wrap text-base-content">
@@ -148,7 +185,10 @@ export const SpacingExamples = () => {
 export const ButtonExamples = () => {
   return (
     <div className="space-y-4">
-      <Typography variant={TypographyVariants.H4} className="text-base font-semibold text-base-content">
+      <Typography
+        variant={TypographyVariants.H4}
+        className="text-base font-semibold text-base-content"
+      >
         Buttons
       </Typography>
       <div className="flex gap-4 flex-wrap items-center">
@@ -161,7 +201,11 @@ export const ButtonExamples = () => {
         <Button variant={ButtonVariants.TERTIARY} size={ComponentSizes.MD}>
           Tertiary
         </Button>
-        <Button variant={ButtonVariants.PRIMARY} size={ComponentSizes.SM} isLoading>
+        <Button
+          variant={ButtonVariants.PRIMARY}
+          size={ComponentSizes.SM}
+          isLoading
+        >
           Loading
         </Button>
       </div>
@@ -183,7 +227,10 @@ export const CompletePageExample: React.FC = () => {
           <div className="flex justify-center my-2">
             <Asset asset={icons.logo} className="h-12 w-12" />
           </div>
-          <Typography variant={TypographyVariants.BODY_S} className="text-center text-base-content opacity-70 mb-4">
+          <Typography
+            variant={TypographyVariants.BODY_S}
+            className="text-center text-base-content opacity-70 mb-4"
+          >
             Unified foundation for modern web & mobile apps.
           </Typography>
 
@@ -197,7 +244,6 @@ export const CompletePageExample: React.FC = () => {
             />
 
             <Button
-              type="button"
               variant={ButtonVariants.PRIMARY}
               fullWidth
               onClick={() => alert(`Submitted: ${email}`)}

@@ -40,10 +40,10 @@ class UserService {
     const formData = new FormData();
     formData.append("file", file);
     if (options?.type) formData.append("type", options.type);
-    if (options?.resource_model)
-      formData.append("resource_model", options.resource_model);
-    if (options?.resource_id)
-      formData.append("resource_id", options.resource_id);
+    if (options?.assetable_type)
+      formData.append("assetable_type", options.assetable_type);
+    if (options?.assetable_id)
+      formData.append("assetable_id", options.assetable_id);
     if (options?.duration_secs !== undefined)
       formData.append("duration_secs", String(options.duration_secs));
     if (options?.folder) formData.append("folder", options.folder);

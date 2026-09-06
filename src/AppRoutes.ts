@@ -14,6 +14,7 @@ class AppRoutes {
   private static admin(path: string): string {
     return `/admin${path}`;
   }
+
   static withId(path: string, id: string): string {
     return path.replace(":id", id);
   }
@@ -51,11 +52,19 @@ class AppRoutes {
         ROLE_CREATE: AppRoutes.admin("/roles/create"),
         ROLE_EDIT: AppRoutes.admin("/roles/:id/edit"),
         NOTIFICATIONS: AppRoutes.admin("/notifications"),
+        NOTIFICATION_CREATE: AppRoutes.admin("/notifications/create"),
+        NOTIFICATION_EDIT: AppRoutes.admin("/notifications/:id/edit"),
         PRODUCTS: AppRoutes.admin("/products"),
         PRODUCTS_RECYCLE_BIN: AppRoutes.admin("/products/bin"),
         PRODUCT_CREATE: AppRoutes.admin("/products/create"),
         PRODUCT_EDIT: AppRoutes.admin("/products/:id/edit"),
+        ASSETS: AppRoutes.admin("/assets"),
+        ASSETS_RECYCLE_BIN: AppRoutes.admin("/assets/bin"),
+        ASSET_CREATE: AppRoutes.admin("/assets/create"),
+        ASSET_EDIT: AppRoutes.admin("/assets/:id/edit"),
         ACCESSES: AppRoutes.admin("/accesses"),
+        ACCESS_CREATE: AppRoutes.admin("/accesses/create"),
+        ACCESS_EDIT: AppRoutes.admin("/accesses/:id/edit"),
         FEEDBACK: AppRoutes.admin("/feedback"),
         FEEDBACK_DETAIL: AppRoutes.admin("/feedback/:id"),
         LOGS: AppRoutes.admin("/logs"),
@@ -144,6 +153,13 @@ class AppRoutes {
       // Feedback
       FEEDBACKS: AppRoutes.api("/feedbacks"), // GET
 
+      // Notifications
+      NOTIFICATIONS: AppRoutes.api("/notifications"), // GET
+      NOTIFICATIONS_UNREAD_COUNT: AppRoutes.api("/notifications/unread_count"), // GET
+      NOTIFICATION_READ: AppRoutes.api("/notifications/:id/read"), // PUT
+      NOTIFICATIONS_READ_ALL: AppRoutes.api("/notifications/read_all"), // PUT
+      NOTIFICATION_DELETE: AppRoutes.api("/notifications/:id"), // DELETE
+
       // API for Client Admin Dashboard
       admin: {
         USERS: AppRoutes.adminApi("/users"), // GET, POST
@@ -159,8 +175,14 @@ class AppRoutes {
         IAM_PERMISSIONS: AppRoutes.adminApi("/iam/permissions"), // GET, POST
         IAM_PERMISSION_DETAIL: AppRoutes.adminApi("/iam/permissions/:id"), // GET, PUT, DELETE
         IAM_ROLE_PERMISSIONS: AppRoutes.adminApi("/iam/permissions"), // GET
-        NOTIFICATIONS: AppRoutes.adminApi("/notifications"), // POST
-        NOTIFICATION_TEMPLATES: AppRoutes.adminApi("/notifications/templates"), // GET
+        NOTIFICATIONS: AppRoutes.adminApi("/notifications"), // GET, POST
+        NOTIFICATION_DETAIL: AppRoutes.adminApi("/notifications/:id"), // GET, PUT, DELETE
+        NOTIFICATION_UNDISCARD: AppRoutes.adminApi("/notifications/:id/undiscard"), // POST
+        NOTIFICATION_DISPATCH: AppRoutes.adminApi("/notifications/dispatch"), // POST
+        NOTIFICATION_TEMPLATES: AppRoutes.adminApi("/notifications"), // GET, POST
+        NOTIFICATION_TEMPLATE_DETAIL: AppRoutes.adminApi("/notifications/:id"), // GET, PUT, DELETE
+        NOTIFICATION_TEMPLATE_DISCARD: AppRoutes.adminApi("/notifications/:id"), // DELETE
+        NOTIFICATION_TEMPLATE_UNDISCARD: AppRoutes.adminApi("/notifications/:id/undiscard"), // POST
         PAYMENT_PRODUCTS: AppRoutes.adminApi("/payment/products"), // GET, POST
         DISCARDED_PAYMENT_PRODUCTS: AppRoutes.adminApi(
           "/payment/products/discarded",
@@ -172,6 +194,18 @@ class AppRoutes {
         PAYMENT_PRODUCT_UNDISCARD: AppRoutes.adminApi(
           "/payment/products/:id/undiscard",
         ), // POST
+        ASSETS: AppRoutes.adminApi("/assets"), // GET
+        ASSET_DETAIL: AppRoutes.adminApi("/assets/:id"), // GET, PUT, DELETE
+        DISCARDED_ASSETS: AppRoutes.adminApi("/assets/discarded"), // GET
+        ASSET_UPLOAD: AppRoutes.adminApi("/assets/upload"), // POST
+        ASSET_DISCARD: AppRoutes.adminApi("/assets/:id/discard"), // POST
+        ASSET_UNDISCARD: AppRoutes.adminApi("/assets/:id/undiscard"), // POST
+        ASSET_COMPRESS: AppRoutes.adminApi("/assets/:id/compress"), // POST
+        ASSET_STORAGE_STATS: AppRoutes.adminApi("/assets/storage_stats"), // GET
+        ASSET_EMPTY_RECYCLE_BIN: AppRoutes.adminApi("/assets/bin"), // DELETE
+        ASSETS_BATCH_DISCARD: AppRoutes.adminApi("/assets/discard_batch"), // POST
+        ASSETS_BATCH_UNDISCARD: AppRoutes.adminApi("/assets/undiscard_batch"), // POST
+        ASSETS_BATCH_DESTROY: AppRoutes.adminApi("/assets/destroy_batch"), // POST
         CHAT_ROOMS: AppRoutes.adminApi("/chat/rooms"), // GET
         CHAT_ROOM_DETAIL: AppRoutes.adminApi("/chat/rooms/:id"), // GET, PUT, DELETE
         CHAT_ROOM_DISCARD: AppRoutes.adminApi("/chat/rooms/:id/discard"), // POST

@@ -269,7 +269,177 @@
   },
 
   "admin": {
+    "nav": {
+      "sections": {
+        "overview": "Overview",
+        "commerce": "Commerce",
+        "communication": "Communication",
+        "iam": "IAM",
+        "support": "Support",
+        "observability": "Observability",
+        "media": "Media"
+      },
+      "items": {
+        "analytics": "Analytics",
+        "products": "Products",
+        "accesses": "Access",
+        "notifications": "Notifications",
+        "chat_rooms": "Chat Rooms",
+        "chat_messages": "Chat Messages",
+        "users": "Users",
+        "roles": "Roles",
+        "feedback": "Feedback Inbox",
+        "logs": "Client Logs & Telemetry",
+        "assets": "Assets"
+      }
+    },
+    "common": {
+      "actions": {
+        "create": "Create",
+        "edit": "Edit",
+        "review": "Review",
+        "extend": "Extend",
+        "restore": "Restore",
+        "discard": "Discard",
+        "revoke": "Revoke",
+        "destroy": "Destroy",
+        "inspect": "Inspect",
+        "save": "Save Changes",
+        "cancel": "Cancel",
+        "refresh": "Refresh",
+        "close": "Close",
+        "search": "Search",
+        "view_details": "View Details",
+        "select_all": "Select All",
+        "deselect_all": "Deselect All",
+        "clear_all": "Clear All",
+        "apply_filter": "Apply Filter",
+        "reset_filter": "Reset Filter",
+        "open_recycle_bin": "Open recycle bin"
+      },
+      "recycle_bin": {
+        "empty_button": "Empty Recycle Bin",
+        "empty_title": "Empty all items in the recycle bin",
+        "confirm_empty_title": "Empty Recycle Bin",
+        "confirm_empty_message": "Are you sure you want to empty the recycle bin? This action cannot be undone and will permanently delete all {{count}} discarded item(s) from storage."
+      },
+      "batch": {
+        "selected_count": "{{count}} item(s) selected",
+        "clear_selection": "Clear selection",
+        "discard_selected": "Discard Selected",
+        "restore_selected": "Restore Selected",
+        "destroy_selected": "Delete Permanently",
+        "confirm_discard_title": "Discard Selected Items",
+        "confirm_discard_message": "Are you sure you want to discard {{count}} selected item(s)? They will be moved to the recycle bin.",
+        "confirm_restore_title": "Restore Selected Items",
+        "confirm_restore_message": "Are you sure you want to restore {{count}} selected item(s)?",
+        "confirm_destroy_title": "Permanently Delete Selected Items",
+        "confirm_destroy_message": "Are you sure you want to permanently delete {{count}} selected item(s)? This action cannot be undone and will purge all files from storage."
+      },
+      "tabs": {
+        "active": "Active",
+        "recycle_bin": "Recycle Bin",
+        "all": "All"
+      },
+      "table": {
+        "actions": "Actions",
+        "status": "Status",
+        "created_at": "Created",
+        "updated_at": "Updated",
+        "discarded_at": "Discarded",
+        "no_records": "No records found",
+        "loading": "Loading data...",
+        "page_info": "Page {{current}} of {{total}}"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "discarded": "Discarded",
+        "pending": "Pending",
+        "queued": "Queued",
+        "processing": "Processing",
+        "completed": "Completed",
+        "failed": "Failed",
+        "resolved": "Resolved",
+        "unresolved": "Unresolved",
+        "expired": "Expired",
+        "revoked": "Revoked",
+        "lifetime": "Lifetime",
+        "system": "System",
+        "custom": "Custom",
+        "synced": "Synced",
+        "local_only": "Local Only",
+        "confirmed": "Confirmed",
+        "unconfirmed": "Unconfirmed"
+      },
+      "confirm": {
+        "discard_title": "Discard Record",
+        "discard_message": "Are you sure you want to discard this record? It will be moved to the recycle bin.",
+        "restore_title": "Restore Record",
+        "restore_message": "Are you sure you want to restore this record back to active status?",
+        "destroy_title": "Permanently Purge Record",
+        "destroy_message": "This action cannot be undone. Are you sure you want to permanently delete this record?",
+        "revoke_title": "Revoke Access",
+        "revoke_message": "Are you sure you want to immediately revoke access for this user?"
+      },
+      "state": {
+        "empty_title": "No records found",
+        "empty_desc": "There are currently no records available in this view.",
+        "error_title": "Unable to load data",
+        "error_desc": "An unexpected error occurred while fetching information."
+      }
+    },
     "users": {
+      "title": "Users",
+      "description": "Manage user accounts, roles, and administrative access permissions.",
+      "recycle_title": "Discarded Users",
+      "recycle_description": "Review deactivated accounts and restore access.",
+      "create_title": "Create User",
+      "create_description": "Provision a new user account with initial role assignments.",
+      "edit_title": "Edit User",
+      "edit_description": "Update user credentials, profile information, and assigned roles.",
+      "tabs": {
+        "active_users": "Active Users",
+        "recycle_bin": "Recycle Bin"
+      },
+      "search_placeholder": "Search by name, username or email...",
+      "table": {
+        "user": "User",
+        "email": "Email",
+        "username": "Username",
+        "roles": "Roles",
+        "confirmed": "Confirmed",
+        "status": "Status",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "form": {
+        "name_label": "Full Name",
+        "name_placeholder": "Enter user's full name",
+        "username_label": "Username",
+        "username_placeholder": "Enter unique username",
+        "email_label": "Email Address",
+        "email_placeholder": "user@example.com",
+        "password_label": "Passcode",
+        "password_placeholder": "Enter 6-digit passcode",
+        "password_confirm_label": "Confirm Passcode",
+        "password_confirm_placeholder": "Re-enter 6-digit passcode",
+        "roles_label": "Assigned Roles",
+        "confirmed_label": "Mark as Confirmed",
+        "avatar_label": "Profile Avatar",
+        "avatar_helper": "Assign an uploaded avatar asset to this user.",
+        "choose_avatar": "Choose Avatar",
+        "remove_avatar": "Remove Avatar",
+        "save_user": "Save User",
+        "create_user": "Create User",
+        "saving": "Saving..."
+      },
+      "toasts": {
+        "create_success": "User created successfully",
+        "update_success": "User updated successfully",
+        "discard_success": "User discarded successfully",
+        "restore_success": "User restored successfully"
+      },
       "errors": {
         "load_list_failed": "Failed to load admin users",
         "load_one_failed": "Failed to load admin user",
@@ -285,36 +455,413 @@
         "load_roles_unexpected": "An error occurred while loading roles."
       }
     },
-    "chat": {
+    "roles": {
+      "title": "Roles & Permissions",
+      "description": "Define system roles, access policies, and permission grants across the platform.",
+      "recycle_title": "Discarded Roles",
+      "recycle_description": "Review archived roles and restore permissions.",
+      "create_title": "Create Role",
+      "create_description": "Define a new custom role and assign resource permissions.",
+      "edit_title": "Edit Role",
+      "edit_description": "Update role permissions and administrative policies.",
+      "tabs": {
+        "active_roles": "Active Roles",
+        "recycle_bin": "Recycle Bin"
+      },
+      "search_placeholder": "Search roles by name or key...",
+      "table": {
+        "role_name": "Role Name",
+        "description": "Description",
+        "permissions_count": "Permissions",
+        "type": "Type",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "name_label": "Role Name",
+        "name_placeholder": "e.g. Content Moderator",
+        "key_label": "Role Key",
+        "key_placeholder": "e.g. content_moderator",
+        "description_label": "Description",
+        "description_placeholder": "Describe the responsibilities and scope of this role...",
+        "permissions_matrix_title": "Permission Matrix",
+        "select_all": "Select All",
+        "deselect_all": "Deselect All",
+        "save_role": "Save Role",
+        "create_role": "Create Role",
+        "saving": "Saving..."
+      },
+      "toasts": {
+        "create_success": "Role created successfully",
+        "update_success": "Role updated successfully",
+        "discard_success": "Role discarded successfully",
+        "restore_success": "Role restored successfully"
+      },
       "errors": {
-        "load_rooms": "Failed to load rooms", "delete_room": "Failed to delete room",
-        "load_room": "Failed to load room", "update_room": "Failed to update room",
-        "load_messages": "Failed to load messages", "delete_message": "Failed to delete message",
-        "load_message": "Failed to load message", "update_message": "Failed to update message"
+        "load_list": "Failed to load roles",
+        "load_one": "Failed to load role",
+        "load_permissions": "Failed to load permissions",
+        "create": "Failed to create role",
+        "update": "Failed to update role",
+        "delete": "Failed to delete role"
       }
     },
     "products": {
+      "title": "Products & Pricing",
+      "description": "Manage product catalogue, recurring subscriptions, Stripe synchronization, and pricing models.",
+      "recycle_title": "Discarded Products",
+      "recycle_description": "Restore or inspect archived products.",
+      "create_title": "Create Product",
+      "create_description": "Add a new digital product or recurring subscription plan.",
+      "edit_title": "Edit Product",
+      "edit_description": "Update product details, pricing, or billing cycle.",
+      "tabs": {
+        "active_products": "Active Products",
+        "recycle_bin": "Recycle Bin"
+      },
+      "search_placeholder": "Search products by name or code...",
+      "table": {
+        "product": "Product",
+        "code": "Code",
+        "price": "Price",
+        "cycle": "Billing Cycle",
+        "stripe_sync": "Stripe Sync",
+        "status": "Status",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "form": {
+        "name_label": "Product Name",
+        "name_placeholder": "e.g. Pro Membership",
+        "code_label": "Product Code / Slug",
+        "code_placeholder": "e.g. pro-membership",
+        "description_label": "Description",
+        "description_placeholder": "Detailed description of what this product grants...",
+        "price_label": "Price Amount",
+        "price_placeholder": "29.00",
+        "currency_label": "Currency",
+        "cycle_label": "Billing Cycle",
+        "cycle_monthly": "Monthly",
+        "cycle_yearly": "Yearly",
+        "cycle_one_time": "One-Time",
+        "active_for_purchase": "Active for Purchase",
+        "thumbnail_label": "Product Thumbnail",
+        "thumbnail_helper": "Assign an uploaded thumbnail asset to this product.",
+        "choose_thumbnail": "Choose Thumbnail",
+        "remove_thumbnail": "Remove Thumbnail",
+        "save_product": "Save Product",
+        "create_product": "Create Product",
+        "saving": "Saving..."
+      },
+      "toasts": {
+        "create_success": "Product created successfully",
+        "update_success": "Product updated successfully",
+        "discard_success": "Product discarded successfully",
+        "restore_success": "Product restored successfully"
+      },
       "errors": {
-        "load_list": "Failed to load products", "load_one": "Failed to load product",
-        "create": "Failed to create product", "update": "Failed to update product",
-        "discard": "Failed to discard product", "restore": "Failed to restore product"
+        "load_list": "Failed to load products",
+        "load_one": "Failed to load product",
+        "create": "Failed to create product",
+        "update": "Failed to update product",
+        "discard": "Failed to discard product",
+        "restore": "Failed to restore product"
       }
     },
-    "roles": {
+    "accesses": {
+      "title": "Access & Entitlements",
+      "description": "Manage granted product access, expiration schedules, and access revocation for users.",
+      "grant_button": "Grant Access",
+      "search_placeholder": "Search by email, username or product...",
+      "filters": {
+        "all_types": "All Access Statuses",
+        "active_only": "Active Only",
+        "revoked_only": "Revoked Only",
+        "expired_only": "Expired Only",
+        "all_products": "All Products"
+      },
+      "table": {
+        "user": "User",
+        "product": "Product",
+        "status": "Status",
+        "granted_at": "Granted At",
+        "expires_at": "Expires At",
+        "revoked_at": "Revoked At",
+        "actions": "Actions"
+      },
+      "grant_dialog": {
+        "title": "Grant Product Access",
+        "description": "Grant product entitlements to users by selecting a product and entering recipient email addresses.",
+        "product_label": "Product",
+        "product_placeholder": "Select a product...",
+        "emails_label": "Recipient Emails",
+        "emails_placeholder": "user1@example.com, user2@example.com",
+        "emails_helper": "Enter email addresses separated by commas, spaces, or newlines.",
+        "duration_label": "Access Duration",
+        "duration_days": "{{days}} Days",
+        "lifetime": "Lifetime / No Expiration",
+        "grant_button": "Grant Access",
+        "granting": "Granting Access..."
+      },
+      "extend_dialog": {
+        "title": "Extend Access Duration",
+        "description": "Add additional active days to the selected user entitlement.",
+        "additional_days_label": "Additional Days to Add",
+        "additional_days_placeholder": "30",
+        "extend_button": "Extend Access",
+        "extending": "Extending Access..."
+      },
+      "toasts": {
+        "grant_success": "Access granted successfully",
+        "revoke_success": "Access revoked successfully",
+        "extend_success": "Access extended successfully"
+      },
       "errors": {
-        "load_list": "Failed to load roles", "load_one": "Failed to load role",
-        "load_permissions": "Failed to load permissions", "create": "Failed to create role",
-        "update": "Failed to update role", "delete": "Failed to delete role"
+        "load_list_failed": "Failed to load access list",
+        "grant_failed": "Failed to grant access",
+        "revoke_failed": "Failed to revoke access",
+        "extend_failed": "Failed to extend access"
+      }
+    },
+    "chat": {
+      "rooms_title": "Chat Rooms",
+      "rooms_description": "Moderate chat rooms, inspect discussion threads, and manage community channels.",
+      "rooms_recycle_title": "Discarded Chat Rooms",
+      "rooms_recycle_description": "Permanently purge or restore discarded chat rooms.",
+      "room_edit_title": "Edit Chat Room",
+      "room_edit_description": "Update room parameters, AI model configuration, and system prompt.",
+      "messages_title": "Chat Messages",
+      "messages_description": "Audit and moderate posted chat messages across all discussion rooms.",
+      "messages_recycle_title": "Discarded Messages",
+      "messages_recycle_description": "Review and permanently purge discarded messages.",
+      "message_edit_title": "Edit Chat Message",
+      "message_edit_description": "Update message content or moderation status.",
+      "rooms_tabs": {
+        "active_rooms": "Active Rooms",
+        "recycle_bin": "Recycle Bin"
+      },
+      "messages_tabs": {
+        "active_messages": "Active Messages",
+        "recycle_bin": "Recycle Bin"
+      },
+      "search_rooms_placeholder": "Search rooms by title or user...",
+      "search_messages_placeholder": "Search messages by content or user...",
+      "rooms_table": {
+        "room": "Room",
+        "owner": "Owner",
+        "model": "AI Model",
+        "messages_count": "Messages",
+        "status": "Status",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "messages_table": {
+        "message": "Message",
+        "room": "Room",
+        "sender": "Sender",
+        "role": "Role",
+        "ai_status": "AI Status",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "room_form": {
+        "title_label": "Room Title",
+        "model_label": "AI Model",
+        "system_prompt_label": "System Prompt",
+        "system_prompt_placeholder": "Enter system instruction for this chat room...",
+        "max_tokens_label": "Max Tokens",
+        "temperature_label": "Temperature (Creativity)",
+        "save_room": "Save Room",
+        "saving": "Saving..."
+      },
+      "message_form": {
+        "content_label": "Message Content",
+        "role_label": "Sender Role",
+        "status_label": "Processing Status",
+        "save_message": "Save Message",
+        "saving": "Saving..."
+      },
+      "toasts": {
+        "room_update_success": "Room updated successfully",
+        "room_discard_success": "Room discarded successfully",
+        "room_restore_success": "Room restored successfully",
+        "room_destroy_success": "Room permanently purged",
+        "message_update_success": "Message updated successfully",
+        "message_discard_success": "Message discarded successfully",
+        "message_restore_success": "Message restored successfully",
+        "message_destroy_success": "Message permanently purged"
+      },
+      "errors": {
+        "load_rooms": "Failed to load rooms",
+        "delete_room": "Failed to delete room",
+        "load_room": "Failed to load room",
+        "update_room": "Failed to update room",
+        "load_messages": "Failed to load messages",
+        "delete_message": "Failed to delete message",
+        "load_message": "Failed to load message",
+        "update_message": "Failed to update message"
+      }
+    },
+    "feedback": {
+      "title": "Feedback Inbox",
+      "description": "Review user ratings, feedback submissions, automated categorizations, and device telemetry.",
+      "search_placeholder": "Search feedback by content, user or email...",
+      "filters": {
+        "all_categories": "All Categories",
+        "bug": "Bug Report",
+        "feature_request": "Feature Request",
+        "improvement": "Improvement",
+        "general": "General Feedback",
+        "all_priorities": "All Priorities",
+        "low": "Low Priority",
+        "normal": "Normal Priority",
+        "high": "High Priority",
+        "urgent": "Urgent Priority",
+        "all_statuses": "All Statuses",
+        "open": "Open",
+        "in_review": "In Review",
+        "resolved": "Resolved",
+        "closed": "Closed"
+      },
+      "table": {
+        "rating": "Rating",
+        "category": "Category",
+        "content": "Content",
+        "user": "User",
+        "device_platform": "Device & Platform",
+        "priority": "Priority",
+        "status": "Status",
+        "submitted_at": "Submitted",
+        "actions": "Actions"
+      },
+      "drawer": {
+        "title": "Feedback Details",
+        "content": "Feedback Content",
+        "rating": "Rating Score",
+        "category": "Inferred Category",
+        "priority": "Priority Level",
+        "status": "Workflow Status",
+        "user_info": "User Information",
+        "device_info": "Device & Browser",
+        "url": "Submission Route",
+        "storage_snapshot": "Storage Keys Snapshot",
+        "close": "Close",
+        "update_status": "Update Status",
+        "saving": "Saving..."
+      },
+      "toasts": {
+        "status_update_success": "Feedback status updated successfully"
+      },
+      "errors": {
+        "load_list_failed": "Failed to load feedback list",
+        "update_status_failed": "Failed to update feedback status"
+      }
+    },
+    "logs": {
+      "title": "Client Telemetry & Logs",
+      "description": "Monitor client runtime exceptions, inspect stack traces, and manage crash reports across Web and Mobile.",
+      "recycle_title": "Discarded Logs",
+      "recycle_description": "Purge or restore discarded telemetry reports.",
+      "tabs": {
+        "active_logs": "Active Logs",
+        "recycle_bin": "Recycle Bin"
+      },
+      "search_placeholder": "Search logs by error message, URL or stack trace...",
+      "filters": {
+        "all_platforms": "All Platforms",
+        "web": "Web",
+        "android": "Android",
+        "ios": "iOS",
+        "all_severities": "All Severities",
+        "low": "Low",
+        "warning": "Warning",
+        "error": "Error",
+        "fatal": "Fatal",
+        "all_statuses": "All Statuses",
+        "unresolved": "Unresolved",
+        "resolved": "Resolved"
+      },
+      "table": {
+        "severity": "Severity",
+        "platform": "Platform",
+        "message": "Error Message",
+        "occurrences": "Count",
+        "user": "User",
+        "timestamp": "Timestamp",
+        "actions": "Actions"
+      },
+      "drawer": {
+        "title": "Client Log Telemetry",
+        "message": "Error Summary",
+        "stack_trace": "Stack Trace",
+        "no_stack_trace": "No stack trace provided.",
+        "device_info": "Device & Environment",
+        "browser": "Browser",
+        "os": "Operating System",
+        "url": "Trigger URL",
+        "storage_snapshot": "Storage Keys Snapshot",
+        "cookies_snapshot": "Cookies Snapshot",
+        "mark_resolved": "Mark as Resolved",
+        "mark_unresolved": "Mark as Unresolved",
+        "discard_log": "Discard Log",
+        "destroy_log": "Permanently Purge",
+        "close": "Close"
+      },
+      "toasts": {
+        "resolve_success": "Log marked as resolved",
+        "unresolve_success": "Log marked as unresolved",
+        "discard_success": "Log discarded successfully",
+        "restore_success": "Log restored successfully",
+        "destroy_success": "Log permanently purged"
+      },
+      "errors": {
+        "load_list_failed": "Failed to load telemetry logs",
+        "update_status_failed": "Failed to update log status",
+        "discard_failed": "Failed to discard log",
+        "restore_failed": "Failed to restore log",
+        "destroy_failed": "Failed to purge log"
       }
     },
     "notifications": {
+      "title": "Broadcast Notifications",
+      "description": "Send instant notifications and transactional emails to target user groups or individual recipients.",
+      "labels": {
+        "all": "All",
+        "all_users": "All users",
+        "audience": "Audience",
+        "delivery": "Delivery Channels",
+        "email": "Email",
+        "event": "Notification Event",
+        "in_app": "In-App",
+        "push": "Push",
+        "recipients": "Recipients",
+        "selected_roles": "Selected roles",
+        "selected_users": "Selected users"
+      },
       "actions": {
         "clear_all_roles": "Clear all roles",
         "clear_all_users": "Clear all users",
         "remove_recipient": "Remove {{recipient}}",
         "select_all_roles": "Select all roles",
         "select_all_users": "Select all users",
-        "send": "Send notification"
+        "send": "Send Notification",
+        "sending": "Sending Notification..."
+      },
+      "preview": {
+        "title": "Notification Preview",
+        "subject": "Email Subject",
+        "body": "Preview Body",
+        "channels": "Active Channels",
+        "recipients_count": "Target Recipients: {{count}}"
+      },
+      "validation": {
+        "delivery_channel_required": "Select at least one delivery channel.",
+        "event_required": "Select an available notification event.",
+        "role_required": "Select at least one role.",
+        "user_required": "Select at least one user."
+      },
+      "toasts": {
+        "send_success": "Notification broadcast sent successfully"
       },
       "errors": {
         "load_recipients": "Unable to load recipients",
@@ -322,24 +869,237 @@
         "search_users": "User search is unavailable in the current API.",
         "send": "Unable to send notification"
       },
-      "labels": {
-        "all": "All",
-        "all_users": "All users",
-        "audience": "Audience",
-        "delivery": "Delivery",
-        "email": "Email",
-        "event": "Event",
-        "in_app": "In app",
-        "push": "Push",
-        "recipients": "Recipients",
-        "selected_roles": "Selected roles",
-        "selected_users": "Selected users"
+      "tabs": {
+        "broadcast": "Send Broadcast",
+        "templates": "Notification Templates"
       },
-      "validation": {
-        "delivery_channel_required": "Select at least one delivery channel.",
-        "event_required": "Select an available notification event.",
-        "role_required": "Select at least one role.",
-        "user_required": "Select at least one user."
+      "templates": {
+        "title": "Notification Templates",
+        "description": "Configure delivery copy and templates across In-App, Push, and Email channels.",
+        "new_template": "Create Template",
+        "search_placeholder": "Search templates by name or event...",
+        "all_categories": "All Categories",
+        "empty_title": "No notification templates found",
+        "empty_desc": "Create a custom template for broadcast and marketing messages.",
+        "loading": "Loading notification templates...",
+        "delete_title": "Delete Notification Template",
+        "delete_message": "Are you sure you want to delete \"{{name}}\"? Dispatched user receipts will not be affected.",
+        "delete_confirm": "Delete Template",
+        "columns": {
+          "template_event": "Template / Event",
+          "category": "Category",
+          "channels": "Configured Channels",
+          "target_link": "Target Link",
+          "sent_read": "Sent / Read",
+          "actions": "Actions"
+        },
+        "toasts": {
+          "create_success": "Template created successfully",
+          "update_success": "Template updated successfully",
+          "delete_success": "Template deleted successfully"
+        },
+        "dialog": {
+          "new_title": "Create Notification Template",
+          "edit_title": "Edit Notification Template",
+          "general_info": "General Information",
+          "event_label": "Event Key",
+          "event_placeholder": "e.g. promotional_campaign_fall",
+          "name_label": "Display Name",
+          "name_placeholder": "e.g. Fall Discount Campaign",
+          "desc_label": "Description (Internal)",
+          "desc_placeholder": "Brief context on who receives this and when",
+          "category_label": "Category",
+          "link_label": "Redirect Link (Optional)",
+          "link_placeholder": "/payment or https://...",
+          "admin_only": "Admin Broadcast Only",
+          "channel_content": "Channel Content & Templates",
+          "variables_hint": "Variables: {{user_name}}, {{user_email}}",
+          "in_app_tab": "In-App (Socket)",
+          "push_tab": "Push Notification",
+          "email_tab": "Email",
+          "in_app_title": "In-App Notification Title",
+          "in_app_title_placeholder": "e.g. Announcement: {{title}}",
+          "in_app_body": "In-App Message Body",
+          "in_app_body_placeholder": "e.g. Hello {{user_name}}, we have a special announcement...",
+          "push_title": "Push Notification Title",
+          "push_title_placeholder": "e.g. New Announcement",
+          "push_body": "Push Notification Body",
+          "push_body_placeholder": "e.g. Check out our latest features...",
+          "push_template_id": "Provider Push Template ID (Optional)",
+          "push_template_id_placeholder": "e.g. push_template_uuid",
+          "push_template_id_helper": "If using an external provider-managed push layout",
+          "email_subject": "Email Subject Line",
+          "email_subject_placeholder": "e.g. Important news for {{user_name}}",
+          "email_body": "Email Body (HTML / Text)",
+          "email_body_placeholder": "<p>Dear {{user_name}},</p><p>We are excited to share...</p>",
+          "email_template_id": "Provider Email Template ID (Optional)",
+          "email_template_id_placeholder": "e.g. d-1234567890abcdef",
+          "cancel": "Cancel",
+          "save": "Save Changes",
+          "create": "Create Template",
+          "event_required": "Event identifier is required",
+          "name_required": "Template name is required"
+        }
+      }
+    },
+    "analytics": {
+      "title": "Analytics & System Pulse",
+      "description": "Real-time metrics, platform usage trends, revenue figures, and telemetry breakdowns.",
+      "refresh": "Refresh Metrics",
+      "refreshing": "Refreshing...",
+      "kpis": {
+        "active_users": "Active Users",
+        "total_revenue": "Total Revenue",
+        "chat_interactions": "Chat Interactions",
+        "error_telemetry": "Error Telemetry",
+        "vs_previous": "vs previous period",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "this_month": "This Month"
+      },
+      "periods": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "last_7_days": "Last 7 days",
+        "last_30_days": "Last 30 days",
+        "this_month": "This month",
+        "last_month": "Last month",
+        "this_year": "This year",
+        "last_year": "Last year",
+        "custom": "Custom Range"
+      },
+      "grains": {
+        "hourly": "Hourly",
+        "daily": "Daily",
+        "monthly": "Monthly"
+      },
+      "charts": {
+        "user_growth_title": "User Growth & Registrations",
+        "user_growth_desc": "New user registrations and engagement trends over time.",
+        "revenue_title": "Revenue Breakdown",
+        "revenue_desc": "Gross transactional volume and subscription billing.",
+        "chat_title": "AI & Chat Activity",
+        "chat_desc": "AI completion requests, message volume, and token usage.",
+        "channels_title": "Notification Fanout",
+        "channels_desc": "Volume distribution across In-App, Push, and Email channels."
+      },
+      "cache": {
+        "live_db": "Live DB",
+        "redis_cache": "Redis Cache"
+      }
+    },
+    "assets": {
+      "title": "Assets",
+      "description": "Manage media assets",
+      "recycle_title": "Discarded Assets",
+      "recycle_description": "Manage and restore discarded media assets",
+      "edit_title": "Edit Asset",
+      "edit_description": "Update media asset metadata",
+      "upload_button": "Upload Asset",
+      "search_placeholder": "Search assets...",
+      "tabs": {
+        "active_assets": "Active Assets",
+        "recycle_bin": "Recycle Bin"
+      },
+      "filters": {
+        "all_types": "All Types",
+        "all_formats": "All Formats",
+        "all_sources": "All Sources"
+      },
+      "table": {
+        "preview": "Preview",
+        "name": "Name",
+        "type": "Type",
+        "format": "Format",
+        "size": "Size",
+        "source": "Source",
+        "created": "Created",
+        "discarded": "Discarded",
+        "actions": "Actions"
+      },
+      "upload_dialog": {
+        "title": "Upload Assets",
+        "type_label": "Asset Type",
+        "file_label": "Select Files",
+        "choose_files": "Choose Files (Up to {{count}})",
+        "upload_button": "Upload",
+        "uploading": "Uploading...",
+        "bulk_notice_title": "Notice for Batch Uploads",
+        "bulk_notice": "You can choose up to {{count}} files per batch (Max {{imageLimit}}MB per image, {{videoLimit}}MB per video). All selected files in a batch will share the chosen Asset Type (e.g., all Thumbnails, all Avatars, or all Covers). Mixed types cannot be uploaded in the same batch.",
+        "selected_files": "Selected Files",
+        "clear_all": "Clear All",
+        "uploading_status": "Uploading file {{current}} of {{total}}: {{name}}",
+        "max_files_exceeded": "Maximum {{count}} files allowed per batch upload.",
+        "file_size_exceeded": "Some files exceed maximum size limit: {{names}}",
+        "file_limit_hint": "You can choose up to {{count}} files per batch (Max {{imageLimit}}MB per image, {{videoLimit}}MB per video).",
+        "compress_tip_title": "Compression Recommended",
+        "compress_tip_desc": "Built-in media compression is not yet available. Please compress large files before uploading to optimize loading performance and reduce storage usage:",
+        "compress_images": "Compress Images (TinyPNG)",
+        "compress_videos": "Compress Videos (FreeConvert)"
+      },
+      "compression": {
+        "compress": "Compress",
+        "compressing": "Compressing...",
+        "trigger_compression": "Trigger Compression",
+        "min_size": "Min Size",
+        "at_min_size": "At Minimum Size",
+        "min_size_tooltip": "File is at minimum size",
+        "trigger_tooltip": "Trigger Compression"
+      },
+      "picker": {
+        "title": "Select Asset",
+        "search_placeholder": "Search assets by name...",
+        "no_assets": "No assets found matching criteria.",
+        "select_action": "Select Asset"
+      },
+      "confirm": {
+        "discard_title": "Discard Asset",
+        "discard_message": "Are you sure you want to discard this asset? It will be moved to the recycle bin.",
+        "restore_title": "Restore Asset",
+        "restore_message": "Are you sure you want to restore this asset?",
+        "destroy_title": "Permanently Delete Asset",
+        "destroy_message": "Are you sure you want to permanently delete this asset? This action cannot be undone."
+      },
+      "toasts": {
+        "upload_success": "Asset uploaded successfully",
+        "bulk_upload_success": "Successfully uploaded {{count}} assets",
+        "discard_success": "Asset discarded successfully",
+        "restore_success": "Asset restored successfully",
+        "destroy_success": "Asset permanently deleted",
+        "update_success": "Asset updated successfully",
+        "recycle_bin_emptied": "Recycle bin emptied successfully",
+        "batch_discard_success": "Successfully discarded {{count}} assets",
+        "batch_restore_success": "Successfully restored {{count}} assets",
+        "batch_destroy_success": "Successfully deleted {{count}} assets permanently"
+      },
+      "errors": {
+        "load_failed": "Failed to load assets",
+        "load_one_failed": "Failed to load asset details",
+        "upload_failed": "Failed to upload asset",
+        "discard_failed": "Failed to discard asset",
+        "restore_failed": "Failed to restore asset",
+        "destroy_failed": "Failed to delete asset",
+        "update_failed": "Failed to update asset"
+      },
+      "state": {
+        "empty_title": "No Assets Found",
+        "empty_desc": "Upload an asset to get started or adjust your filters.",
+        "recycle_empty_title": "Recycle Bin Empty",
+        "recycle_empty_desc": "No discarded assets found."
+      },
+      "storage_stats": {
+        "title": "Storage & VPS Capacity",
+        "provider": "Storage Provider",
+        "occupied": "Garage Storage Occupied",
+        "objects": "objects",
+        "vps_disk": "VPS Host Disk Space",
+        "vps_available": "Free",
+        "vps_total": "Total",
+        "vps_used": "Used",
+        "vps_low_warning": "Warning: VPS disk space is critically low (<15% free). Consider upgrading VPS disk capacity soon.",
+        "db_assets": "Tracked Assets",
+        "refresh": "Refresh Stats",
+        "refreshing": "Refreshing..."
       }
     }
   },
@@ -358,5 +1118,21 @@
     "timer_hours": "Hours",
     "welcome_donations": "If this is helpful for you to find your inner peace, you may support its maintenance and future development with some loving kindness collecting some merits!",
     "timer_start_message": "Let's start the training of mindfulness!"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "filter_all": "All",
+    "filter_unread": "Unread",
+    "filter_read": "Read",
+    "mark_all_read": "Mark all as read",
+    "empty_all": "No notifications yet",
+    "empty_unread": "You're all caught up!",
+    "empty_read": "No read notifications",
+    "empty_desc": "We'll let you know when something important arrives.",
+    "load_more": "Load More",
+    "loading": "Loading notifications...",
+    "delete": "Delete notification",
+    "delete_success": "Notification deleted",
+    "mark_read_success": "Marked as read"
   }
 }

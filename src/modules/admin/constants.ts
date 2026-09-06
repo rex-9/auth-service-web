@@ -50,6 +50,7 @@ export const ADMIN_RESOURCES = {
   ANALYTICS: "analytics",
   FEEDBACKS: "feedbacks",
   CLIENTS: "clients",
+  ASSETS: "assets",
 } as const;
 
 export type TAdminResourceName =
@@ -84,6 +85,7 @@ export const ADMIN_NAV_SECTION_LABELS = {
   COMMUNICATION: "Communication",
   SUPPORT: "Support",
   OBSERVABILITY: "Observability",
+  MEDIA: "Media",
 } as const;
 
 export const ADMIN_NAV_LABELS = {
@@ -97,6 +99,7 @@ export const ADMIN_NAV_LABELS = {
   LOGS: "Client Logs & Telemetry",
   ROLES: "Roles",
   USERS: "Users",
+  ASSETS: "Assets",
 } as const;
 
 export const ANALYTICS_PERIODS = {

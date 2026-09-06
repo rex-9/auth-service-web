@@ -132,7 +132,6 @@ export const LandingPage: React.FC = () => {
         {/* Down Arrow Button */}
         <div className="flex justify-center my-8 animate-down-bounce">
           <Button
-            type="button"
             variant={ButtonVariants.TERTIARY}
             aria-label="Scroll to skills"
             onClick={() => handleScrollToSection("#Skills")}

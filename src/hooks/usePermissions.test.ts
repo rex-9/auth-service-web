@@ -19,7 +19,7 @@ import {
   isAdminRoleName,
   hasAdminRole,
   ADMIN_ROLE_NAMES,
-} from "../modules/admin/roles/constants";
+} from "../modules/admin/role/constants";
 import { ADMIN_RESOURCES } from "../modules/admin/constants";
 
 // =========================================================================
@@ -109,6 +109,29 @@ describe("getAdminRoleResourceScope", () => {
   it("ignores unknown _admin prefixes that don't match any resource", () => {
     const scope = getAdminRoleResourceScope(["finance_admin"]);
     expect(scope.size).toBe(0);
+  });
+
+  it("maps 'log_admin' to clients (telemetry) resource", () => {
+    const scope = getAdminRoleResourceScope(["log_admin"]);
+    expect(scope.has(ADMIN_RESOURCES.CLIENTS)).toBe(true);
+    expect(scope.size).toBe(1);
+  });
+
+  it("strictly scopes 'chat_admin' and ignores permissions under 'user' role", () => {
+    const scope = getAdminRoleResourceScope(["chat_admin", "user"]);
+    expect(scope.has(ADMIN_RESOURCES.ROOMS)).toBe(true);
+    expect(scope.has(ADMIN_RESOURCES.MESSAGES)).toBe(true);
+    expect(scope.has(ADMIN_RESOURCES.CLIENTS)).toBe(false);
+    expect(scope.has(ADMIN_RESOURCES.USERS)).toBe(false);
+    expect(scope.size).toBe(2);
+  });
+
+  it("scopes 'log_admin' and 'user' to allow logs but block other resources", () => {
+    const scope = getAdminRoleResourceScope(["log_admin", "user"]);
+    expect(scope.has(ADMIN_RESOURCES.CLIENTS)).toBe(true);
+    expect(scope.has(ADMIN_RESOURCES.ROOMS)).toBe(false);
+    expect(scope.has(ADMIN_RESOURCES.PRODUCTS)).toBe(false);
+    expect(scope.size).toBe(1);
   });
 
   it("handles an empty array without errors", () => {

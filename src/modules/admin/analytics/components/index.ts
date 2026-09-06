@@ -1,5 +1,4 @@
 // src/modules/admin/analytics/components/index.ts
-export { AnalyticsKpiCard } from "./AnalyticsKpiCard";
 export { AnalyticsPeriodSelector } from "./AnalyticsPeriodSelector";
 export type { ISelectedPeriodOption } from "./AnalyticsPeriodSelector";
 export { CacheSourceBadge } from "./CacheSourceBadge";

@@ -15,6 +15,7 @@ import AppRoutes from "../../../AppRoutes";
 import { DialogAuthSteps, TAuthStep } from "..";
 import { AuthController } from "..";
 import { AppLocales } from "../../../locales/app_locales";
+import { ButtonVariants } from "../../../design";
 
 interface ISigninPasswordDialogProps {
   email: string;
@@ -213,7 +214,7 @@ export const SigninPasswordDialog: React.FC<ISigninPasswordDialogProps> = ({
         />
 
         <Button
-          variant="primary"
+          variant={ButtonVariants.PRIMARY}
           type="submit"
           fullWidth
           disabled={isSubmitDisabled}

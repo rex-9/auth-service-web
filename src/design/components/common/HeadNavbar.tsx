@@ -10,6 +10,7 @@ import { ThemeToggle } from "../settings/ThemeToggle";
 import { ButtonTypes, ButtonVariants, ComponentSizes } from "../../constants";
 import { cn } from "../../helpers";
 import ProfileAvatar from "./ProfileAvatar";
+import { NotificationCenter } from "./NotificationCenter";
 
 export interface HeadNavbarProps {
   children?: React.ReactNode;
@@ -109,18 +110,7 @@ export const HeadNavbar: React.FC<HeadNavbarProps> = ({
                   <iconsLib.feedback className="h-5 w-5" />
                 </Button>
               )}
-              {showNotifications && (
-                <Button
-                  type={ButtonTypes.BUTTON}
-                  variant={ButtonVariants.TERTIARY}
-                  size={ComponentSizes.SM}
-                  className="hidden h-10 w-10 p-0 md:inline-flex items-center justify-center"
-                  aria-label="Notifications"
-                  title="Notifications"
-                >
-                  <iconsLib.bell className="h-5 w-5" />
-                </Button>
-              )}
+              {showNotifications && <NotificationCenter />}
               <ThemeToggle />
               <div className="hidden sm:block">
                 <LanguageDropdown />

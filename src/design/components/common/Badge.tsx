@@ -21,7 +21,7 @@ export interface IBadgeProps extends React.HTMLAttributes<
 
 export const Badge: React.FC<IBadgeProps> = ({
   variant = BadgeVariants.DEFAULT,
-  size = ComponentSizes.MD,
+  size = ComponentSizes.SM,
   href,
   target = href ? "_blank" : undefined,
   rel = href ? "noopener noreferrer" : undefined,

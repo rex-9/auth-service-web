@@ -31,18 +31,15 @@ import {
   ADMIN_PAGE_SIZE,
   ADMIN_RESOURCES,
   ADMIN_ACTIONS,
-  ADMIN_COMMON_LABELS,
-  ADMIN_TABLE_HEADERS,
   ADMIN_VIEW_MODES,
   type TAdminViewMode,
 } from "../../constants";
 import {
   ADMIN_CHAT_MESSAGE_SORT_KEYS,
   ADMIN_CHAT_MESSAGE_TABLE_KEYS,
-  ADMIN_CHAT_PAGE_TITLES,
   ADMIN_CHAT_ROLES,
-  ADMIN_CHAT_TABLE_HEADERS,
 } from "../constants";
+import { useTranslate, AppLocales } from "../../../../locales";
 
 interface IAdminChatMessagesPageProps {
   view?: TAdminViewMode;
@@ -51,10 +48,11 @@ interface IAdminChatMessagesPageProps {
 export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
   view = ADMIN_VIEW_MODES.ACTIVE,
 }) => {
+  const t = useTranslate();
   useDocumentTitle(
     view === ADMIN_VIEW_MODES.ACTIVE
-      ? ADMIN_CHAT_PAGE_TITLES.MESSAGES
-      : ADMIN_CHAT_PAGE_TITLES.MESSAGES_RECYCLE_BIN,
+      ? `${t(AppLocales.Admin.Chat.MessagesTitle)} | Admin`
+      : `${t(AppLocales.Admin.Chat.MessagesRecycleTitle)} | Admin`,
   );
 
   const toast = useToast();
@@ -117,10 +115,10 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
       setMessages(result.messages);
       setPagination(result.pagination);
     } else {
-      setError(result.error || "Failed to load messages");
+      setError(result.error || t(AppLocales.Admin.Chat.Errors.LoadMessages));
     }
     setLoading(false);
-  }, [can, page, setLoading, sortBy, sortOrder, view]);
+  }, [can, page, setLoading, sortBy, sortOrder, t, view]);
 
   useEffect(() => {
     void loadMessages();
@@ -132,10 +130,10 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
     setLoading(false);
 
     if (result.success) {
-      toast.success("Chat message restored");
+      toast.success(t(AppLocales.Admin.Chat.Toasts.MessageRestoreSuccess));
       void loadMessages();
     } else {
-      toast.error(result.error || "Failed to restore message");
+      toast.error(result.error || t(AppLocales.Admin.Chat.Errors.UpdateMessage));
     }
   };
 
@@ -143,7 +141,7 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
     () => [
       {
         key: ADMIN_CHAT_MESSAGE_TABLE_KEYS.ROLE,
-        header: ADMIN_CHAT_TABLE_HEADERS.ROLE,
+        header: t(AppLocales.Admin.Chat.MessagesTable.Role),
         sortKey: ADMIN_CHAT_MESSAGE_SORT_KEYS.ROLE,
         render: (message) => (
           <StatusBadge
@@ -158,7 +156,7 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
       },
       {
         key: ADMIN_CHAT_MESSAGE_TABLE_KEYS.CONTENT,
-        header: ADMIN_CHAT_TABLE_HEADERS.MESSAGE,
+        header: t(AppLocales.Admin.Chat.MessagesTable.Message),
         render: (message) => (
           <div className="max-w-md">
             <div className="line-clamp-2 text-body-m text-base-content">
@@ -172,13 +170,14 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
       },
       {
         key: ADMIN_CHAT_MESSAGE_TABLE_KEYS.CREATED,
-        header: ADMIN_TABLE_HEADERS.CREATED,
+        header: t(AppLocales.Admin.Common.Table.CreatedAt),
         sortKey: ADMIN_CHAT_MESSAGE_SORT_KEYS.CREATED_AT,
+        className: "text-center",
         render: (message) => formatAdminDate(message.created_at),
       },
       {
         key: ADMIN_CHAT_MESSAGE_TABLE_KEYS.ACTIONS,
-        header: ADMIN_TABLE_HEADERS.ACTIONS,
+        header: t(AppLocales.Admin.Common.Table.Actions),
         className: "text-right",
         render: (message) => (
           <AdminTableActions
@@ -216,7 +215,7 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
         ),
       },
     ],
-    [navigate, toast, view],
+    [navigate, t, view],
   );
 
   const handleDiscard = async () => {
@@ -228,11 +227,11 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
     setLoading(false);
 
     if (result.success) {
-      toast.success("Chat message discarded");
+      toast.success(t(AppLocales.Admin.Chat.Toasts.MessageDiscardSuccess));
       setDiscardTarget(null);
       void loadMessages();
     } else {
-      toast.error(result.error || "Failed to discard message");
+      toast.error(result.error || t(AppLocales.Admin.Chat.Errors.DeleteMessage));
     }
   };
 
@@ -240,62 +239,73 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
     if (!destroyTarget) return;
 
     setLoading(true);
+
     const result = await ChatController.deleteMessage(destroyTarget.id);
     setLoading(false);
 
     if (result.success) {
-      toast.success("Chat message permanently destroyed");
+      toast.success(t(AppLocales.Admin.Chat.Toasts.MessageDestroySuccess));
       setDestroyTarget(null);
       void loadMessages();
     } else {
-      toast.error(result.error || "Failed to destroy message");
+      toast.error(result.error || t(AppLocales.Admin.Chat.Errors.DeleteMessage));
     }
   };
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Chat Messages"
-        description="Audit and moderate posted chat messages across all discussion rooms."
+        title={
+          view === ADMIN_VIEW_MODES.ACTIVE
+            ? t(AppLocales.Admin.Chat.MessagesTitle)
+            : t(AppLocales.Admin.Chat.MessagesRecycleTitle)
+        }
+        description={
+          view === ADMIN_VIEW_MODES.ACTIVE
+            ? t(AppLocales.Admin.Chat.MessagesDescription)
+            : t(AppLocales.Admin.Chat.MessagesRecycleDescription)
+        }
       >
-        <Tabs
-          value={view}
-          onChange={(tab) => {
-            navigate(
-              tab === ADMIN_VIEW_MODES.ACTIVE
-                ? AppRoutes.client.protected.admin.CHAT_MESSAGES
-                : AppRoutes.client.protected.admin.CHAT_MESSAGES_RECYCLE_BIN,
-            );
-            updateFilters({ page: 1 });
-          }}
-          items={[
-            {
-              value: ADMIN_VIEW_MODES.ACTIVE,
-              label: "Active Messages",
-              icon: iconsLib.feedback,
-              count:
-                view === ADMIN_VIEW_MODES.ACTIVE
-                  ? pagination?.total_count
-                  : undefined,
-            },
-            {
-              value: ADMIN_VIEW_MODES.DISCARDED,
-              label: "Recycle Bin",
-              icon: iconsLib.trash,
-              count:
-                view === ADMIN_VIEW_MODES.DISCARDED
-                  ? pagination?.total_count
-                  : undefined,
-            },
-          ]}
-        />
+        {can(ADMIN_ACTIONS.DELETE, ADMIN_RESOURCES.MESSAGES) && (
+          <Tabs
+            value={view}
+            onChange={(tab) => {
+              navigate(
+                tab === ADMIN_VIEW_MODES.ACTIVE
+                  ? AppRoutes.client.protected.admin.CHAT_MESSAGES
+                  : AppRoutes.client.protected.admin.CHAT_MESSAGES_RECYCLE_BIN,
+              );
+              updateFilters({ page: 1 });
+            }}
+            items={[
+              {
+                value: ADMIN_VIEW_MODES.ACTIVE,
+                label: t(AppLocales.Admin.Chat.MessagesTabs.ActiveMessages),
+                icon: iconsLib.feedback,
+                count:
+                  view === ADMIN_VIEW_MODES.ACTIVE
+                    ? pagination?.total_count
+                    : undefined,
+              },
+              {
+                value: ADMIN_VIEW_MODES.DISCARDED,
+                label: t(AppLocales.Admin.Chat.MessagesTabs.RecycleBin),
+                icon: iconsLib.trash,
+                count:
+                  view === ADMIN_VIEW_MODES.DISCARDED
+                    ? pagination?.total_count
+                    : undefined,
+              },
+            ]}
+          />
+        )}
       </PageHeader>
 
       {/* Table & States */}
       {error ? (
         <AdminState
           icon={iconsLib.warning}
-          title="Unable to load messages"
+          title={t(AppLocales.Admin.Common.State.ErrorTitle)}
           message={error}
         />
       ) : !isLoading && messages.length === 0 ? (
@@ -305,16 +315,8 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
               ? iconsLib.inboxStack
               : iconsLib.trash
           }
-          title={
-            view === ADMIN_VIEW_MODES.ACTIVE
-              ? "No chat messages yet"
-              : "Recycle bin is empty"
-          }
-          message={
-            view === ADMIN_VIEW_MODES.ACTIVE
-              ? "Messages will appear here as users participate in chat rooms."
-              : "Discarded chat messages will appear here."
-          }
+          title={t(AppLocales.Admin.Common.State.EmptyTitle)}
+          message={t(AppLocales.Admin.Common.State.EmptyDesc)}
         />
       ) : (
         <>
@@ -335,9 +337,10 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
 
       <ConfirmDialog
         isOpen={Boolean(discardTarget)}
-        title="Discard Chat Message"
-        message="Are you sure you want to discard this message?"
-        confirmLabel={ADMIN_COMMON_LABELS.DISCARD}
+        title={t(AppLocales.Admin.Common.Confirm.DiscardTitle)}
+        message={t(AppLocales.Admin.Common.Confirm.DiscardMessage)}
+        confirmLabel={t(AppLocales.Admin.Common.Actions.Discard)}
+        cancelLabel={t(AppLocales.Admin.Common.Actions.Cancel)}
         isDestructive={true}
         isLoading={isLoading}
         onClose={() => setDiscardTarget(null)}
@@ -346,9 +349,10 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
 
       <ConfirmDialog
         isOpen={Boolean(destroyTarget)}
-        title="Destroy Chat Message"
-        message="Are you sure you want to permanently destroy this message? This action cannot be undone."
-        confirmLabel={ADMIN_COMMON_LABELS.DESTROY}
+        title={t(AppLocales.Admin.Common.Confirm.DestroyTitle)}
+        message={t(AppLocales.Admin.Common.Confirm.DestroyMessage)}
+        confirmLabel={t(AppLocales.Admin.Common.Actions.Destroy)}
+        cancelLabel={t(AppLocales.Admin.Common.Actions.Cancel)}
         isDestructive={true}
         isLoading={isLoading}
         onClose={() => setDestroyTarget(null)}
@@ -357,3 +361,4 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
     </div>
   );
 };
+

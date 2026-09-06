@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import AppRoutes from "../../../../AppRoutes";
 import { useLoading } from "../../../../contexts/LoadingContext";
 import { useToast } from "../../../../contexts/ToastContext";
-import { useDocumentTitle, usePermissions ,  useSort, SORT_ORDERS } from "../../../../hooks";
+import { useDocumentTitle, usePermissions, useSort, SORT_ORDERS } from "../../../../hooks";
 import type { IApiPagination } from "../../../../models";
 import { iconsLib } from "../../../../assets";
 import ChatController from "../chat.controller";
@@ -25,17 +25,14 @@ import {
   ADMIN_PAGE_SIZE,
   ADMIN_RESOURCES,
   ADMIN_ACTIONS,
-  ADMIN_COMMON_LABELS,
-  ADMIN_TABLE_HEADERS,
   ADMIN_VIEW_MODES,
   type TAdminViewMode,
 } from "../../constants";
 import {
-  ADMIN_CHAT_PAGE_TITLES,
   ADMIN_CHAT_ROOM_SORT_KEYS,
   ADMIN_CHAT_ROOM_TABLE_KEYS,
-  ADMIN_CHAT_TABLE_HEADERS,
 } from "../constants";
+import { useTranslate, AppLocales } from "../../../../locales";
 
 interface IAdminChatRoomsPageProps {
   view?: TAdminViewMode;
@@ -44,10 +41,11 @@ interface IAdminChatRoomsPageProps {
 export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
   view = ADMIN_VIEW_MODES.ACTIVE,
 }) => {
+  const t = useTranslate();
   useDocumentTitle(
     view === ADMIN_VIEW_MODES.ACTIVE
-      ? ADMIN_CHAT_PAGE_TITLES.ROOMS
-      : ADMIN_CHAT_PAGE_TITLES.ROOMS_RECYCLE_BIN,
+      ? `${t(AppLocales.Admin.Chat.RoomsTitle)} | Admin`
+      : `${t(AppLocales.Admin.Chat.RoomsRecycleTitle)} | Admin`,
   );
 
   const toast = useToast();
@@ -106,10 +104,10 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
       setRooms(result.rooms);
       setPagination(result.pagination);
     } else {
-      setError(result.error || "Failed to load chat rooms");
+      setError(result.error || t(AppLocales.Admin.Chat.Errors.LoadRooms));
     }
     setLoading(false);
-  }, [can, page, setLoading, sortBy, sortOrder, view]);
+  }, [can, page, setLoading, sortBy, sortOrder, t, view]);
 
   useEffect(() => {
     void loadRooms();
@@ -121,10 +119,10 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
     setLoading(false);
 
     if (result.success) {
-      toast.success("Chat room restored");
+      toast.success(t(AppLocales.Admin.Chat.Toasts.RoomRestoreSuccess));
       void loadRooms();
     } else {
-      toast.error(result.error || "Failed to restore chat room");
+      toast.error(result.error || t(AppLocales.Admin.Chat.Errors.UpdateRoom));
     }
   };
 
@@ -132,7 +130,7 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
     () => [
       {
         key: ADMIN_CHAT_ROOM_TABLE_KEYS.TITLE,
-        header: ADMIN_CHAT_TABLE_HEADERS.ROOM,
+        header: t(AppLocales.Admin.Chat.RoomsTable.Room),
         sortKey: ADMIN_CHAT_ROOM_SORT_KEYS.TITLE,
         render: (room) => (
           <div>
@@ -149,7 +147,7 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
       },
       {
         key: ADMIN_CHAT_ROOM_TABLE_KEYS.MESSAGES,
-        header: ADMIN_CHAT_TABLE_HEADERS.MESSAGES,
+        header: t(AppLocales.Admin.Chat.RoomsTable.MessagesCount),
         sortKey: ADMIN_CHAT_ROOM_SORT_KEYS.MESSAGE_COUNT,
         render: (room) => (
           <span className="font-semibold text-base-content">
@@ -159,13 +157,14 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
       },
       {
         key: ADMIN_CHAT_ROOM_TABLE_KEYS.CREATED,
-        header: ADMIN_TABLE_HEADERS.CREATED,
+        header: t(AppLocales.Admin.Common.Table.CreatedAt),
         sortKey: ADMIN_CHAT_ROOM_SORT_KEYS.CREATED_AT,
+        className: "text-center",
         render: (room) => formatAdminDate(room.created_at),
       },
       {
         key: ADMIN_CHAT_ROOM_TABLE_KEYS.ACTIONS,
-        header: ADMIN_TABLE_HEADERS.ACTIONS,
+        header: t(AppLocales.Admin.Common.Table.Actions),
         className: "text-right",
         render: (room) => (
           <AdminTableActions
@@ -203,7 +202,7 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
         ),
       },
     ],
-    [navigate, toast, view],
+    [navigate, t, view],
   );
 
   const handleDiscard = async () => {
@@ -215,11 +214,11 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
     setLoading(false);
 
     if (result.success) {
-      toast.success("Chat room discarded");
+      toast.success(t(AppLocales.Admin.Chat.Toasts.RoomDiscardSuccess));
       setDiscardTarget(null);
       void loadRooms();
     } else {
-      toast.error(result.error || "Failed to discard room");
+      toast.error(result.error || t(AppLocales.Admin.Chat.Errors.DeleteRoom));
     }
   };
 
@@ -231,58 +230,68 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
     setLoading(false);
 
     if (result.success) {
-      toast.success("Chat room permanently destroyed");
+      toast.success(t(AppLocales.Admin.Chat.Toasts.RoomDestroySuccess));
       setDestroyTarget(null);
       void loadRooms();
     } else {
-      toast.error(result.error || "Failed to destroy room");
+      toast.error(result.error || t(AppLocales.Admin.Chat.Errors.DeleteRoom));
     }
   };
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Chat Rooms"
-        description="Moderate chat rooms, inspect discussion threads, and manage community channels."
+        title={
+          view === ADMIN_VIEW_MODES.ACTIVE
+            ? t(AppLocales.Admin.Chat.RoomsTitle)
+            : t(AppLocales.Admin.Chat.RoomsRecycleTitle)
+        }
+        description={
+          view === ADMIN_VIEW_MODES.ACTIVE
+            ? t(AppLocales.Admin.Chat.RoomsDescription)
+            : t(AppLocales.Admin.Chat.RoomsRecycleDescription)
+        }
       >
-        <Tabs
-          value={view}
-          onChange={(tab) => {
-            navigate(
-              tab === ADMIN_VIEW_MODES.ACTIVE
-                ? AppRoutes.client.protected.admin.CHAT_ROOMS
-                : AppRoutes.client.protected.admin.CHAT_ROOMS_RECYCLE_BIN,
-            );
-            updateFilters({ page: 1 });
-          }}
-          items={[
-            {
-              value: ADMIN_VIEW_MODES.ACTIVE,
-              label: "Active Rooms",
-              icon: iconsLib.chatBubbleLeftRight,
-              count:
-                view === ADMIN_VIEW_MODES.ACTIVE
-                  ? pagination?.total_count
-                  : undefined,
-            },
-            {
-              value: ADMIN_VIEW_MODES.DISCARDED,
-              label: "Recycle Bin",
-              icon: iconsLib.trash,
-              count:
-                view === ADMIN_VIEW_MODES.DISCARDED
-                  ? pagination?.total_count
-                  : undefined,
-            },
-          ]}
-        />
+        {can(ADMIN_ACTIONS.DELETE, ADMIN_RESOURCES.ROOMS) && (
+          <Tabs
+            value={view}
+            onChange={(tab) => {
+              navigate(
+                tab === ADMIN_VIEW_MODES.ACTIVE
+                  ? AppRoutes.client.protected.admin.CHAT_ROOMS
+                  : AppRoutes.client.protected.admin.CHAT_ROOMS_RECYCLE_BIN,
+              );
+              updateFilters({ page: 1 });
+            }}
+            items={[
+              {
+                value: ADMIN_VIEW_MODES.ACTIVE,
+                label: t(AppLocales.Admin.Chat.RoomsTabs.ActiveRooms),
+                icon: iconsLib.chatBubbleLeftRight,
+                count:
+                  view === ADMIN_VIEW_MODES.ACTIVE
+                    ? pagination?.total_count
+                    : undefined,
+              },
+              {
+                value: ADMIN_VIEW_MODES.DISCARDED,
+                label: t(AppLocales.Admin.Chat.RoomsTabs.RecycleBin),
+                icon: iconsLib.trash,
+                count:
+                  view === ADMIN_VIEW_MODES.DISCARDED
+                    ? pagination?.total_count
+                    : undefined,
+              },
+            ]}
+          />
+        )}
       </PageHeader>
 
       {/* Table & States */}
       {error ? (
         <AdminState
           icon={iconsLib.warning}
-          title="Unable to load chat rooms"
+          title={t(AppLocales.Admin.Common.State.ErrorTitle)}
           message={error}
         />
       ) : !isLoading && rooms.length === 0 ? (
@@ -292,16 +301,8 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
               ? iconsLib.chatBubbleLeftRight
               : iconsLib.trash
           }
-          title={
-            view === ADMIN_VIEW_MODES.ACTIVE
-              ? "No chat rooms yet"
-              : "Recycle bin is empty"
-          }
-          message={
-            view === ADMIN_VIEW_MODES.ACTIVE
-              ? "Chat rooms will appear here when users start conversations."
-              : "Discarded chat rooms will appear here."
-          }
+          title={t(AppLocales.Admin.Common.State.EmptyTitle)}
+          message={t(AppLocales.Admin.Common.State.EmptyDesc)}
         />
       ) : (
         <>
@@ -322,9 +323,10 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
 
       <ConfirmDialog
         isOpen={Boolean(discardTarget)}
-        title="Discard Chat Room"
-        message={`Are you sure you want to discard "${discardTarget?.title || "this chat room"}"?`}
-        confirmLabel={ADMIN_COMMON_LABELS.DISCARD}
+        title={t(AppLocales.Admin.Common.Confirm.DiscardTitle)}
+        message={t(AppLocales.Admin.Common.Confirm.DiscardMessage)}
+        confirmLabel={t(AppLocales.Admin.Common.Actions.Discard)}
+        cancelLabel={t(AppLocales.Admin.Common.Actions.Cancel)}
         isDestructive={true}
         isLoading={isLoading}
         onClose={() => setDiscardTarget(null)}
@@ -333,9 +335,10 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
 
       <ConfirmDialog
         isOpen={Boolean(destroyTarget)}
-        title="Destroy Chat Room"
-        message={`Are you sure you want to permanently destroy "${destroyTarget?.title || "this chat room"}"? This action cannot be undone.`}
-        confirmLabel={ADMIN_COMMON_LABELS.DESTROY}
+        title={t(AppLocales.Admin.Common.Confirm.DestroyTitle)}
+        message={t(AppLocales.Admin.Common.Confirm.DestroyMessage)}
+        confirmLabel={t(AppLocales.Admin.Common.Actions.Destroy)}
+        cancelLabel={t(AppLocales.Admin.Common.Actions.Cancel)}
         isDestructive={true}
         isLoading={isLoading}
         onClose={() => setDestroyTarget(null)}
@@ -344,3 +347,4 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
     </div>
   );
 };
+

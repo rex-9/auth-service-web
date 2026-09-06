@@ -143,7 +143,6 @@ export const LandingNav: React.FC<ILandingNavProps> = ({
             </Button>
 
             <Button
-              type="button"
               variant={ButtonVariants.TERTIARY}
               aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

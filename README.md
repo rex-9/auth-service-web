@@ -59,22 +59,23 @@ It is to provide a **clear client foundation**—strong enough to carry ambitiou
 
 ## Feature map
 
-| Foundation    | What is ready                                                                         | Details                                                |
-| ------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Identity      | Email/passcode flows, confirmation, recovery, Google sign-in, session expiry          | [Authentication & security](#authentication--security) |
-| Navigation    | Public and protected routes with centralized route definitions                        | [Routing & access](#routing--access)                   |
-| Design        | Reusable inputs, buttons, dialogs, overlays, media, themes, and typography            | [Design system](#design-system)                        |
-| State         | React contexts, Jotai atoms, and deliberate browser persistence                       | [State & application flow](#state--application-flow)   |
-| Commerce      | Product selection, Stripe Checkout handoff, success, and cancellation flows           | [Payments & entitlements](#payments--entitlements)     |
-| Media         | Authenticated upload requests and reusable image/video presentation                   | [Media & assets](#media--assets)                       |
-| AI            | Non-blocking queued chat, durable history, live completion alerts, and language tools | [AI capabilities](#ai-capabilities)                    |
-| Real time     | Action Cable-compatible WebSocket lifecycle and reconnect handling                    | [Real-time delivery](#real-time-delivery)              |
-| Localization  | English, Spanish, and Burmese resources with organized typed keys                     | [Localization](#localization)                          |
-| Observability | React boundary, global browser capture, structured context, and Core API delivery     | [Client observability](#client-observability)          |
-| Admin         | User, role, permission, product, chat, and notification management with RBAC guards   | [Administration](#administration)                      |
-| Testing (E2E) | 19 real user journey specs across 6 auth flows via Playwright Page Object Model       | [End-to-End Testing](#end-to-end-testing-playwright)   |
-| Quality       | TypeScript builds, ESLint, Vitest unit tests, Playwright, and production preview      | [Quality toolchain](#quality-toolchain)                |
-| Delivery      | Vite production output and a Docker-based development environment                     | [Delivery](#delivery)                                  |
+| Foundation    | What is ready                                                                          | Details                                                |
+| ------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Identity      | Email/passcode flows, confirmation, recovery, Google sign-in, session expiry           | [Authentication & security](#authentication--security) |
+| Navigation    | Public and protected routes with centralized route definitions                         | [Routing & access](#routing--access)                   |
+| Design        | Reusable inputs, buttons, dialogs, overlays, media, themes, and typography             | [Design system](#design-system)                        |
+| State         | React contexts, Jotai atoms, and deliberate browser persistence                        | [State & application flow](#state--application-flow)   |
+| Commerce      | Product selection, Stripe Checkout handoff, success, and cancellation flows            | [Payments & entitlements](#payments--entitlements)     |
+| Media         | Real-time compression tracking, 10MB image / 100MB video uploads, optimal badges       | [Media & assets](#media--assets)                       |
+| Speech        | Binary MP3 streaming playback (`/v1/speech/tts`), chat TTS, and live audio recognition | [Speech & audio](#speech--audio)                       |
+| AI            | Non-blocking queued chat, durable history, live completion alerts, and language tools  | [AI capabilities](#ai-capabilities)                    |
+| Real time     | Action Cable-compatible WebSocket lifecycle and reconnect handling                     | [Real-time delivery](#real-time-delivery)              |
+| Localization  | English, Spanish, and Burmese resources with organized typed keys                      | [Localization](#localization)                          |
+| Observability | React boundary, global browser capture, structured context, and Core API delivery      | [Client observability](#client-observability)          |
+| Admin         | User, role, permission, product, chat, asset, and notification management with RBAC    | [Administration](#administration)                      |
+| Testing (E2E) | 19 real user journey specs across 6 auth flows via Playwright Page Object Model        | [End-to-End Testing](#end-to-end-testing-playwright)   |
+| Quality       | TypeScript builds, ESLint, Vitest unit tests, Playwright, and production preview       | [Quality toolchain](#quality-toolchain)                |
+| Delivery      | Vite production output and a Docker-based development environment                      | [Delivery](#delivery)                                  |
 
 ## Architecture
 
@@ -153,12 +154,17 @@ The client admin panel architecture provides a protected workspace for managing 
 
 - **Architecture**: Sidebar navigation, permission-based visibility, and strict route guards (`AdminRootRoute`, `AdminHomeRoute`).
 - **Client-Side RBAC**: The `usePermissions` hook evaluates the current user's role and permission matrix to determine access and UI state dynamically.
-- **Admin Modules**:
-  - **Users**: User management, reserved for super admins.
-  - **Roles**: Role and permission management with an interactive permission matrix.
-  - **Products**: Product and pricing management synchronized with Stripe.
+- **Admin Modules & Dedicated Create/Edit Consoles**:
+  - **Users**: User management (`/admin/users`), user creation (`/admin/users/create`), and user edit (`/admin/users/:id/edit`) powered by `AdminUserForm`.
+  - **Roles**: Role and permission management (`/admin/roles`), role creation (`/admin/roles/create`), and role edit (`/admin/roles/:id/edit`) powered by `AdminRoleForm`.
+  - **Products**: Product and pricing management (`/admin/products`), product creation (`/admin/products/create`), and product edit (`/admin/products/:id/edit`) powered by `AdminProductForm`.
+  - **Notifications**: Broadcast dispatch and templates (`/admin/notifications`), template creation (`/admin/notifications/create`), and template edit (`/admin/notifications/:id/edit`) powered by `AdminNotificationForm`.
+  - **Accesses**: Entitlements and access management (`/admin/accesses`), access grant console (`/admin/accesses/create`), and validity extension console (`/admin/accesses/:id/edit`) powered by `AdminAccessForm`.
+  - **Assets**: Asset control center (`/admin/assets`), batch upload console (`/admin/assets/create`), and asset edit console (`/admin/assets/:id/edit`) powered by `AdminAssetForm`.
   - **Chat**: Moderation tools for chat rooms and messages.
-  - **Notifications**: Broadcast notification dispatch targeting audiences by roles, users, or all.
+  - **Feedbacks & Logs**: User feedback review and client runtime error telemetry.
+- **Form Component Unification**: Every admin module featuring Create and Edit shares a single, reusable `Admin[Entity]Form` component (`mode: CREATE | EDIT`) between its dedicated create and edit route pages. Modals and dialogs are retired in favor of full pages.
+- **Table Compactness**: `AdminTableActions` uses compact square icon action buttons (pencil for edit, red bin for delete/discard/revoke, arrow path for restore) to optimize horizontal table space.
 - **Data Handling**: Standardized data tables, forms, search filters, and recycle bins for discarded records.
 
 ### Design system
@@ -201,9 +207,26 @@ This gives product modules a real-time path without coupling components directly
 
 ### Media & assets
 
-The client exposes the authenticated `/v1/media/upload` contract and reusable media presentation components. Provider selection, durable metadata, remote deletion, and Cloudinary/local storage behavior remain responsibilities of Rexone Core.
+The client provides comprehensive media upload, presentation, and compression management integrated with Rexone Core:
 
-That boundary keeps storage credentials and provider rules out of the browser.
+- **Bulk Upload Dialog (`AdminAssetUploadDialog`)**: Multi-file selection queue supporting uploads up to **10 MB** for images/non-videos and **100 MB** for videos when the media container is enabled.
+- **Optimistic Table Prepending**: Previews and newly uploaded asset records appear immediately in the asset table upon upload completion rather than blocking until the entire batch completes.
+- **Real-Time Cable Compression Sync**: Listens to ActionCable `asset_updated` events over `NotificationChannel`, automatically reflecting status transitions (`pending` $\rightarrow$ `processing` $\rightarrow$ `ready` or `optimal`), updated file sizes, and reduction percentages in real-time.
+- **Race-Condition Safeguard (`pendingSocketUpdates`)**: An in-memory buffer catches any socket completion events that arrive before an asset is registered in the table state, merging updates deterministically without dropping events or requiring manual page refreshes.
+- **Action Guards**: Action buttons (compress, edit, delete) are dynamically disabled while an asset is in `pending` or `processing` states to prevent race conditions and duplicate jobs.
+- **Optimal & Pass Badging**: Renders color-coded status badges (`optimal`, `ready`, `processing`, `pending`) and allows an admin to trigger a manual secondary compression pass (safeguarded by a 2-pass cap).
+- **Empty Recycle Bin (`AdminEmptyRecycleBinButton`)**: Built-in modal confirmation button that allows admins to empty all discarded items from the recycle bin in one click, permanently purging database records and remote storage objects.
+- **Batch Operations & Multi-Select (`AdminBatchActionBar` & `AdminTable`)**: Support for row checkboxes in `AdminTable`, allowing admins to multi-select items and perform batch discards in the active view, or batch restorations and permanent batch deletions in the recycle bin.
+- **Unified Modular Analytics Cards (`AdminKpiCard`)**: High-reusability metric KPI card shared between the Analytics overview and Asset storage capacity dashboards.
+- **Presentation Primitives**: Standardized `Asset`, `Image`, and `Video` components prevent raw `<img>` or `<video>` tags and handle loading skeletons, fallbacks, and aspect ratios cleanly.
+
+### Speech & audio
+
+The speech integration provides audio playback and streaming communication with Rexone Core's speech engine:
+
+- **Binary MP3 Audio Streaming**: Direct playback of synthesized audio from `POST /v1/speech/tts` returning raw binary MP3 streams without base64 wrapper overhead.
+- **Chat TTS Synthesis**: Asynchronous text-to-speech generation for conversational messages, receiving `tts_ready` notifications via ActionCable and playing attached audio assets.
+- **Live Audio Streaming**: Infrastructure ready for WebSocket-based live audio capture and streaming transcription (`SpeechLiveChannel`).
 
 ### AI capabilities
 
@@ -244,6 +267,20 @@ Frontend failures are treated as operational data, not console debris.
 - Logs are delivered to `POST /v1/log/clients` and become visible in the Rexone Core administration and error workflows.
 
 This complements backend exception tracking: the server explains what failed there, while client telemetry explains what the user actually experienced here.
+
+### Administration & Role-Based Access Control (RBAC)
+
+The web client includes a dedicated Client Admin Portal (`/admin/*`) providing operational management across Overview, Commerce, Communication, IAM, and Observability.
+
+- **Admin Portal Entry Gate**: Users holding only non-admin roles (e.g. `user`, `subscriber`) have ZERO access to the Admin Portal. All `/admin/*` routes render `NotFoundPage` (404), even if non-admin roles contain permissions.
+- **Strict Role Scoping & Non-Admin Isolation**: Admin capabilities are evaluated strictly against active **admin roles** (`super_admin`, `admin`, `*_admin`). Permissions granted under base/non-admin roles (`user`) are ignored and never leak into the admin portal.
+  - _Example_: A user holding `chat_admin` and `user` with `read_logs` under `user` can access `/admin/chat/*` but cannot see or access `/admin/log`.
+  - _Example_: A user holding `log_admin` with `read_logs` under `log_admin` can see and access `/admin/log`.
+- **Granular CUD UI & Route Protection**:
+  - **Create**: Create buttons in `<PageHeader>` and table headers are gated by `can(ADMIN_ACTIONS.CREATE, resource)`; `/admin/<resource>/new` is guarded by `AdminRootRoute(action: CREATE)`.
+  - **Update**: Edit, review, and extend buttons are gated by `can(ADMIN_ACTIONS.UPDATE, resource)`; `/admin/<resource>/:id/edit` is guarded by `AdminRootRoute(action: UPDATE)`.
+  - **Delete**: Discard, restore (`undiscard`), destroy, and revoke buttons are gated by `can(ADMIN_ACTIONS.DELETE, resource)`. The Recycle Bin tab in `<Tabs>` and `/admin/<resource>/discarded` route are accessible ONLY with `ADMIN_ACTIONS.DELETE` permission.
+  - **Read**: Sidebar nav links and list pages require `can(ADMIN_ACTIONS.READ, resource)`.
 
 ---
 
@@ -328,27 +365,35 @@ e2e/
         └── sso.spec.ts            # Google SSO authentication & challenge token setup
 ```
 
-### Running E2E Tests
+### Running Tests
 
-Rexone Web provides a unified test runner script at [`scripts/test.sh`](scripts/test.sh):
+Rexone Web provides specialized and unified test runner scripts in [`scripts/`](scripts/):
 
 ```bash
-# Run all 19 E2E tests (default)
+# 1. Run FULL test suite (Unit + E2E)
 ./scripts/test.sh
-# or: npm run test:e2e:all
+# or: npm run test:all
 
-# Run specific flows
-./scripts/test.sh sign-in        # Sign-in flow, attempt limits, unconfirmed recovery
-./scripts/test.sh sign-up        # Registration & input validations
-./scripts/test.sh password       # Password matching & retries
-./scripts/test.sh password-reset # Reset request & cooldowns
-./scripts/test.sh sso            # Google SSO authentication
-./scripts/test.sh sign-out       # Sign-out & session termination
+# 2. Run ONLY Unit tests (Vitest) - fast feedback loop
+./scripts/test_unit.sh
+# or: npm run test:unit
+
+# 3. Run ONLY E2E tests (Playwright)
+./scripts/test_e2e.sh
+# or: npm run test:e2e
+
+# Run specific E2E flows
+./scripts/test_e2e.sh sign-in        # Sign-in flow, attempt limits, unconfirmed recovery
+./scripts/test_e2e.sh sign-up        # Registration & input validations
+./scripts/test_e2e.sh password       # Password matching & retries
+./scripts/test_e2e.sh password-reset # Reset request & cooldowns
+./scripts/test_e2e.sh sso            # Google SSO authentication
+./scripts/test_e2e.sh sign-out       # Sign-out & session termination
 
 # Interactive & Debugging Modes
-./scripts/test.sh --headed       # Watch tests in a real browser window
-./scripts/test.sh --ui           # Open Playwright's interactive visual UI
-./scripts/test.sh --debug        # Launch Playwright step-by-step inspector
+./scripts/test_e2e.sh --headed       # Watch tests in a real browser window
+./scripts/test_e2e.sh --ui           # Open Playwright's interactive visual UI
+./scripts/test_e2e.sh --debug        # Launch Playwright step-by-step inspector
 ```
 
 ### Test Guarantees
@@ -369,41 +414,62 @@ The checked-in [`.env.example`](.env.example) documents the client settings.
 | Variable                              | Purpose                                                                                      | Development default     |
 | ------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------- |
 | `NODE_ENV`                            | Runtime environment label                                                                    | `development`           |
+| `VITE_REACT_APP_NAME`                 | Application display name                                                                     | `rexone.me`             |
 | `VITE_REACT_APP_GOOGLE_CLIENT_ID`     | Google OAuth browser client ID                                                               | Empty                   |
 | `VITE_REACT_APP_GOOGLE_CLIENT_SECRET` | Legacy checked-in configuration field; browser apps should not receive Google client secrets | Empty                   |
 | `VITE_REACT_APP_SERVER_BASE_URL`      | Rexone Core HTTP base URL                                                                    | `http://localhost:3000` |
 | `VITE_REACT_APP_CLIENT_BASE_URL`      | Public web client base URL                                                                   | `http://localhost:4000` |
 | `VITE_REACT_APP_SERVER_WS_BASE_URL`   | Rexone Core WebSocket base URL                                                               | `ws://localhost:3000`   |
+| `VITE_PORT`                           | Vite dev server local port                                                                   | `4000`                  |
 | `VITE_REACT_APP_PORT_MAP`             | Docker host/container port mapping                                                           | `4000:4000`             |
 | `VITE_REACT_APP_DOCKERFILE`           | Dockerfile selected by Compose                                                               | `Dockerfile.dev`        |
+| `VITE_MEDIA_MAX_NON_VIDEO_SIZE_MB`    | Maximum upload size for non-video files (MB)                                                 | `10`                    |
+| `VITE_MEDIA_MAX_VIDEO_SIZE_MB`        | Maximum upload size for video files (MB)                                                     | `100`                   |
+| `VITE_MEDIA_MAX_FILE_COUNT`           | Maximum batch upload count                                                                   | `20`                    |
 
-Only variables prefixed with `VITE_` are exposed to browser code. Never place private credentials or provider secrets in them. In particular, Google client secrets belong on a trusted backend or provider configuration, not in a Vite application.
+All frontend environment variables are centralized through [`src/AppConfig.tsx`](src/AppConfig.tsx) (`AppConfig.*`). Only variables prefixed with `VITE_` are exposed to browser code. Never place private credentials or provider secrets in them. In particular, Google client secrets belong on a trusted backend or provider configuration, not in a Vite application.
 
 ## Client route surface
 
-| Access    | Route                  | Purpose                                 |
-| --------- | ---------------------- | --------------------------------------- |
-| Public    | `/`                    | Root experience                         |
-| Public    | `/signin`              | Open the authentication dialog          |
-| Public    | `/signup`              | Enter the account creation flow         |
-| Public    | `/email/confirm`       | Handle confirmation links or code entry |
-| Public    | `/password/forgot`     | Request account recovery                |
-| Public    | `/password/reset`      | Complete password reset links           |
-| Public    | `/anapana`             | Anapana interval reminder               |
-| Protected | `/home`                | Authenticated home                      |
-| Protected | `/profile`             | Current-user profile                    |
-| Protected | `/payment`             | Products and checkout                   |
-| Protected | `/payment/success`     | Checkout success return                 |
-| Protected | `/payment/cancel`      | Checkout cancellation return            |
-| Protected | `/ai`                  | AI workspace                            |
-| Protected | `/signout`             | Sign out and provider cleanup           |
-| Protected | `/admin`               | Admin panel entry with smart redirect   |
-| Protected | `/admin/users`         | User management (super admin only)      |
-| Protected | `/admin/roles`         | Role and permission management          |
-| Protected | `/admin/products`      | Product and pricing management          |
-| Protected | `/admin/chat/rooms`    | Chat room moderation                    |
-| Protected | `/admin/chat/messages` | Chat message moderation                 |
-| Protected | `/admin/notifications` | Broadcast notification dispatch         |
+| Access    | Route                  | Purpose                                     |
+| --------- | ---------------------- | ------------------------------------------- |
+| Public    | `/`                    | Root experience                             |
+| Public    | `/signin`              | Open the authentication dialog              |
+| Public    | `/signup`              | Enter the account creation flow             |
+| Public    | `/email/confirm`       | Handle confirmation links or code entry     |
+| Public    | `/password/forgot`     | Request account recovery                    |
+| Public    | `/password/reset`      | Complete password reset links               |
+| Public    | `/anapana`             | Anapana interval reminder                   |
+| Protected | `/home`                | Authenticated home                          |
+| Protected | `/profile`             | Current-user profile                        |
+| Protected | `/payment`             | Products and checkout                       |
+| Protected | `/payment/success`     | Checkout success return                     |
+| Protected | `/payment/cancel`      | Checkout cancellation return                |
+| Protected | `/ai`                  | AI workspace                                |
+| Protected | `/signout`             | Sign out and provider cleanup               |
+| Protected | `/admin`                       | Admin panel entry with smart redirect           |
+| Protected | `/admin/users`                 | User management (super admin only)              |
+| Protected | `/admin/users/create`          | User creation console                           |
+| Protected | `/admin/users/:id/edit`        | User edit console                               |
+| Protected | `/admin/roles`                 | Role and permission management                  |
+| Protected | `/admin/roles/create`          | Role creation console                           |
+| Protected | `/admin/roles/:id/edit`        | Role edit console                               |
+| Protected | `/admin/products`              | Product and pricing management                  |
+| Protected | `/admin/products/create`       | Product creation console                        |
+| Protected | `/admin/products/:id/edit`     | Product edit console                            |
+| Protected | `/admin/accesses`              | Entitlements and user access management         |
+| Protected | `/admin/accesses/create`       | Access grant console                            |
+| Protected | `/admin/accesses/:id/edit`     | Access validity extension console               |
+| Protected | `/admin/assets`                | Asset control center & storage overview         |
+| Protected | `/admin/assets/create`         | Asset upload console                            |
+| Protected | `/admin/assets/:id/edit`       | Asset edit and compression console              |
+| Protected | `/admin/notifications`         | Broadcast notification dispatch & templates     |
+| Protected | `/admin/notifications/create`  | Notification template creation console          |
+| Protected | `/admin/notifications/:id/edit`| Notification template edit console              |
+| Protected | `/admin/chat/rooms`            | Chat room moderation                            |
+| Protected | `/admin/chat/messages`         | Chat message moderation                         |
+| Protected | `/admin/feedback`              | User feedback management                        |
+| Protected | `/admin/logs`                  | Client error and telemetry logs                 |
 
 [`src/AppRoutes.ts`](src/AppRoutes.ts) is the client-side source of truth. Rexone Core's OpenAPI page at `/api-docs` and its `config/routes.rb` remain authoritative for server contracts.
 
@@ -417,8 +483,10 @@ rexone-web/
 │   ├── pages/           # Page Object Model (POM) classes
 │   └── specs/           # User journey test specifications
 ├── scripts/             # Development & test automation scripts
-│   ├── dev.sh       # Docker compose dev environment starter
-│   └── test.sh       # Playwright E2E runner CLI
+│   ├── dev.sh           # Local Vite development server
+│   ├── test.sh          # Full test suite runner (Unit + E2E)
+│   ├── test_unit.sh     # Vitest unit test runner
+│   └── test_e2e.sh      # Playwright E2E runner CLI
 ├── src/
 │   ├── assets/          # Static application media
 │   ├── constants/       # Storage keys, dialog steps, and route parameter constants
@@ -453,14 +521,36 @@ For production deployments:
 1. Point HTTP and WebSocket variables at the deployed Rexone Core instance.
 2. Configure the Google OAuth client for the production origin.
 3. Serve the client over TLS and use `wss://` for real-time traffic.
-4. Configure the host to return `index.html` for client-side routes.
-5. Keep secrets in Rexone Core or the relevant provider—not in Vite variables.
-6. Run `npm run build`, `npm run lint`, `npm test`, and `./scripts/test.sh` in CI.
+4. Keep secrets in Rexone Core or the relevant provider—not in Vite variables.
+5. Run `npm run build`, `npm run lint`, `npm test`, and `./scripts/test.sh` in CI.
 
-## Related foundations
+## Other Repos in Rexone Ecosystem
 
 - [Rexone Core](https://github.com/rex-9/rexone-core) — Rails API, IAM, payments, jobs, notifications, storage, AI, administration, and observability
 - [Rexone Mobile](https://github.com/rex-9/rexone_mobile) — mobile client
+
+## 🎨 Rebranding
+
+Rexone Web can be rebranded directly via the master rebranding engine in `rexone-core` or standalone:
+
+```bash
+# 1. From rexone-core (rebrands all 3 repositories):
+cd ../rexone-core && ./scripts/rebrand.sh
+
+# 2. Local variables in .env.*:
+VITE_APP_NAME="My New App Name"
+```
+
+---
+
+## 🏛️ Ecosystem Lineage & Attribution
+
+This application is built on top of the **Rexone Ecosystem** (`rex-9`). When creating derivative products or white-label applications:
+
+- Developers and creators are warmly encouraged to preserve ecosystem credit in documentation to support the project.
+- All development must strictly adhere to the constitutional engineering standards in **[LAW.md](LAW.md)** and **[ECOSYSTEM.md](ECOSYSTEM.md)**.
+
+---
 
 ## Support the project
 
@@ -470,7 +560,7 @@ If Rexone Web saves you a few weeks—or saves your users from one memorable edg
 
 ## Author
 
-Built with clarity, curiosity, and a healthy suspicion of unexamined complexity by **Rex (Rex9)**.
+Built with Clarity & Simplicity Driven Development, by **Rex (Rex9)**.
 
 A software engineer, full-stack architect, and long-time practitioner of meditation.
 
@@ -479,5 +569,7 @@ I build systems the same way I approach the path itself: **with a clear mind, de
 - GitHub: [@rex-9](https://github.com/rex-9)
 - Portfolio: [rex9.vercel.app](https://rex9.vercel.app)
 - LinkedIn: [rex9](https://www.linkedin.com/in/rex9/)
+
+_Built with ❤️ by Rex9 on Rexone Ecosystem_
 
 <p align="right"><a href="#readme-top">Back to top ↑</a></p>

@@ -1,10 +1,16 @@
 > [!IMPORTANT]
 >
-> ### 🏛️ The Foundation Creed
+> ### 🏛️ The Foundation Creed & Supreme Motivation
 >
 > **"Clarity before cleverness. Precision before haste. Simplicity without weakness. Strength without spectacle."**
 >
-> Non-negotiable architectural laws and engineering standards for **Rexone Web** (`rexone-web`). Zero exceptions!!!
+> 📜 **Constitutional Mandate**: Non-negotiable architectural laws and engineering standards for all human engineers and autonomous AI agents on **Rexone Web** (`rexone-web`). Zero exceptions!!!
+>
+> This application is built upon the **Rexone Ecosystem** (`rex-9`). These are immutable **Rexone Laws and Protocols** to be strictly observed and enforced without any exception across all human engineers and autonomous AI agents. Developers building on top of this foundation are warmly encouraged to preserve ecosystem credit to support the project.
+
+> > _"If you don't follow These LAWS, u're gay."_
+> >
+> > — _Newton'z Law_
 
 ---
 
@@ -41,7 +47,7 @@
 ### 2.2 Distributed Centralized Dynamic Assets
 
 - **Rule**: NEVER store raw media URL strings directly on domain entities.
-- ALL media is managed through the backend distributed assets system (`type`, `storage_key`, `resource_model`, `resource_id`).
+- ALL media is managed through the backend distributed assets system (`type`, `storage_key`, `assetable_type`, `assetable_id`).
 - Display dynamic avatars via `ProfileAvatar` or `Asset`.
 
 ---
@@ -130,16 +136,38 @@ Transport Layer   (src/services/api.service.ts)
 
 1. **`super_admin`**: Full access to all administration modules, routes, user management, and IAM governance.
 2. **`admin`**: Full access across domain operational modules (`feedbacks`, `payments`, `ai`, `logs`, `notifications`). Restricted from `users` and `iam`.
-3. **Partial Admin (`*_admin` Suffix)**: Users possessing a specific `*_admin` role (e.g. `notification_admin`, `product_admin`, `feedback_admin`).
+3. **Partial Admin (`*_admin` Suffix)**: Users possessing a specific `*_admin` role (e.g. `notification_admin`, `product_admin`, `chat_admin`, `log_admin`, `feedback_admin`).
 
 ### 6.2 Strict Non-Admin Role Permission Isolation Law
 
-- **Rule**: The Client Admin Panel (`/admin/*`) strictly evaluates authorization from **admin roles** (`super_admin`, `admin`, `*_admin`).
-- **Permissions from Non-Admin Roles Are Strictly Ignored**: If a user has a partial admin role (e.g. `teacher_admin`) without notification access, but also holds a base `user` role with `read_notifications`, the admin portal **completely ignores** the `user` role's permissions. The user will NOT see the notification panel, cannot visit `/admin/notifications`, and cannot access create/edit/discard buttons or `/admin/notifications/bin`.
+- **Admin Portal Entry Gate**: Users holding ONLY non-admin roles (`user`, `member`, `subscriber`) have ZERO access to the Admin Portal (`/admin/*`). Even if a non-admin role contains `read_users`, `read_products`, or other permissions, the user CANNOT enter the portal or any of its subroutes (all admin routes render 404 / `NotFoundPage`).
+- **Role Partitioning / Scoping**: When evaluating capabilities in the Admin Portal, permissions are scoped STRICTLY to the resources covered by the user's active **admin roles** (`super_admin`, `admin`, `*_admin`). Permissions granted under base/non-admin roles (`user`) are **strictly ignored and NEVER leak into the admin portal**.
+  - _Example 1_: A user holding `chat_admin` and `user` with `read_logs` under the `user` role:
+    - Can enter the Admin Portal and access `/admin/chat/*`.
+    - **Cannot** see the Client Logs & Telemetry menu item in the sidebar.
+    - **Cannot** access `/admin/logs` through direct route navigation (renders 404 / `NotFoundPage`).
+  - _Example 2_: A user holding `log_admin` and `user` with `read_logs` under the `log_admin` role:
+    - Can enter the Admin Portal, see the logs sidebar menu item, and access `/admin/logs`.
 
-### 6.3 Client Admin Portal Completeness
+### 6.3 Granular CUD UI & Route Gating Law
 
-- Sub-admins do not access internal Rails engines (`/admin`, `/red`, `/solid_queue`, `/pulse`). The Client Admin Portal provides all operational modules: Overview (`/admin/analytics`), Commerce (`/admin/products`, `/admin/accesses`), Communication (`/admin/feedback`, `/admin/notifications`, `/admin/chat/*`), IAM (`/admin/users`, `/admin/roles`), Observability (`/admin/logs`).
+1. **Create Operations**:
+   - **UI**: Create action buttons in `<PageHeader>` and table headers MUST be gated by `can(ADMIN_ACTIONS.CREATE, resource)`.
+   - **Routes**: Create pages (`/admin/<resource>/new`) MUST be guarded by `AdminRootRoute(action: ADMIN_ACTIONS.CREATE, resource: <resource>)`.
+2. **Update Operations**:
+   - **UI**: Edit, review, and extend action buttons in `<AdminTableActions>` and table rows MUST be gated by `can(ADMIN_ACTIONS.UPDATE, resource)`.
+   - **Routes**: Edit pages (`/admin/<resource>/:id/edit`) MUST be guarded by `AdminRootRoute(action: ADMIN_ACTIONS.UPDATE, resource: <resource>)`.
+3. **Delete Operations (Discard, Undiscard, Destroy & Recycle Bin)**:
+   - **UI**: Discard, undiscard (restore), destroy, and revoke buttons in `<AdminTableActions>` MUST be gated by `can(ADMIN_ACTIONS.DELETE, resource)`.
+   - **Recycle Bin Tab**: The Recycle Bin tab in `<Tabs>` on list pages is visible ONLY if `can(ADMIN_ACTIONS.DELETE, resource)` is true.
+   - **Routes**: Recycle bin pages (`/admin/<resource>/discarded`) MUST be guarded by `AdminRootRoute(action: ADMIN_ACTIONS.DELETE, resource: <resource>)`.
+4. **Read Operations**:
+   - **UI**: Sidebar navigation items and list views are visible ONLY if `can(ADMIN_ACTIONS.READ, resource)` is true.
+   - **Routes**: List pages (`/admin/<resource>`) MUST be guarded by `AdminRootRoute(action: ADMIN_ACTIONS.READ, resource: <resource>)`.
+
+### 6.4 Client Admin Portal Completeness
+
+- Sub-admins do not access internal Rails engines (`/admin`, `/red`, `/solid_queue`, `/pulse`). The Client Admin Portal provides all operational modules: Overview (`/admin/analytics`), Commerce (`/admin/product`, `/admin/access`), Communication (`/admin/feedback`, `/admin/notification`, `/admin/chat/*`), IAM (`/admin/user`, `/admin/role`), Observability (`/admin/log`).
 
 ---
 

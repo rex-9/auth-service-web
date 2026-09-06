@@ -2,6 +2,7 @@
 import React from "react";
 import { iconsLib } from "../../../../assets";
 import { cn } from "../../../../design/helpers";
+import { useTranslate, AppLocales } from "../../../../locales";
 
 interface ICacheSourceBadgeProps {
   isFetching: boolean;
@@ -14,6 +15,8 @@ export const CacheSourceBadge: React.FC<ICacheSourceBadgeProps> = ({
   isHistorical,
   className,
 }) => {
+  const t = useTranslate();
+
   if (isFetching) {
     return (
       <div
@@ -23,7 +26,7 @@ export const CacheSourceBadge: React.FC<ICacheSourceBadgeProps> = ({
         )}
       >
         <span className="loading loading-spinner loading-xs" />
-        <span>Fetching live from server...</span>
+        <span>{t(AppLocales.Admin.Analytics.Refreshing)}</span>
       </div>
     );
   }
@@ -37,7 +40,7 @@ export const CacheSourceBadge: React.FC<ICacheSourceBadgeProps> = ({
         )}
       >
         <iconsLib.shieldCheck className="h-3.5 w-3.5" />
-        <span>IndexedDB Cached (0ms server load)</span>
+        <span>{t(AppLocales.Admin.Analytics.Cache.RedisCache)}</span>
       </div>
     );
   }
@@ -50,9 +53,10 @@ export const CacheSourceBadge: React.FC<ICacheSourceBadgeProps> = ({
       )}
     >
       <iconsLib.clock className="h-3.5 w-3.5" />
-      <span>Live session (Auto-refreshed)</span>
+      <span>{t(AppLocales.Admin.Analytics.Cache.LiveDb)}</span>
     </div>
   );
 };
 
 export default CacheSourceBadge;
+

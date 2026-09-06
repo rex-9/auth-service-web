@@ -21,14 +21,14 @@ export const UserPage: React.FC = () => {
     try {
       const result = await UserController.uploadImage(selectedFile, {
         type: "avatar",
-        resource_model: "user",
-        resource_id: currentUser?.id,
+        assetable_type: "User",
+        assetable_id: currentUser?.id,
       });
 
       if (result?.asset?.url && currentUser) {
         setCurrentUser({
           ...currentUser,
-          profile_pic_url: result.asset.url,
+          avatar_url: result.asset.url,
         });
         setSelectedFile(null);
       }
@@ -43,13 +43,15 @@ export const UserPage: React.FC = () => {
       <div className="bg-base-100/70 border border-base-300 rounded-2xl p-6 shadow-xl backdrop-blur-md">
         <div className="flex items-center space-x-5">
           <ProfileAvatar
-            src={currentUser?.profile_pic_url}
+            src={currentUser?.avatar_url}
             alt={currentUser?.name || currentUser?.username}
             size={ComponentSizes.LG}
           />
           <div>
             <h1 className="text-2xl font-bold font-primary text-base-content">
-              {currentUser?.name || currentUser?.username || t(AppLocales.User.Profile)}
+              {currentUser?.name ||
+                currentUser?.username ||
+                t(AppLocales.User.Profile)}
             </h1>
             <p className="text-body-m text-base-content/70">
               {currentUser?.email}
@@ -75,7 +77,9 @@ export const UserPage: React.FC = () => {
         <div className="space-y-4">
           <FileInput
             accept="image/*"
-            buttonText={selectedFile ? selectedFile.name : t(AppLocales.User.SelectImage)}
+            buttonText={
+              selectedFile ? selectedFile.name : t(AppLocales.User.SelectImage)
+            }
             onChange={(file) => setSelectedFile(file)}
           />
 

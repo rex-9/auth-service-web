@@ -1,4 +1,4 @@
-import React from "react";
+import { Checkbox } from "../../../design/components/form/Checkbox";
 import { iconsLib } from "../../../assets";
 import { cn } from "../../../design/helpers";
 import { SORT_ORDERS, type TSortOrder } from "../../../hooks/useSort";
@@ -11,22 +11,29 @@ export interface IAdminTableColumn<T> {
   sortKey?: string;
 }
 
-interface IAdminTableProps<T> {
+export interface IAdminTableProps<T> {
   columns: IAdminTableColumn<T>[];
   records: T[];
   getRowKey: (record: T) => string;
   sortBy?: string;
   sortOrder?: TSortOrder;
   onSort?: (sortKey: string) => void;
+  selectable?: boolean;
+  selectedRowKeys?: string[];
+  onSelectRow?: (key: string, selected: boolean) => void;
+  onSelectAll?: (selected: boolean) => void;
 }
 
 const AdminTableHead: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => <thead>{children}</thead>;
 
-const AdminTableRow: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => <tr className="border-base-300">{children}</tr>;
+const AdminTableRow: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className }) => (
+  <tr className={cn("border-base-300", className)}>{children}</tr>
+);
 
 const AdminTableHeaderCell: React.FC<{
   children: React.ReactNode;
@@ -87,7 +94,11 @@ const AdminTableHeaderCell: React.FC<{
         <button
           type="button"
           onClick={() => onSort(sortKey)}
-          className="group inline-flex items-center gap-1.5 cursor-pointer select-none rounded hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          className={cn(
+            "group inline-flex items-center gap-1.5 cursor-pointer select-none rounded hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+            className?.includes("text-center") && "justify-center",
+            className?.includes("text-right") && "justify-end",
+          )}
           title={`Sort by ${typeof children === "string" ? children : sortKey}`}
         >
           <span>{children}</span>
@@ -112,13 +123,33 @@ export function AdminTable<T>({
   sortBy,
   sortOrder,
   onSort,
+  selectable = false,
+  selectedRowKeys = [],
+  onSelectRow,
+  onSelectAll,
 }: IAdminTableProps<T>) {
+  const allSelected =
+    selectable &&
+    records.length > 0 &&
+    records.every((record) => selectedRowKeys.includes(getRowKey(record)));
+
   return (
     <div className="overflow-hidden rounded-md border border-base-300 bg-base-100">
       <div className="overflow-x-auto">
         <table className="table w-full">
           <AdminTableHead>
             <AdminTableRow>
+              {selectable && (
+                <th className="bg-base-200 w-12 text-center px-3">
+                  <div className="flex items-center justify-center">
+                    <Checkbox
+                      checked={!!allSelected}
+                      onChange={(e) => onSelectAll?.(e.target.checked)}
+                      aria-label="Select all rows"
+                    />
+                  </div>
+                </th>
+              )}
               {columns.map((column) => (
                 <AdminTableHeaderCell
                   key={column.key}
@@ -134,15 +165,42 @@ export function AdminTable<T>({
             </AdminTableRow>
           </AdminTableHead>
           <tbody>
-            {records.map((record) => (
-              <AdminTableRow key={getRowKey(record)}>
-                {columns.map((column) => (
-                  <AdminTableCell key={column.key} className={column.className}>
-                    {column.render(record)}
-                  </AdminTableCell>
-                ))}
-              </AdminTableRow>
-            ))}
+            {records.map((record) => {
+              const rowKey = getRowKey(record);
+              const isSelected = selectable && selectedRowKeys.includes(rowKey);
+
+              return (
+                <AdminTableRow
+                  key={rowKey}
+                  className={cn(
+                    "transition-colors",
+                    isSelected && "bg-primary/5",
+                  )}
+                >
+                  {selectable && (
+                    <td className="w-12 text-center px-3">
+                      <div className="flex items-center justify-center">
+                        <Checkbox
+                          checked={!!isSelected}
+                          onChange={(e) =>
+                            onSelectRow?.(rowKey, e.target.checked)
+                          }
+                          aria-label={`Select row ${rowKey}`}
+                        />
+                      </div>
+                    </td>
+                  )}
+                  {columns.map((column) => (
+                    <AdminTableCell
+                      key={column.key}
+                      className={column.className}
+                    >
+                      {column.render(record)}
+                    </AdminTableCell>
+                  ))}
+                </AdminTableRow>
+              );
+            })}
           </tbody>
         </table>
       </div>

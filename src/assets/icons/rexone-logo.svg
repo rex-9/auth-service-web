@@ -1,37 +1,58 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" fill="none">
   <defs>
-    <linearGradient id="rexoneBg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FF3B5C" />
-      <stop offset="50%" stop-color="#E11D48" />
-      <stop offset="100%" stop-color="#881337" />
+    <!-- Background Glass Gradient -->
+    <radialGradient id="glassBg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#24101A" stop-opacity="0.95" />
+      <stop offset="70%" stop-color="#160810" stop-opacity="0.98" />
+      <stop offset="100%" stop-color="#0E040A" stop-opacity="1" />
+    </radialGradient>
+
+    <!-- Border Glow -->
+    <linearGradient id="neonBorder" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF5E62" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#E8334A" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#FF7556" stop-opacity="0.5" />
     </linearGradient>
-    <linearGradient id="rexoneBorder" x1="0" y1="0" x2="40" y2="20" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.6" />
-      <stop offset="100%" stop-color="#E11D48" stop-opacity="0.1" />
-    </linearGradient>
-    <linearGradient id="rexoneGlyph" x1="12" y1="8" x2="28" y2="32" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="100%" stop-color="#FFF1F2" />
-    </linearGradient>
-    <linearGradient id="rexoneLeg" x1="20" y1="20" x2="30" y2="32" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="100%" stop-color="#FDA4AF" />
-    </linearGradient>
+
+    <!-- Deep Ambient Glow Filter -->
+    <filter id="ambientGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+    </filter>
+
+    <!-- Neon Tube Core Glow Filter -->
+    <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur1" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur2" />
+      <feMerge>
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
   </defs>
 
-  <!-- Background Crest -->
-  <rect x="1" y="1" width="38" height="38" rx="10" fill="url(#rexoneBg)" />
-  <rect x="1.5" y="1.5" width="37" height="37" rx="9.5" stroke="url(#rexoneBorder)" stroke-width="1" />
+  <!-- Glassmorphic Crest -->
+  <rect x="4" y="4" width="92" height="92" rx="26" fill="url(#glassBg)" />
+  <rect x="4.5" y="4.5" width="91" height="91" rx="25.5" stroke="url(#neonBorder)" stroke-width="1.5" />
 
-  <!-- Stylized Geometric R Monogram -->
-  <path d="M12 9C12 8.44772 12.4477 8 13 8H21.5C25.6421 8 29 11.3579 29 15.5C29 19.2483 26.2488 22.3537 22.6517 22.9239L28.6186 31.0791C29.0743 31.7005 28.6302 32.5714 27.8596 32.5714H23.9554C23.5186 32.5714 23.1118 32.3323 22.8946 31.9523L17.7 22.8571H16V31.5C16 32.0523 15.5523 32.5 15 32.5H13C12.4477 32.5 12 32.0523 12 31.5V9Z" fill="url(#rexoneGlyph)" />
+  <!-- Subtle Ambient Radial Glow -->
+  <circle cx="50" cy="50" r="30" fill="#FF5E62" opacity="0.2" filter="url(#ambientGlow)" />
 
-  <!-- Inner Loop Cutout -->
-  <path d="M16 12.5V18.2857H21C22.6569 18.2857 24 16.9426 24 15.2857C24 13.6289 22.6569 12.5 21 12.5H16Z" fill="#9F1239" />
+  <!-- Outer Neon Halo Layer -->
+  <g stroke="#E8334A" stroke-linecap="round" stroke-linejoin="round" opacity="0.75" filter="url(#ambientGlow)">
+    <path d="M 28 72 V 28 C 28 24 38 22 47 27 C 53 30 51 40 43 44 C 36 47 33 49 33 50" stroke-width="10" />
+    <path d="M 33 50 C 37 50 44 65 52 70 C 60 74 72 70 76 60 C 80 48 76 34 66 31 C 55 28 50 36 52 44 C 54 50 63 52 70 48" stroke-width="10" />
+  </g>
 
-  <!-- Angular Leg Shading -->
-  <path d="M17.7 22.8571L22.8946 31.9523C23.1118 32.3323 23.5186 32.5714 23.9554 32.5714H27.8596C28.6302 32.5714 29.0743 31.7005 28.6186 31.0791L22.6517 22.9239H17.7Z" fill="url(#rexoneLeg)" fill-opacity="0.9" />
+  <!-- Middle Vibrant Neon Tube Layer -->
+  <g stroke="#FF5E62" stroke-linecap="round" stroke-linejoin="round" filter="url(#neonGlow)">
+    <path d="M 28 72 V 28 C 28 24 38 22 47 27 C 53 30 51 40 43 44 C 36 47 33 49 33 50" stroke-width="5" />
+    <path d="M 33 50 C 37 50 44 65 52 70 C 60 74 72 70 76 60 C 80 48 76 34 66 31 C 55 28 50 36 52 44 C 54 50 63 52 70 48" stroke-width="5" />
+  </g>
 
-  <!-- Apex Crown Diamond Accent -->
-  <polygon points="27,7.5 29.5,10 27,12.5 24.5,10" fill="#FFFFFF" />
+  <!-- Core Hot-White Neon Filament -->
+  <g stroke="#FFF2F4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 28 72 V 28 C 28 24 38 22 47 27 C 53 30 51 40 43 44 C 36 47 33 49 33 50" stroke-width="2" />
+    <path d="M 33 50 C 37 50 44 65 52 70 C 60 74 72 70 76 60 C 80 48 76 34 66 31 C 55 28 50 36 52 44 C 54 50 63 52 70 48" stroke-width="2" />
+  </g>
 </svg>

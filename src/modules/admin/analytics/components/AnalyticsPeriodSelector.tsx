@@ -4,7 +4,6 @@ import { iconsLib } from "../../../../assets";
 import { Dropdown, DropdownSizes, type IDropdownOption } from "../../../../design";
 import {
   ANALYTICS_PERIODS,
-  ANALYTICS_PERIOD_LABELS,
   TAnalyticsPeriod,
 } from "../../constants";
 import {
@@ -12,6 +11,7 @@ import {
   calculateUtcRangeForPreset,
   calculateUtcRangeForYear,
 } from "../helpers/analyticsDate.helper";
+import { useTranslate, AppLocales } from "../../../../locales";
 
 export const APP_INCEPTION_YEAR = 2026;
 export const APP_INCEPTION_MONTH = 8; // 0-indexed: 8 = September 2026
@@ -38,6 +38,7 @@ interface IPresetOption {
 export const AnalyticsPeriodSelector: React.FC<
   IAnalyticsPeriodSelectorProps
 > = ({ selected, onSelect, disabled = false }) => {
+  const t = useTranslate();
   const appInceptionDate = useMemo(
     () => new Date(APP_INCEPTION_YEAR, APP_INCEPTION_MONTH, 1, 0, 0, 0, 0),
     [],
@@ -111,27 +112,27 @@ export const AnalyticsPeriodSelector: React.FC<
       {
         id: ANALYTICS_PERIODS.TODAY,
         period: ANALYTICS_PERIODS.TODAY,
-        label: ANALYTICS_PERIOD_LABELS[ANALYTICS_PERIODS.TODAY],
+        label: t(AppLocales.Admin.Analytics.Periods.Today),
       },
       {
         id: ANALYTICS_PERIODS.YESTERDAY,
         period: ANALYTICS_PERIODS.YESTERDAY,
-        label: ANALYTICS_PERIOD_LABELS[ANALYTICS_PERIODS.YESTERDAY],
+        label: t(AppLocales.Admin.Analytics.Periods.Yesterday),
       },
       {
         id: ANALYTICS_PERIODS.SEVEN_DAYS,
         period: ANALYTICS_PERIODS.SEVEN_DAYS,
-        label: ANALYTICS_PERIOD_LABELS[ANALYTICS_PERIODS.SEVEN_DAYS],
+        label: t(AppLocales.Admin.Analytics.Periods.Last7Days),
       },
       {
         id: ANALYTICS_PERIODS.THIRTY_DAYS,
         period: ANALYTICS_PERIODS.THIRTY_DAYS,
-        label: ANALYTICS_PERIOD_LABELS[ANALYTICS_PERIODS.THIRTY_DAYS],
+        label: t(AppLocales.Admin.Analytics.Periods.Last30Days),
       },
       {
         id: ANALYTICS_PERIODS.THIS_MONTH,
         period: ANALYTICS_PERIODS.THIS_MONTH,
-        label: ANALYTICS_PERIOD_LABELS[ANALYTICS_PERIODS.THIS_MONTH],
+        label: t(AppLocales.Admin.Analytics.Periods.ThisMonth),
       },
     ];
 
@@ -141,7 +142,7 @@ export const AnalyticsPeriodSelector: React.FC<
       presets.push({
         id: ANALYTICS_PERIODS.LAST_MONTH,
         period: ANALYTICS_PERIODS.LAST_MONTH,
-        label: ANALYTICS_PERIOD_LABELS[ANALYTICS_PERIODS.LAST_MONTH],
+        label: t(AppLocales.Admin.Analytics.Periods.LastMonth),
       });
     }
 
@@ -149,7 +150,7 @@ export const AnalyticsPeriodSelector: React.FC<
     presets.push({
       id: ANALYTICS_PERIODS.THIS_YEAR,
       period: ANALYTICS_PERIODS.THIS_YEAR,
-      label: ANALYTICS_PERIOD_LABELS[ANALYTICS_PERIODS.THIS_YEAR],
+      label: t(AppLocales.Admin.Analytics.Periods.ThisYear),
     });
 
     // Only show "Last year" if last year >= 2026
@@ -157,24 +158,23 @@ export const AnalyticsPeriodSelector: React.FC<
       presets.push({
         id: ANALYTICS_PERIODS.LAST_YEAR,
         period: ANALYTICS_PERIODS.LAST_YEAR,
-        label: ANALYTICS_PERIOD_LABELS[ANALYTICS_PERIODS.LAST_YEAR],
+        label: t(AppLocales.Admin.Analytics.Periods.LastYear),
       });
     }
 
     return presets;
-  }, [appInceptionDate]);
+  }, [appInceptionDate, t]);
 
   const options = useMemo(() => {
     const list: IDropdownOption[] = [];
     standardPresets.forEach((p) => {
-      list.push({ value: p.id, label: p.label, group: "Standard Presets" });
+      list.push({ value: p.id, label: p.label });
     });
     if (pastMonths.length > 0) {
       pastMonths.forEach((m) => {
         list.push({
           value: m.id,
           label: m.label,
-          group: "Previous Completed Months",
         });
       });
     }
@@ -183,7 +183,6 @@ export const AnalyticsPeriodSelector: React.FC<
         list.push({
           value: y.id,
           label: y.label,
-          group: "Previous Completed Years",
         });
       });
     }
@@ -258,3 +257,4 @@ export const AnalyticsPeriodSelector: React.FC<
 };
 
 export default AnalyticsPeriodSelector;
+

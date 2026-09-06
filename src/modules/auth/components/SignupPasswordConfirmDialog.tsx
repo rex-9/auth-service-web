@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import AppRoutes from "../../../AppRoutes";
 import { AuthController } from "..";
 import { AppLocales, useTranslate } from "../../../locales";
+import { ButtonVariants } from "../../../design";
 
 interface ISignupPasswordConfirmDialogProps {
   email: string;
@@ -189,7 +190,7 @@ export const SignupPasswordConfirmDialog: React.FC<
           disabled={false}
         />
         <Button
-          variant="primary"
+          variant={ButtonVariants.PRIMARY}
           type="submit"
           fullWidth
           disabled={isLoading || confirmPassword.length !== 6}

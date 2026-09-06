@@ -3,8 +3,8 @@ import { Outlet } from "react-router-dom";
 import { useAuth } from "../contexts";
 import { NotFoundPage } from "../design/pages";
 import { usePermissions } from "../hooks";
-import type { AdminAction, AdminResource } from "../modules/admin/roles";
-import { hasAdminRole } from "../modules/admin/roles";
+import type { AdminAction, AdminResource } from "../modules/admin/role";
+import { hasAdminRole } from "../modules/admin/role";
 import { AdminLayout } from "../modules/admin/components/AdminLayout";
 import { ADMIN_ROLE_NAMES } from "../modules/admin";
 

@@ -12,6 +12,8 @@ export interface IPasswordInputProps {
   error?: string;
   disabled?: boolean;
   autoFocus?: boolean;
+  mask?: boolean;
+  showSeparator?: boolean;
 }
 
 export const PasswordInput: React.FC<IPasswordInputProps> = ({
@@ -24,6 +26,8 @@ export const PasswordInput: React.FC<IPasswordInputProps> = ({
   error,
   disabled = false,
   autoFocus = true,
+  mask = true,
+  showSeparator = false,
 }) => {
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const digits = Array.from({ length: 6 }, (_, index) => value[index] || "");
@@ -61,9 +65,13 @@ export const PasswordInput: React.FC<IPasswordInputProps> = ({
     event: React.KeyboardEvent<HTMLInputElement>,
     index: number,
   ) => {
-    // Backspace: go to previous input
-    if (event.key === "Backspace" && !digits[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
+    // Backspace: clear current if filled, or move to previous input if empty
+    if (event.key === "Backspace") {
+      if (digits[index]) {
+        updateDigit(index, "");
+      } else if (index > 0) {
+        inputRefs.current[index - 1]?.focus();
+      }
       return;
     }
 
@@ -111,9 +119,11 @@ export const PasswordInput: React.FC<IPasswordInputProps> = ({
 
   return (
     <div className="flex flex-col w-full">
-      <label className="text-body-s font-medium text-base-content mb-1">
-        {label}
-      </label>
+      {label && (
+        <label className="text-body-s font-medium text-base-content mb-2 text-center">
+          {label}
+        </label>
+      )}
 
       <div className="flex items-center justify-center gap-2">
         {digits.map((digit, index) => (
@@ -127,33 +137,37 @@ export const PasswordInput: React.FC<IPasswordInputProps> = ({
               inputMode="numeric"
               autoComplete="one-time-code"
               pattern="[0-9]*"
-              value={digit}
+              value={mask && digit ? "*" : digit}
               maxLength={1}
               onChange={(event) => updateDigit(index, event.target.value)}
               onKeyDown={(event) => handleKeyDown(event, index)}
               onPaste={(event) => handlePaste(event, index)}
               onFocus={() => handleFocus(index)}
               disabled={disabled}
-              aria-label={`${label} digit ${index + 1}`}
+              aria-label={`${label || "Passcode"} digit ${index + 1}`}
               className={`
-                w-11 sm:w-12 h-12 sm:h-14
-                rounded-lg border-2 text-center
-                text-body-l font-semibold font-primary tracking-wider
-                transition-all duration-200 ease-out
-                focus:outline-none focus:ring-2 focus:ring-primary
+                w-12 h-14
+                rounded-xl border-2 text-center
+                caret-primary transition-all duration-200 ease-out
+                focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary
+                ${
+                  mask && digit
+                    ? "font-sans font-bold text-2xl sm:text-3xl text-white tracking-normal pt-1"
+                    : "font-primary font-semibold text-xl text-base-content tracking-wider pt-0"
+                }
                 ${
                   hasError
                     ? "border-error focus:border-error focus:ring-error"
-                    : "border-base-300 focus:border-primary"
+                    : "border-base-300 hover:border-base-content/30 focus:border-primary"
                 }
                 ${
                   disabled
-                    ? "opacity-50 cursor-not-allowed bg-base-200"
-                    : "bg-base-100"
+                    ? "opacity-50 cursor-not-allowed bg-base-300"
+                    : "bg-base-200"
                 }
               `}
             />
-            {index === 2 && (
+            {showSeparator && index === 2 && (
               <span className="text-body-l font-semibold text-base-content opacity-70 px-1">
                 -
               </span>

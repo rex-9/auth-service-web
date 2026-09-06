@@ -22,6 +22,7 @@ export const Button: React.FC<IButtonProps> = ({
   fullWidth = false,
   isLoading = false,
   disabled = false,
+  type = "button",
   className,
   children,
   ...props
@@ -54,8 +55,9 @@ export const Button: React.FC<IButtonProps> = ({
 
   return (
     <button
-      {...props}
+      type={type}
       disabled={disabled || isLoading}
+      {...props}
       className={cn(
         "inline-flex items-center justify-center whitespace-nowrap select-none",
         "font-medium transition-all duration-200 ease-out",

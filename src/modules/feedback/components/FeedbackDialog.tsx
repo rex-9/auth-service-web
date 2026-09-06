@@ -1,6 +1,5 @@
-// src/modules/feedback/components/FeedbackDialog.tsx
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "../../../locales";
 import {
   Dialog,
   FormContainer,
@@ -21,7 +20,7 @@ export const FeedbackDialog: React.FC<IFeedbackDialogProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslate();
   const { success, error } = useToast();
   const { isLoading, setLoading } = useLoading();
   const [content, setContent] = useState("");
@@ -65,7 +64,10 @@ export const FeedbackDialog: React.FC<IFeedbackDialogProps> = ({
       onClose={onClose}
       title={t("feedback.title", "Share Your Feedback")}
     >
-      <FormContainer onSubmit={handleSubmit} className="p-0 bg-transparent gap-4">
+      <FormContainer
+        onSubmit={handleSubmit}
+        className="p-0 bg-transparent gap-4"
+      >
         <RatingSlider
           value={rating}
           onChange={setRating}
@@ -91,7 +93,6 @@ export const FeedbackDialog: React.FC<IFeedbackDialogProps> = ({
 
         <div className="flex justify-end gap-2 pt-2">
           <Button
-            type="button"
             variant="tertiary"
             size="sm"
             onClick={onClose}

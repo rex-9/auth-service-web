@@ -1,11 +1,23 @@
 import { describe, it, expect } from "vitest";
-import { formatDateTime, formatAdminDate } from "./date.helper";
+import React from "react";
+import {
+  formatDateTime,
+  formatAdminDate,
+  parseDateTimeParts,
+} from "./date.helper";
 
 describe("date.helper", () => {
   it("formats date in 24-hour format: DD Mon YY - HH:mm:ss", () => {
     const testDate = new Date(2026, 8, 1, 13, 51, 40); // 1 Sept 2026 13:51:40
     expect(formatDateTime(testDate)).toBe("01 Sept 26 - 13:51:40");
-    expect(formatAdminDate(testDate)).toBe("01 Sept 26 - 13:51:40");
+    expect(formatAdminDate(testDate, { inline: true })).toBe(
+      "01 Sept 26 - 13:51:40",
+    );
+    expect(parseDateTimeParts(testDate)).toEqual({
+      date: "01 Sept 26",
+      time: "13:51:40",
+    });
+    expect(React.isValidElement(formatAdminDate(testDate))).toBe(true);
   });
 
   it("pads single digit days, hours, minutes, seconds with leading zeroes", () => {

@@ -1,11 +1,9 @@
-// src/design/components/settings/LanguageDropdown.tsx
 import { useAtom } from "jotai";
-import { useTranslation } from "react-i18next";
+import { i18n } from "../../../locales";
 import { Dropdown } from "../form/Dropdown";
 import atoms from "../../../atoms";
 
 export const LanguageDropdown = () => {
-  const { i18n } = useTranslation();
   const [locale, setLocale] = useAtom(atoms.localeAtom);
 
   const languageOptions = [

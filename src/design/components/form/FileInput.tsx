@@ -14,7 +14,9 @@ export interface IFileInputProps {
   disabled?: boolean;
   fullWidth?: boolean;
   className?: string;
-  onChange: (file: File | null) => void;
+  multiple?: boolean;
+  onChange?: (file: File | null) => void;
+  onFilesChange?: (files: File[]) => void;
 }
 
 export const FileInput: React.FC<IFileInputProps> = ({
@@ -26,7 +28,9 @@ export const FileInput: React.FC<IFileInputProps> = ({
   disabled = false,
   fullWidth = true,
   className,
+  multiple = false,
   onChange,
+  onFilesChange,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const hasError = !!error;
@@ -39,12 +43,14 @@ export const FileInput: React.FC<IFileInputProps> = ({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      onChange(files[0]);
-    } else {
-      onChange(null);
+    const files = e.target.files ? Array.from(e.target.files) : [];
+    if (onFilesChange) {
+      onFilesChange(files);
     }
+    if (onChange) {
+      onChange(files.length > 0 ? files[0] : null);
+    }
+    e.target.value = "";
   };
 
   return (
@@ -61,6 +67,7 @@ export const FileInput: React.FC<IFileInputProps> = ({
         type="file"
         ref={fileInputRef}
         accept={accept}
+        multiple={multiple}
         disabled={disabled}
         onChange={handleFileChange}
         className="hidden"
@@ -69,7 +76,6 @@ export const FileInput: React.FC<IFileInputProps> = ({
       />
 
       <Button
-        type="button"
         variant={ButtonVariants.SECONDARY}
         size={ComponentSizes.MD}
         disabled={disabled}

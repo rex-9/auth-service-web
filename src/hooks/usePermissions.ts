@@ -5,30 +5,31 @@ import {
   hasAdminRole,
   isAdminRoleName,
   ADMIN_ROLE_NAMES,
-} from "../modules/admin/roles/constants";
+} from "../modules/admin/role/constants";
 import type {
   AdminAction,
   AdminRoleName,
   AdminResource,
   IPermission,
-} from "../modules/admin/roles";
+} from "../modules/admin/role";
 
+/**
+ * Standardized mapping between AdminResource (matching Rails controller_name)
+ * and scoped role name prefixes (e.g. users_admin or user_admin).
+ * Strictly standardizes on the controller resource names with no ad-hoc aliases.
+ */
 const ADMIN_ROLE_RESOURCE_PREFIXES: Record<AdminResource, readonly string[]> = {
-  [ADMIN_RESOURCES.USERS]: ["user", "users"],
-  [ADMIN_RESOURCES.ROLES]: ["role", "roles"],
-  [ADMIN_RESOURCES.PRODUCTS]: ["product", "products"],
-  [ADMIN_RESOURCES.ACCESSES]: [
-    "access",
-    "accesses",
-    "entitlement",
-    "entitlements",
-  ],
-  [ADMIN_RESOURCES.NOTIFICATIONS]: ["notification", "notifications"],
-  [ADMIN_RESOURCES.ROOMS]: ["chat", "room", "rooms"],
-  [ADMIN_RESOURCES.MESSAGES]: ["chat", "message", "messages"],
+  [ADMIN_RESOURCES.USERS]: ["users", "user"],
+  [ADMIN_RESOURCES.ROLES]: ["roles", "role"],
+  [ADMIN_RESOURCES.PRODUCTS]: ["products", "product"],
+  [ADMIN_RESOURCES.ACCESSES]: ["accesses", "access"],
+  [ADMIN_RESOURCES.NOTIFICATIONS]: ["notifications", "notification"],
+  [ADMIN_RESOURCES.ROOMS]: ["rooms", "room", "chat"],
+  [ADMIN_RESOURCES.MESSAGES]: ["messages", "message", "chat"],
   [ADMIN_RESOURCES.ANALYTICS]: ["analytics"],
-  [ADMIN_RESOURCES.FEEDBACKS]: ["feedback", "feedbacks"],
-  [ADMIN_RESOURCES.CLIENTS]: ["client", "clients", "log", "logs"],
+  [ADMIN_RESOURCES.FEEDBACKS]: ["feedbacks", "feedback"],
+  [ADMIN_RESOURCES.CLIENTS]: ["clients", "client", "logs", "log"],
+  [ADMIN_RESOURCES.ASSETS]: ["assets", "asset"],
 };
 
 interface IUsePermissionsResult {

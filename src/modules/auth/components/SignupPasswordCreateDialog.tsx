@@ -11,6 +11,7 @@ import {
 } from "../../../design/components";
 import { AppLocales, useTranslate } from "../../../locales";
 import { DialogAuthSteps, TAuthStep } from "..";
+import { ButtonVariants } from "../../../design";
 
 interface ISignupPasswordCreateDialogProps {
   email: string;
@@ -113,7 +114,7 @@ export const SignupPasswordCreateDialog: React.FC<
           disabled={false}
         />
         <Button
-          variant="primary"
+          variant={ButtonVariants.PRIMARY}
           type="submit"
           fullWidth
           disabled={password.length !== 6}

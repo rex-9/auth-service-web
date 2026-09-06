@@ -4,8 +4,8 @@ import AppRoutes from "../AppRoutes";
 import { useAuth } from "../contexts";
 import { NotFoundPage } from "../design/pages";
 import { usePermissions } from "../hooks";
-import type { AdminResource } from "../modules/admin/roles";
-import { hasAdminRole } from "../modules/admin/roles";
+import type { AdminResource } from "../modules/admin/role";
+import { hasAdminRole } from "../modules/admin/role";
 import { ADMIN_ACTIONS, ADMIN_RESOURCES, ADMIN_ROLE_NAMES } from "../modules/admin";
 
 const adminEntryRoutes: Array<{

@@ -15,3 +15,4 @@ export * from "./form.constants";
 export * from "./dialog.constants";
 export * from "./toast.constants";
 export * from "./typography.constants";
+export * from "./progress.constants";

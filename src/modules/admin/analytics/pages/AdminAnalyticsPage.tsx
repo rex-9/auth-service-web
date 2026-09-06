@@ -3,9 +3,8 @@ import React, { useState } from "react";
 import { iconsLib } from "../../../../assets";
 import { useDocumentTitle } from "../../../../hooks";
 import { ANALYTICS_PERIODS, ANALYTICS_PERIOD_LABELS } from "../../constants";
-import { AdminState, PageHeader } from "../../components";
+import { AdminKpiCard, AdminState, PageHeader } from "../../components";
 import {
-  AnalyticsKpiCard,
   AnalyticsPeriodSelector,
   CacheSourceBadge,
   ChatActivityChart,
@@ -16,9 +15,11 @@ import {
 import { ISelectedPeriodOption } from "../components/AnalyticsPeriodSelector";
 import { calculateUtcRangeForPreset } from "../helpers/analyticsDate.helper";
 import { useAnalytics } from "../hooks/useAnalytics";
+import { useTranslate, AppLocales } from "../../../../locales";
 
 export const AdminAnalyticsPage: React.FC = () => {
-  useDocumentTitle("Analytics — Admin Panel");
+  const t = useTranslate();
+  useDocumentTitle(`${t(AppLocales.Admin.Analytics.Title)} | Admin`);
 
   const [selectedOption, setSelectedOption] = useState<ISelectedPeriodOption>(
     () => {
@@ -84,9 +85,9 @@ export const AdminAnalyticsPage: React.FC = () => {
   if (error || !data) {
     return (
       <AdminState
-        title="Unable to load analytics"
-        message={error?.message || "Failed to retrieve analytics overview."}
-        actionLabel="Try Again"
+        title={t(AppLocales.Admin.Common.State.ErrorTitle)}
+        message={error?.message || t(AppLocales.Admin.Common.State.ErrorDesc)}
+        actionLabel={t(AppLocales.Admin.Common.Actions.Refresh)}
         onAction={() => refetch()}
       />
     );
@@ -97,12 +98,12 @@ export const AdminAnalyticsPage: React.FC = () => {
   return (
     <div className="space-y-6 pb-12">
       <PageHeader
-        title="Analytics Overview"
+        title={t(AppLocales.Admin.Analytics.Title)}
         description={
           <span className="flex flex-wrap items-center gap-2">
-            <span>Real-time system health and operational growth.</span>
+            <span>{t(AppLocales.Admin.Analytics.Description)}</span>
             <span className="rounded bg-base-200 px-2 py-0.5 text-caption font-medium text-base-content opacity-80">
-              🕒 Local Time ({Intl.DateTimeFormat().resolvedOptions().timeZone})
+              🕒 ({Intl.DateTimeFormat().resolvedOptions().timeZone})
             </span>
           </span>
         }
@@ -123,8 +124,8 @@ export const AdminAnalyticsPage: React.FC = () => {
 
       {/* Main KPI Cards Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <AnalyticsKpiCard
-          title="Gross Revenue"
+        <AdminKpiCard
+          title={t(AppLocales.Admin.Analytics.Kpis.TotalRevenue)}
           value={`$${kpis.period_revenue.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -134,27 +135,27 @@ export const AdminAnalyticsPage: React.FC = () => {
           subtitle={`All-time: $${kpis.total_revenue.toLocaleString()}`}
         />
 
-        <AnalyticsKpiCard
-          title="New Users"
+        <AdminKpiCard
+          title={t(AppLocales.Admin.Analytics.Kpis.ActiveUsers)}
           value={kpis.new_users.toLocaleString()}
           deltaPct={kpis.users_delta_pct}
           icon={iconsLib.userGroup}
-          subtitle={`Total users: ${kpis.total_users.toLocaleString()}`}
+          subtitle={`Total: ${kpis.total_users.toLocaleString()}`}
         />
 
-        <AnalyticsKpiCard
-          title="Active Subscriptions"
+        <AdminKpiCard
+          title={t(AppLocales.Admin.Nav.Items.Products)}
           value={kpis.active_subscriptions.toLocaleString()}
           icon={iconsLib.cube}
-          subtitle={`${kpis.period_transactions} transactions this period`}
+          subtitle={`${kpis.period_transactions} ${t(AppLocales.Admin.Analytics.Kpis.ThisMonth)}`}
         />
 
-        <AnalyticsKpiCard
-          title="Total Messages"
+        <AdminKpiCard
+          title={t(AppLocales.Admin.Analytics.Kpis.ChatInteractions)}
           value={kpis.total_messages.toLocaleString()}
           deltaPct={kpis.messages_delta_pct}
           icon={iconsLib.chatBubbleLeftRight}
-          subtitle={`${kpis.user_messages} user / ${kpis.ai_messages} AI`}
+          subtitle={`${kpis.user_messages} / ${kpis.ai_messages}`}
         />
       </div>
 
@@ -163,35 +164,35 @@ export const AdminAnalyticsPage: React.FC = () => {
         <div className="flex items-center justify-between rounded-md border border-base-300 bg-base-100 p-3.5 shadow-sm">
           <div>
             <p className="text-caption font-medium text-base-content opacity-60">
-              Unresolved Errors
+              {t(AppLocales.Admin.Analytics.Kpis.ErrorTelemetry)}
             </p>
             <p className="text-body-l font-bold text-rose-500">
               {kpis.unresolved_errors}
             </p>
           </div>
           <span className="rounded bg-rose-500/10 px-2 py-1 text-caption font-semibold text-rose-500">
-            {kpis.period_errors} logged
+            {kpis.period_errors}
           </span>
         </div>
 
         <div className="flex items-center justify-between rounded-md border border-base-300 bg-base-100 p-3.5 shadow-sm">
           <div>
             <p className="text-caption font-medium text-base-content opacity-60">
-              User Feedbacks
+              {t(AppLocales.Admin.Nav.Items.Feedback)}
             </p>
             <p className="text-body-l font-bold text-base-content">
               {kpis.period_feedbacks}
             </p>
           </div>
           <span className="rounded bg-base-200 px-2 py-1 text-caption font-semibold text-base-content opacity-70">
-            This period
+            {t(AppLocales.Admin.Analytics.Kpis.ThisMonth)}
           </span>
         </div>
 
         <div className="flex items-center justify-between rounded-md border border-base-300 bg-base-100 p-3.5 shadow-sm">
           <div>
             <p className="text-caption font-medium text-base-content opacity-60">
-              AI Conversion
+              {t(AppLocales.Admin.Analytics.Charts.ChatTitle)}
             </p>
             <p className="text-body-l font-bold text-purple-400">
               {kpis.user_messages > 0
@@ -200,7 +201,7 @@ export const AdminAnalyticsPage: React.FC = () => {
             </p>
           </div>
           <span className="rounded bg-purple-500/10 px-2 py-1 text-caption font-semibold text-purple-400">
-            Response rate
+            {t(AppLocales.Admin.Common.Status.Completed)}
           </span>
         </div>
       </div>

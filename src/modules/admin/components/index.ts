@@ -8,6 +8,15 @@ export { AdminPermissionMatrix } from "./AdminPermissionMatrix";
 export type { IAdminPermissionMatrixItem } from "./AdminPermissionMatrix";
 export { AdminTable } from "./AdminTable";
 export type { IAdminTableColumn } from "./AdminTable";
+export { AdminKpiCard } from "./AdminKpiCard";
+export type { IAdminKpiCardProps } from "./AdminKpiCard";
+export { AdminEmptyRecycleBinButton } from "./AdminEmptyRecycleBinButton";
+export type { IAdminEmptyRecycleBinButtonProps } from "./AdminEmptyRecycleBinButton";
+export { AdminBatchActionBar } from "./AdminBatchActionBar";
+export type {
+  IAdminBatchAction,
+  IAdminBatchActionBarProps,
+} from "./AdminBatchActionBar";
 export { Button, GoogleButton, SignOutButton } from "../../../design/components/button";
 export type { IButtonProps } from "../../../design/components/button/Button";
 export {

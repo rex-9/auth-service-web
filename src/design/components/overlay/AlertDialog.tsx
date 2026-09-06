@@ -21,7 +21,7 @@ export const AlertDialog: React.FC<IAlertDialogProps> = ({
       onClose={onClose}
       title={title}
       className="max-w-md"
-      footer={<Button type="button" onClick={onClose}>OK</Button>}
+      footer={<Button onClick={onClose}>OK</Button>}
     >
       <p className="whitespace-pre-wrap text-body-m text-base-content/70">
         {message}

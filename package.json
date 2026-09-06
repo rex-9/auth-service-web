@@ -14,7 +14,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "./scripts/test.sh",
+    "test:unit": "./scripts/test_unit.sh",
+    "test:e2e": "./scripts/test_e2e.sh",
+    "test:all": "./scripts/test.sh",
     "test:e2e:all": "./scripts/test.sh all",
     "test:e2e:signin": "./scripts/test.sh sign-in",
     "test:e2e:signup": "./scripts/test.sh sign-up",
@@ -29,7 +31,6 @@
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "^5.2.6",
-    "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
     "@react-oauth/google": "^0.13.5",
     "@tanstack/react-query": "^5.102.8",

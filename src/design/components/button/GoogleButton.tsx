@@ -14,14 +14,16 @@ export const GoogleButton: React.FC<IGoogleButtonProps> = ({
   isLoading = false,
   fullWidth = true,
   disabled,
+  type = "button",
   className,
   children,
   ...props
 }) => {
   return (
     <button
-      {...props}
+      type={type}
       disabled={disabled || isLoading}
+      {...props}
       className={cn(
         "px-4 py-2 rounded-md",
         "font-medium text-body-m transition-all duration-200 ease-out",

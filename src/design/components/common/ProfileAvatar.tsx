@@ -27,7 +27,7 @@ export const ProfileAvatar: React.FC<IProfileAvatarProps> = ({
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
 
-  const effectiveSrc = src !== undefined ? src : currentUser?.profile_pic_url;
+  const effectiveSrc = src !== undefined ? src : currentUser?.avatar_url;
   const effectiveName =
     alt || currentUser?.name || currentUser?.username || "User";
 

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+// src/modules/admin/chat/pages/AdminChatMessageEditPage.tsx
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AppRoutes from "../../../../AppRoutes";
 import { useLoading } from "../../../../contexts/LoadingContext";
@@ -17,17 +18,13 @@ import {
   FormContainer,
   TextArea,
 } from "../../components";
-import { ADMIN_CHAT_PAGE_TITLES, ADMIN_CHAT_ROLES } from "../constants";
-import { ADMIN_COMMON_LABELS } from "../../constants";
+import { ADMIN_CHAT_ROLES } from "../constants";
 import type { TAdminChatRole } from "../types";
-
-const messageRoleOptions = [
-  { value: ADMIN_CHAT_ROLES.USER, label: "User" },
-  { value: ADMIN_CHAT_ROLES.ASSISTANT, label: "Assistant" },
-];
+import { useTranslate, AppLocales } from "../../../../locales";
 
 export const AdminChatMessageEditPage: React.FC = () => {
-  useDocumentTitle(ADMIN_CHAT_PAGE_TITLES.MESSAGE_EDIT);
+  const t = useTranslate();
+  useDocumentTitle(`${t(AppLocales.Admin.Chat.MessageEditTitle)} | Admin`);
 
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -38,6 +35,14 @@ export const AdminChatMessageEditPage: React.FC = () => {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+
+  const messageRoleOptions = useMemo(
+    () => [
+      { value: ADMIN_CHAT_ROLES.USER, label: "User" },
+      { value: ADMIN_CHAT_ROLES.ASSISTANT, label: "Assistant" },
+    ],
+    [],
+  );
 
   useEffect(() => {
     if (!id) return;
@@ -52,12 +57,12 @@ export const AdminChatMessageEditPage: React.FC = () => {
         setRole((result.message.role as TAdminChatRole) || ADMIN_CHAT_ROLES.USER);
         setContent(result.message.content || "");
       } else {
-        setError(result.error || "Unable to load chat message");
+        setError(result.error || t(AppLocales.Admin.Chat.Errors.LoadMessage));
       }
     };
 
     void loadMessage();
-  }, [id, setLoading]);
+  }, [id, setLoading, t]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -74,10 +79,10 @@ export const AdminChatMessageEditPage: React.FC = () => {
     setLoading(false, { overlay: false });
 
     if (result.success) {
-      toast.success("Chat message updated");
+      toast.success(t(AppLocales.Admin.Chat.Toasts.MessageUpdateSuccess));
       navigate(AppRoutes.client.protected.admin.CHAT_MESSAGES);
     } else {
-      setAlertMessage(result.error || "Failed to update chat message");
+      setAlertMessage(result.error || t(AppLocales.Admin.Chat.Errors.UpdateMessage));
     }
   };
 
@@ -89,33 +94,34 @@ export const AdminChatMessageEditPage: React.FC = () => {
         onClose={() => setAlertMessage("")}
       />
       {error && !message ? (
-        <AdminState title="Unable to load chat message" message={error} />
-      ) : message? (
+        <AdminState title={t(AppLocales.Admin.Common.State.ErrorTitle)} message={error} />
+      ) : message ? (
         <FormContainer onSubmit={handleSubmit}>
-            <div className="grid gap-4">
-              <Dropdown
-                label="Role"
-                value={role}
-                onValueChange={(val) => setRole(val as TAdminChatRole)}
-                options={messageRoleOptions}
-              />
-              <TextArea
-                label="Message"
-                value={content}
-                required
-                rows={6}
-                onChange={(event) => setContent(event.target.value)}
-              />
-            </div>
-            <FormActionRow
-              cancelLabel={ADMIN_COMMON_LABELS.CANCEL}
-              submitLabel="Save changes"
-              onCancel={() =>
-                navigate(AppRoutes.client.protected.admin.CHAT_MESSAGES)
-              }
+          <div className="grid gap-4">
+            <Dropdown
+              label={t(AppLocales.Admin.Chat.MessageForm.RoleLabel)}
+              value={role}
+              onValueChange={(val) => setRole(val as TAdminChatRole)}
+              options={messageRoleOptions}
             />
-          </FormContainer>
-      ):null}
+            <TextArea
+              label={t(AppLocales.Admin.Chat.MessageForm.ContentLabel)}
+              value={content}
+              required
+              rows={6}
+              onChange={(event) => setContent(event.target.value)}
+            />
+          </div>
+          <FormActionRow
+            cancelLabel={t(AppLocales.Admin.Common.Actions.Cancel)}
+            submitLabel={t(AppLocales.Admin.Chat.MessageForm.SaveMessage)}
+            onCancel={() =>
+              navigate(AppRoutes.client.protected.admin.CHAT_MESSAGES)
+            }
+          />
+        </FormContainer>
+      ) : null}
     </>
   );
 };
+
