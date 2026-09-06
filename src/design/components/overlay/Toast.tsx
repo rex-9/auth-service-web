@@ -9,7 +9,7 @@ import { cn } from "../../helpers";
 import { ToastTypes, type TToastTypes } from "../../constants";
 
 export { ToastTypes };
-export type { TToastTypes as TToastType };
+export type { TToastTypes };
 
 export interface IToastProps {
   message: string;
