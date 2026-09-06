@@ -6,14 +6,14 @@
 import React, { useEffect } from "react";
 import { iconsLib } from "../../../assets";
 import { cn } from "../../helpers";
-import { ToastTypes, type ToastType } from "../../constants";
+import { ToastTypes, type TToastTypes } from "../../constants";
 
 export { ToastTypes };
-export type { ToastType };
+export type { TToastTypes };
 
 export interface IToastProps {
   message: string;
-  type?: ToastType;
+  type?: TToastTypes;
   duration?: number;
   onClose: () => void;
   icon?: React.ReactNode;
@@ -35,14 +35,14 @@ export const Toast: React.FC<IToastProps> = ({
     }
   }, [duration, onClose]);
 
-  const typeClasses = {
+  const typeClasses: Record<TToastTypes, string> = {
     success: "alert-success",
     info: "alert-info",
     warning: "alert-warning",
     error: "alert-error",
   };
 
-  const defaultIcons = {
+  const defaultIcons: Record<TToastTypes, React.ReactNode> = {
     success: (
       <iconsLib.check className="h-6 w-6 text-emerald-600 dark:text-emerald-400 shrink-0" />
     ),
@@ -57,7 +57,7 @@ export const Toast: React.FC<IToastProps> = ({
     ),
   };
 
-  const typeColors = {
+  const typeColors: Record<TToastTypes, string> = {
     success: "text-emerald-800 dark:text-emerald-200",
     info: "text-sky-800 dark:text-sky-200",
     warning: "text-amber-800 dark:text-amber-200",

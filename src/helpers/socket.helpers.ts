@@ -1,3 +1,6 @@
+import { ToastTypes, type TToastTypes } from "../design";
+import { NOTIFICATION_SOCKET_TYPES } from "../modules/notification";
+
 export type ISocketMessage = {
   type: string;
   message?: string;
@@ -21,24 +24,22 @@ export const SOCKET_SUBSCRIBE_TIMEOUT_MS = 10_000;
 export const SOCKET_CONNECT_WAIT_MS = 5_000;
 
 export const NOTIFICATION_TOAST_SUCCESS_TYPES = [
-  "payment_success",
-  "subscription_created",
-  "subscription_resumed",
-  "welcome",
-  "ai_response_ready",
-  "tts_ready",
-  "asset_compressed",
+  NOTIFICATION_SOCKET_TYPES.PAYMENT_SUCCESS,
+  NOTIFICATION_SOCKET_TYPES.SUBSCRIPTION_CREATED,
+  NOTIFICATION_SOCKET_TYPES.SUBSCRIPTION_RESUMED,
+  NOTIFICATION_SOCKET_TYPES.WELCOME,
+  NOTIFICATION_SOCKET_TYPES.AI_RESPONSE_READY,
+  NOTIFICATION_SOCKET_TYPES.TTS_READY,
+  NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSED,
 ] as const;
 
 export const NOTIFICATION_TOAST_ERROR_TYPES = [
-  "payment_failed",
-  "subscription_canceled",
-  "ai_response_failed",
-  "tts_failed",
-  "asset_compression_failed",
+  NOTIFICATION_SOCKET_TYPES.PAYMENT_FAILED,
+  NOTIFICATION_SOCKET_TYPES.SUBSCRIPTION_CANCELED,
+  NOTIFICATION_SOCKET_TYPES.AI_RESPONSE_FAILED,
+  NOTIFICATION_SOCKET_TYPES.TTS_FAILED,
+  NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSION_FAILED,
 ] as const;
-
-export type TSocketToastKind = "success" | "error" | "info" | "none";
 
 export function parseCableChannel(identifier: unknown): string {
   if (identifier && typeof identifier === "object") {
@@ -76,20 +77,20 @@ export function isSpeechLiveMessage(data: ISocketMessage): boolean {
 }
 
 export function getSocketToast(data: ISocketMessage): {
-  kind: TSocketToastKind;
+  kind: TToastTypes;
   message: string;
-} {
+} | null {
   const message = data.message?.trim() ?? "";
 
   if (isSpeechLiveMessage(data)) {
     if (getSpeechEventType(data) === SPEECH_EVENT_TYPES.ERROR && message) {
-      return { kind: "error", message };
+      return { kind: ToastTypes.ERROR, message };
     }
-    return { kind: "none", message: "" };
+    return null;
   }
 
   if (data.type !== "notification" || !message) {
-    return { kind: "none", message: "" };
+    return null;
   }
 
   const eventType = getSpeechEventType(data);
@@ -97,14 +98,14 @@ export function getSocketToast(data: ISocketMessage): {
   if (
     (NOTIFICATION_TOAST_SUCCESS_TYPES as readonly string[]).includes(eventType)
   ) {
-    return { kind: "success", message };
+    return { kind: ToastTypes.SUCCESS, message };
   }
 
   if (
     (NOTIFICATION_TOAST_ERROR_TYPES as readonly string[]).includes(eventType)
   ) {
-    return { kind: "error", message };
+    return { kind: ToastTypes.ERROR, message };
   }
 
-  return { kind: "info", message };
+  return { kind: ToastTypes.INFO, message };
 }

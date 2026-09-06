@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 import { getSocketToast } from "../helpers/socket.helpers";
 import SocketService, { ISocketMessage } from "../services/socket.service";
+import { ToastTypes } from "../constants";
 
 export interface INotification {
   id: string;
@@ -25,7 +26,7 @@ export const useSocket = () => {
 
     const handleNotification = (data: ISocketMessage) => {
       const toast = getSocketToast(data);
-      if (toast.kind === "none") {
+      if (!toast) {
         return;
       }
 
@@ -40,12 +41,12 @@ export const useSocket = () => {
         return [notif, ...prev];
       });
 
-      if (toast.kind === "success") {
+      if (toast.kind === ToastTypes.SUCCESS) {
         success(toast.message);
         return;
       }
 
-      if (toast.kind === "error") {
+      if (toast.kind === ToastTypes.ERROR) {
         error(toast.message);
         return;
       }
