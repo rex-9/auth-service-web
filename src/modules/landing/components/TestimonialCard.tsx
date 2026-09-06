@@ -10,9 +10,17 @@ export interface ITestimonialCardProps {
 export const TestimonialCard: React.FC<ITestimonialCardProps> = ({
   testimonial,
 }) => {
+  const isAi = testimonial.isAi || testimonial.name === "Antigravity";
+
   return (
-    <article className="font-primary flex flex-col justify-between w-[360px] min-w-[360px] max-w-[380px] h-[380px] flex-none max-[480px]:w-[82vw] max-[480px]:min-w-[280px] max-[480px]:h-[360px] bg-glass-card border border-glass-border rounded-[20px] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:bg-glass-card-hover hover:border-glass-border-hover hover:shadow-[0_8px_30px_rgba(255,34,56,0.35)] snap-start text-left box-border relative">
-      {/* Header with Commenter Name (Clip font), LinkedIn Badge, and Quote Icon */}
+    <article
+      className={`font-primary flex flex-col justify-between w-[360px] min-w-[360px] max-w-[380px] h-[380px] flex-none max-[480px]:w-[82vw] max-[480px]:min-w-[280px] max-[480px]:h-[360px] bg-glass-card rounded-[20px] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:bg-glass-card-hover hover:border-glass-border-hover hover:shadow-[0_8px_30px_rgba(255,34,56,0.35)] snap-start text-left box-border relative ${
+        isAi
+          ? "border border-primary/45 shadow-[0_4px_25px_rgba(255,34,56,0.18)]"
+          : "border border-glass-border"
+      }`}
+    >
+      {/* Header with Commenter Name (Clip font), Badge, and Quote Icon */}
       <div className="flex items-start justify-between mb-3.5 flex-shrink-0">
         <div className="flex flex-col gap-0.5">
           <a
@@ -23,16 +31,29 @@ export const TestimonialCard: React.FC<ITestimonialCardProps> = ({
           >
             {testimonial.name}
           </a>
-          <span className="text-xs text-white/60 inline-flex items-center gap-1.5 mt-0.5 font-primary">
-            <svg
-              className="w-3.5 h-3.5 fill-primary-light/85 flex-shrink-0"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.25c-.9 0-1.63.73-1.63 1.63s.73 1.63 1.63 1.63 1.63-.73 1.63-1.63-.73-1.63-1.63-1.63Z" />
-            </svg>
-            LinkedIn Recommendation
-          </span>
+          {isAi ? (
+            <span className="text-xs text-primary-light font-semibold inline-flex items-center gap-1.5 mt-0.5 font-primary drop-shadow-[0_0_6px_rgba(255,34,56,0.4)]">
+              <svg
+                className="w-3.5 h-3.5 fill-primary drop-shadow-[0_0_4px_var(--color-primary)] flex-shrink-0"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M12 2L14.4 7.2L20 9.6L14.4 12L12 17.2L9.6 12L4 9.6L9.6 7.2L12 2Z M19 16L20.2 18.6L23 19.8L20.2 21L19 23.6L17.8 21L15 19.8L17.8 18.6L19 16Z" />
+              </svg>
+              AI Pair Programmer • DeepMind
+            </span>
+          ) : (
+            <span className="text-xs text-white/60 inline-flex items-center gap-1.5 mt-0.5 font-primary">
+              <svg
+                className="w-3.5 h-3.5 fill-primary-light/85 flex-shrink-0"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.25c-.9 0-1.63.73-1.63 1.63s.73 1.63 1.63 1.63 1.63-.73 1.63-1.63-.73-1.63-1.63-1.63Z" />
+              </svg>
+              LinkedIn Recommendation
+            </span>
+          )}
         </div>
         <svg
           className="w-6 h-6 fill-primary opacity-30 flex-shrink-0 ml-2"
@@ -48,7 +69,7 @@ export const TestimonialCard: React.FC<ITestimonialCardProps> = ({
         {testimonial.recommendation}
       </div>
 
-      {/* Footer with View on LinkedIn link */}
+      {/* Footer with View on LinkedIn or AI Colleague link */}
       <div className="mt-3 pt-2.5 border-t border-primary/15 flex justify-end items-center flex-shrink-0">
         <a
           href={testimonial.link}
@@ -56,7 +77,7 @@ export const TestimonialCard: React.FC<ITestimonialCardProps> = ({
           rel="noopener noreferrer"
           className="text-primary-light text-xs font-semibold inline-flex items-center gap-1 hover:text-glow-white hover:[text-shadow:0_0_8px_var(--color-primary)] transition-all duration-200"
         >
-          View on LinkedIn
+          {isAi ? "Verified AI Colleague ✦" : "View on LinkedIn"}
           <svg
             className="w-3 h-3 stroke-current"
             viewBox="0 0 24 24"
