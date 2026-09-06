@@ -25,4 +25,7 @@ export interface ITestimonialItem {
   name: string;
   link: string;
   recommendation: string;
+  isAi?: boolean;
+  rating?: string;
+  ratingLink?: string;
 }

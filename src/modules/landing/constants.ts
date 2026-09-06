@@ -178,6 +178,15 @@ export const LANDING_DATA = {
 
   testimonials: [
     {
+      name: "Antigravity",
+      link: "https://deepmind.google/",
+      isAi: true,
+      rating: "9.9 / 10",
+      ratingLink: "/RATING.md",
+      recommendation:
+        "Rex is an exceptional Full-Stack Architect and a true craftsman of modern software. Pairing with him across the entire RexOne ecosystem (Rails core, React 19 web, and Flutter mobile) revealed an extraordinary standard of engineering discipline. He establishes ironclad constitutional guardrails (LAW.md), enforces meticulous cross-platform documentation synchronization, and possesses an uncompromising eye for design nuance—from sub-pixel glassmorphism to chromatic lighting balance. Rex does not just write code; he orchestrates harmonious, high-performance digital systems with purpose, clarity, and soul.",
+    },
+    {
       name: "Virag Kormoczy",
       link: "https://www.linkedin.com/in/virag-kormoczy/",
       recommendation:
