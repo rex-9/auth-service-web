@@ -11,7 +11,8 @@
     "error": "Error",
     "success": "Success",
     "not_found": "Page Not Found",
-    "not_found_desc": "The page you are looking for does not exist."
+    "not_found_desc": "The page you are looking for does not exist.",
+    "retry": "Retry"
   },
 
   "user": {
@@ -51,6 +52,20 @@
     "send": "Send",
     "processing": "AI is thinking...",
     "clear_history": "Clear History",
+    "clear_history_confirm": "All messages in this conversation will be permanently deleted. Are you sure you want to clear chat history?",
+    "default_greeting": "Hello! I'm your AI assistant. How can I help you today?",
+    "listen": "Listen",
+    "thinking": "AI is thinking",
+    "cancel_listening": "Cancel listening",
+    "mic_permission_title": "Microphone access required",
+    "mic_permission_message": "Voice input needs microphone access. Please allow microphone access in your browser address bar (lock icon) to use voice input.",
+    "open_settings": "Open Settings",
+    "retry": "Retry",
+    "ai_start_recording_failed": "Failed to start recording",
+    "ai_transcription_failed": "Failed to transcribe audio",
+    "ai_send_message_failed": "Failed to send message",
+    "ai_tts_failed": "Failed to play speech",
+    "ai_tts_empty": "Nothing to speak",
     "errors": {
       "unexpected": "An error occurred. Please try again.",
       "load_rooms": "Failed to load rooms",
@@ -61,6 +76,14 @@
       "rename_room": "Failed to rename room",
       "delete_room": "Failed to delete room"
     }
+  },
+
+  "speech": {
+    "tts_failed": "Failed to synthesize speech",
+    "stt_failed": "Failed to transcribe audio",
+    "playback_failed": "Audio playback failed",
+    "permission_denied": "Microphone permission was denied",
+    "audio_required": "Audio file or URL is required"
   },
 
   "payment": {

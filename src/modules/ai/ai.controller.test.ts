@@ -4,6 +4,13 @@ import AiService from "./ai.service";
 import SocketService from "../../services/socket.service";
 import { IRoom, IMessage } from "./types";
 import { AI_MESSAGE_STATUS, AI_SOCKET_EVENTS } from "./constants";
+import { SpeechController } from "../speech";
+
+vi.mock("../speech", () => ({
+  SpeechController: {
+    queueTextToSpeech: vi.fn(),
+  },
+}));
 
 vi.mock("./ai.service", () => ({
   default: {
@@ -232,6 +239,38 @@ describe("AiController", () => {
       const result = await AiController.deleteRoom("room-1");
       expect(result.success).toBe(true);
       expect(AiController.getCurrentRoomId()).toBeNull();
+    });
+  });
+
+  describe("queueTextToSpeech", () => {
+    it("delegates to SpeechController and returns success", async () => {
+      vi.mocked(SpeechController.queueTextToSpeech).mockResolvedValue({
+        success: true,
+        message: "TTS queued",
+      });
+
+      const result = await AiController.queueTextToSpeech("msg-1");
+
+      expect(SpeechController.queueTextToSpeech).toHaveBeenCalledWith("msg-1");
+      expect(result).toEqual({
+        success: true,
+        message: "TTS queued",
+      });
+    });
+
+    it("delegates to SpeechController and returns failure", async () => {
+      vi.mocked(SpeechController.queueTextToSpeech).mockResolvedValue({
+        success: false,
+        error: "Failed to queue TTS",
+      });
+
+      const result = await AiController.queueTextToSpeech("msg-1");
+
+      expect(SpeechController.queueTextToSpeech).toHaveBeenCalledWith("msg-1");
+      expect(result).toEqual({
+        success: false,
+        error: "Failed to queue TTS",
+      });
     });
   });
 });

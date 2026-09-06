@@ -193,10 +193,7 @@ export const AdminSidebarNav: React.FC<IAdminSidebarNavProps> = ({
       )}
     >
       <div
-        className={cn(
-          "space-y-4",
-          !isSidebarOpen && "space-y-2 lg:space-y-4",
-        )}
+        className={cn("space-y-4", !isSidebarOpen && "space-y-2 lg:space-y-4")}
       >
         {enabledItems.map((section, idx) => {
           const isCollapsed = collapsedSections[section.id] ?? false;

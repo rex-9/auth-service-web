@@ -60,15 +60,37 @@ test.describe("Authentication > Sign in", () => {
     await authPage.submit();
 
     await signInPage.waitForVisible();
-    
+
     // Enter wrong password up to 4 times to trigger lockout
     for (let i = 0; i < 4; i++) {
-      if (await page.getByText(/Too many attempts|Try again in/i).first().isVisible()) break;
+      const isLocked = await page
+        .getByText(/Too many attempts|Try again in/i)
+        .first()
+        .isVisible();
+      if (isLocked) break;
+
       await signInPage.enterPassword("000000");
-      await page.waitForTimeout(1000);
+
+      await Promise.race([
+        page
+          .getByText(/Too many attempts|Try again in/i)
+          .first()
+          .waitFor({ state: "visible", timeout: 6000 })
+          .catch(() => null),
+        page
+          .getByText(
+            /Incorrect password|Incorrect passcode|attempts remaining/i,
+          )
+          .first()
+          .waitFor({ state: "visible", timeout: 6000 })
+          .catch(() => null),
+      ]);
+      await page.waitForTimeout(300);
     }
 
-    await expect(page.getByText(/Too many attempts|Try again in/i).first()).toBeVisible();
+    await expect(
+      page.getByText(/Too many attempts|Try again in/i).first(),
+    ).toBeVisible({ timeout: 10000 });
     await expect(signInPage.submitButton).toBeDisabled();
   });
 

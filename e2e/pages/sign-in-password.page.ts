@@ -1,4 +1,4 @@
-import { type Locator, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 export class SignInPasswordPage {
   readonly page: Page;
@@ -26,6 +26,18 @@ export class SignInPasswordPage {
     await this.waitForVisible();
     const firstInput = this.inputs.first();
     await firstInput.waitFor({ state: "visible", timeout: 10000 });
+
+    const isLocked = await this.page
+      .getByText(/Too many attempts|Try again in/i)
+      .first()
+      .isVisible()
+      .catch(() => false);
+    if (isLocked) {
+      return;
+    }
+
+    await expect(firstInput).toBeEnabled({ timeout: 10000 });
+
     for (let i = 0; i < 6; i++) {
       const input = this.inputs.nth(i);
       if (await input.isVisible()) {

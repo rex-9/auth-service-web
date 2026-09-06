@@ -22,7 +22,10 @@ export type TAiMessageStatus =
 export const AI_SOCKET_EVENTS = {
   RESPONSE_READY: "ai_response_ready",
   RESPONSE_FAILED: "ai_response_failed",
+  TTS_READY: "tts_ready",
+  TTS_FAILED: "tts_failed",
 } as const;
+
 
 export const AI_DEFAULTS = {
   TEMPERATURE: 0.7,

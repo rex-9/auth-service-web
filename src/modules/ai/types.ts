@@ -1,3 +1,4 @@
+import type { IAsset } from "../../models/asset.model";
 import type { TAiChatRole, TAiMessageStatus } from "./constants";
 
 export interface IChatRequest {
@@ -20,8 +21,10 @@ export interface IMessage {
   role: TAiChatRole;
   content: string;
   room_id?: string;
+  assets?: IAsset[];
   metadata?: {
     status?: TAiMessageStatus;
+    tts_status?: string;
     system_prompt?: string;
     temperature?: number;
     max_tokens?: number;
@@ -45,4 +48,20 @@ export interface IRoom {
 
 export interface IRoomsResponse {
   rooms: IRoom[];
+}
+
+const AUDIO_ASSET_TYPE = "audio";
+
+function findMessageAudioAsset(message: IMessage): IAsset | undefined {
+  return message.assets?.find(
+    (item) => item.type === AUDIO_ASSET_TYPE && item.url.trim() !== "",
+  );
+}
+
+export function getMessageAudioUrl(message: IMessage): string | null {
+  return findMessageAudioAsset(message)?.url ?? null;
+}
+
+export function messageHasAudio(message: IMessage): boolean {
+  return Boolean(findMessageAudioAsset(message));
 }

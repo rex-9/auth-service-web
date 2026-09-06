@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
+import { getSocketToast, SOCKET_MESSAGE_TYPES } from "../helpers/socket.helpers";
 import SocketService, { ISocketMessage } from "../services/socket.service";
-import { NOTIFICATION_SOCKET_TYPES } from "../modules/notification/constants";
+import { ToastTypes } from "../constants";
 
 export interface INotification {
   id: string;
@@ -24,11 +25,13 @@ export const useSocket = () => {
     }
 
     const handleNotification = (data: ISocketMessage) => {
-      if (data.type === "notification") {
-        if (!data.message) {
-          return;
-        }
+      const toast = getSocketToast(data);
+      if (!toast) {
+        return;
+      }
 
+      // Only accumulate in persistent notification state if payload is a domain notification
+      if (data.type === SOCKET_MESSAGE_TYPES.NOTIFICATION && data.message) {
         const notif: INotification = {
           id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
           message: data.message,
@@ -36,37 +39,22 @@ export const useSocket = () => {
           created_at: data.created_at || new Date().toISOString(),
         };
         setNotifications((prev) => {
-          // Prevent duplicates
           if (prev.some((n) => n.id === notif.id)) return prev;
           return [notif, ...prev];
         });
-
-        const type = typeof notif.data.type === "string" ? notif.data.type : "general";
-
-        switch (type) {
-          case NOTIFICATION_SOCKET_TYPES.PAYMENT_SUCCESS:
-          case NOTIFICATION_SOCKET_TYPES.SUBSCRIPTION_CREATED:
-          case NOTIFICATION_SOCKET_TYPES.SUBSCRIPTION_RESUMED:
-          case NOTIFICATION_SOCKET_TYPES.WELCOME:
-          case NOTIFICATION_SOCKET_TYPES.AI_RESPONSE_READY:
-          case NOTIFICATION_SOCKET_TYPES.TTS_READY:
-          case NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSED:
-            success(notif.message);
-            break;
-          case NOTIFICATION_SOCKET_TYPES.PAYMENT_FAILED:
-          case NOTIFICATION_SOCKET_TYPES.SUBSCRIPTION_CANCELED:
-          case NOTIFICATION_SOCKET_TYPES.AI_RESPONSE_FAILED:
-          case NOTIFICATION_SOCKET_TYPES.TTS_FAILED:
-          case NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSION_FAILED:
-            error(notif.message);
-            break;
-          case NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSING:
-          case NOTIFICATION_SOCKET_TYPES.SIGN_IN_ALERT:
-          default:
-            info(notif.message);
-            break;
-        }
       }
+
+      if (toast.kind === ToastTypes.SUCCESS) {
+        success(toast.message);
+        return;
+      }
+
+      if (toast.kind === ToastTypes.ERROR) {
+        error(toast.message);
+        return;
+      }
+
+      info(toast.message);
     };
 
     SocketService.addListener(handleNotification);

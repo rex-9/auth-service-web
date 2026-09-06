@@ -5,11 +5,18 @@ import { IMessage, IRoom } from "./types";
 import SocketService, { ISocketMessage } from "../../services/socket.service";
 import { IApiPagination } from "../../models";
 import { AppLocales, translate } from "../../locales";
-import { AI_DEFAULTS, AI_MESSAGE_STATUS, AI_SOCKET_EVENTS } from "./constants";
+import {
+  AI_DEFAULTS,
+  AI_MESSAGE_STATUS,
+  AI_SOCKET_EVENTS,
+} from "./constants";
+import { SpeechController } from "../speech";
 
-const AI_RESPONSE_EVENT_TYPES: readonly string[] = [
+const AI_SOCKET_EVENT_TYPES: readonly string[] = [
   AI_SOCKET_EVENTS.RESPONSE_READY,
   AI_SOCKET_EVENTS.RESPONSE_FAILED,
+  AI_SOCKET_EVENTS.TTS_READY,
+  AI_SOCKET_EVENTS.TTS_FAILED,
 ];
 
 const AI_PROCESSING_MESSAGE_STATUSES: readonly string[] = [
@@ -29,24 +36,39 @@ class AiController {
     return this.currentRoomId;
   }
 
-  subscribeToAiMessages(callback: () => void): () => void {
+  subscribeToAiMessages(
+    callback: (eventType: string) => void,
+  ): () => void {
     const handleAiMessage = (event: ISocketMessage) => {
-      const eventType = typeof event.data?.type === "string" ? event.data.type : "";
-      const roomId = typeof event.data?.room_id === "string" ? event.data.room_id : "";
+      const eventType =
+        typeof event.data?.type === "string" ? event.data.type : "";
+      const roomId =
+        typeof event.data?.room_id === "string" ? event.data.room_id : "";
 
       if (
         event.type !== "notification" ||
-        !AI_RESPONSE_EVENT_TYPES.includes(eventType) ||
-        roomId !== this.currentRoomId
+        !AI_SOCKET_EVENT_TYPES.includes(eventType)
       ) {
         return;
       }
 
-      callback();
+      if (roomId && this.currentRoomId && roomId !== this.currentRoomId) {
+        return;
+      }
+
+      callback(eventType);
     };
 
     SocketService.addListener(handleAiMessage);
     return () => SocketService.removeListener(handleAiMessage);
+  }
+
+  async queueTextToSpeech(messageId: string): Promise<{
+    success: boolean;
+    message?: string;
+    error?: string;
+  }> {
+    return SpeechController.queueTextToSpeech(messageId);
   }
 
   async getRooms(params?: { page?: number; limit?: number }): Promise<{
