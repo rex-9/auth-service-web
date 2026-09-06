@@ -8,10 +8,10 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import { translate } from "../locales";
-import { Toast, ToastType } from "../design/components/overlay/Toast";
+import { Toast, TToastType } from "../design/components/overlay/Toast";
 
 interface IToastContextType {
-  showToast: (type: ToastType, message: string, title?: string) => void;
+  showToast: (type: TToastType, message: string, title?: string) => void;
   success: (message: string, title?: string) => void;
   error: (message: string, title?: string) => void;
   info: (message: string, title?: string) => void;
@@ -24,13 +24,13 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [toast, setToast] = useState<{
-    type: ToastType;
+    type: TToastType;
     message: string;
     title?: string;
   } | null>(null);
 
   const showToast = useCallback(
-    (type: ToastType, message: string, title?: string) => {
+    (type: TToastType, message: string, title?: string) => {
       setToast({ type, message: translate(message), title });
     },
     [],
