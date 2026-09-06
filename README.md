@@ -15,6 +15,7 @@ Built under the same creed as Rexone Core: **clear in thought, exact in structur
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Playwright](https://img.shields.io/badge/Playwright-E2E-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev/)
+[![CI](https://github.com/rex-9/rexone-web/actions/workflows/test.yml/badge.svg)](https://github.com/rex-9/rexone-web/actions/workflows/test.yml)
 
 **Typed · Modular · Localized · Observable · API-driven · Fully Tested**
 
@@ -290,6 +291,7 @@ The web client includes a dedicated Client Admin Portal (`/admin/*`) providing o
 - **ESLint** with React Hooks and React Refresh rules.
 - **Vitest** for automated unit and component tests.
 - **Playwright** for end-to-end user journey verification.
+- **Continuous Integration (GitHub Actions)** for automated build validation (`npm run build`) and Vitest test execution on PR branch pushes.
 - **Vite** production builds and local production preview.
 - Dependency and browser-baseline checks through the npm toolchain.
 
