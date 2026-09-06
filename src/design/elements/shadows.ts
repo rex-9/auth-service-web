@@ -17,5 +17,21 @@ export const shadows = {
   "glass-hover": `0 8px 32px ${colors.shadows.glassHover}`,
 } as const;
 
+export const dropShadows = {
+  neon: [
+    "0 0 2px var(--color-glow-white)",
+    "0 0 6px var(--color-primary)",
+    "0 0 14px var(--color-primary-dark)",
+  ],
+  "neon-hover": [
+    "0 0 4px #ffffff",
+    "0 0 10px var(--color-primary-light)",
+    "0 0 22px var(--color-primary)",
+    "0 0 34px var(--color-primary-dark)",
+  ],
+} as const;
+
 export type Shadows = typeof shadows;
 export type ShadowKey = keyof typeof shadows;
+export type DropShadows = typeof dropShadows;
+export type DropShadowKey = keyof typeof dropShadows;

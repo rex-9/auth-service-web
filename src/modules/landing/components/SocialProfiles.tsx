@@ -34,8 +34,10 @@ export const SocialProfiles: React.FC<ISocialProfilesProps> = ({
             <Asset
               src={profile.iconSrc}
               alt={profile.platform}
-              className={`w-7 h-7 object-contain transition-all duration-300 drop-shadow-[0_0_3px_var(--color-primary)] group-hover:drop-shadow-[0_0_8px_var(--color-primary)] ${
-                isRaster ? "rounded-md" : "filter brightness-0 invert"
+              className={`w-7 h-7 object-contain transition-all duration-300 ${
+                isRaster
+                  ? "rounded-md drop-shadow-[0_0_3px_rgba(255,34,56,0.45)] group-hover:drop-shadow-[0_0_6px_var(--color-glow-white)]"
+                  : "drop-shadow-neon group-hover:drop-shadow-neon-hover group-hover:scale-110"
               }`}
             />
           </TextLink>

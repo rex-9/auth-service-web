@@ -1,5 +1,5 @@
 // tailwind.config.js
-import { colors, font, radius, shadows, keyframes, animations } from './src/design/elements';
+import { colors, font, radius, shadows, dropShadows, keyframes, animations } from './src/design/elements';
 import daisyui from 'daisyui';
 import plugin from 'tailwindcss/plugin';
 
@@ -97,6 +97,7 @@ export default {
       fontSize: font.fontSize,
       borderRadius: radius,
       boxShadow: shadows,
+      dropShadow: dropShadows,
       keyframes: keyframes,
       animation: animations,
     },
