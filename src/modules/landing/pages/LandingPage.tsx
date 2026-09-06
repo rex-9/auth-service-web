@@ -63,7 +63,7 @@ export const LandingPage: React.FC = () => {
     const step = getTestimonialsScrollStep();
     const idx = Math.min(
       Math.round(scrollLeft / step),
-      LANDING_DATA.testimonials.length - 1
+      LANDING_DATA.testimonials.length - 1,
     );
     setActiveTestimonialIdx(Math.max(0, idx));
   };
@@ -157,22 +157,15 @@ export const LandingPage: React.FC = () => {
 
         {/* 3. Catchphrase & Social Profiles */}
         <section className="text-center max-w-4xl mx-auto my-8 space-y-3 text-base sm:text-lg text-white leading-relaxed font-display font-normal tracking-wide [text-shadow:0_0_8px_var(--color-glow-white),0_0_20px_var(--color-primary),0_0_40px_var(--color-primary-dark)]">
-          <p>Champion, welcome! 🌟</p>
+          <p>Champion, Welcome! 🌟</p>
+          <p>Rex is an Architect tempered by stillness since age 14. 🧘‍♂️</p>
           <p>
-            I am a battle-hardened Full-Stack Architect with a mind sharpened by
-            meditation. 🧘‍♂️💻
+            Forging sovereign realms where clarity meets code, and simplicity
+            meets soul. 🛡️✨
           </p>
           <p>
-            Forging digital realms where clarity meets code, and simplicity
-            meets soul. ✨
-          </p>
-          <p>
-            Carving seamless paths where beauty and strength walk side by side.
-            ⚔️🌿
-          </p>
-          <p>
-            Let's shape thy vision into reality with purpose, and a touch of
-            magic! 🚀
+            No journey is walked alone. Let's conquer the greatness & stillness
+            together. 🏹
           </p>
         </section>
 
@@ -214,7 +207,7 @@ export const LandingPage: React.FC = () => {
         <section id="Projects" className="py-12 scroll-mt-20">
           <div className="text-center mb-9">
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-normal tracking-wide text-glow-white [text-shadow:0_0_8px_var(--color-glow-white),0_0_20px_var(--color-primary),0_0_40px_var(--color-primary-dark)]">
-              My Recent Works
+              Forged Realms & Masterworks
             </h2>
           </div>
 
@@ -290,9 +283,11 @@ export const LandingPage: React.FC = () => {
             {/* Left Contact Text & Resume Button */}
             <div className="w-full lg:w-1/2 text-center lg:text-left space-y-6">
               <div className="font-display text-xl sm:text-2xl md:text-3xl leading-relaxed font-normal text-glow-white [text-shadow:0_0_8px_var(--color-glow-white),0_0_20px_var(--color-primary),0_0_40px_var(--color-primary-dark)]">
-                I'm always interested in hearing about new projects,
-                <br className="hidden sm:inline" /> so if you'd like to chat,
-                please kindly get in touch with me.
+                Every greatness begins with a single covenant.
+                <br className="hidden sm:inline" /> Whether forging a new
+                digital realm or conquering complex systems,
+                <br className="hidden sm:inline" /> send thy raven and let us
+                build with purpose, soul, and zero technical debt. ⚔️
               </div>
 
               <div className="resumeBox text-center lg:text-left pt-6">
