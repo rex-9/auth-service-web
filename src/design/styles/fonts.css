@@ -2,14 +2,14 @@
 
 @font-face {
   font-family: 'Clip';
-  src: url('./src/assets/fonts/Clip.ttf') format('truetype');
+  src: url('../../assets/fonts/Clip.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Storytime";
-  src: url('./src/assets/fonts/Storytime.ttf') format('truetype');
+  src: url('../../assets/fonts/Storytime.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
