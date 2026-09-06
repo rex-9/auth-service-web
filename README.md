@@ -224,9 +224,15 @@ The client provides comprehensive media upload, presentation, and compression ma
 
 The speech integration provides audio playback and streaming communication with Rexone Core's speech engine:
 
+- **Live Audio Streaming & Recognition (`SpeechLiveChannel`)**:
+  - Direct microphone streaming to Rexone Core using Action Cable over WebSockets (`SpeechLiveChannel`).
+  - High-performance audio ingestion via `AudioWorklet` (`pcm-processor.js`) with automatic fallback to `ScriptProcessorNode`.
+  - Client-side downsampling from native sample rates (e.g. 44.1kHz / 48kHz) down to 16kHz mono linear PCM 16-bit, buffered into 3,200-byte chunks and base64-framed for low-latency transmission.
+  - Real-time RMS voice energy tracking calculating normalized voice amplitude levels (`voiceLevel: 0..1`) for visual waveform frequency bars.
+  - Stream lifecycle management with visibility pause/teardown handling (`document.visibilityState === "hidden"`), network disconnect recovery, and graceful session abort.
 - **Binary MP3 Audio Streaming**: Direct playback of synthesized audio from `POST /v1/speech/tts` returning raw binary MP3 streams without base64 wrapper overhead.
-- **Chat TTS Synthesis**: Asynchronous text-to-speech generation for conversational messages, receiving `tts_ready` notifications via ActionCable and playing attached audio assets.
-- **Live Audio Streaming**: Infrastructure ready for WebSocket-based live audio capture and streaming transcription (`SpeechLiveChannel`).
+- **Chat TTS Synthesis**: Asynchronous text-to-speech generation for conversational messages via `SpeechController.queueTextToSpeech()`, receiving `tts_ready` notifications via Action Cable and playing attached audio assets.
+- **Microphone Permissions & Web Recovery**: Browser permission guidance with lock-icon address bar instructions and instant retry flow.
 
 ### AI capabilities
 

@@ -1,43 +1,43 @@
 import { useCallback, useEffect, useState } from "react";
-import SpeechService from "../speech.service";
+import SpeechController from "../speech.controller";
 import type { ISpeechSnapshot, IStartListeningOptions } from "../types";
 import type { TSpeechListenResult } from "../constants";
 
 export const useLiveSpeech = () => {
   const [snapshot, setSnapshot] = useState<ISpeechSnapshot>(() =>
-    SpeechService.getSnapshot(),
+    SpeechController.getSnapshot(),
   );
 
   useEffect(() => {
-    return SpeechService.subscribe(() => {
-      setSnapshot(SpeechService.getSnapshot());
+    return SpeechController.subscribe(() => {
+      setSnapshot(SpeechController.getSnapshot());
     });
   }, []);
 
   useEffect(() => {
     return () => {
-      SpeechService.stopPlayback();
-      void SpeechService.stopListening();
+      SpeechController.stopPlayback();
+      void SpeechController.stopListening();
     };
   }, []);
 
   const startListening = useCallback(
     (options?: IStartListeningOptions): Promise<TSpeechListenResult> => {
-      return SpeechService.startListening(options);
+      return SpeechController.startListening(options);
     },
     [],
   );
 
   const stopListening = useCallback((): Promise<void> => {
-    return SpeechService.stopListening();
+    return SpeechController.stopListening();
   }, []);
 
   const playUrl = useCallback((url: string): Promise<void> => {
-    return SpeechService.playUrl(url);
+    return SpeechController.playUrl(url);
   }, []);
 
   const stopPlayback = useCallback((): void => {
-    SpeechService.stopPlayback();
+    SpeechController.stopPlayback();
   }, []);
 
   return {

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
-import { getSocketToast } from "../helpers/socket.helpers";
+import { getSocketToast, SOCKET_MESSAGE_TYPES } from "../helpers/socket.helpers";
 import SocketService, { ISocketMessage } from "../services/socket.service";
 import { ToastTypes } from "../constants";
 
@@ -30,16 +30,19 @@ export const useSocket = () => {
         return;
       }
 
-      const notif: INotification = {
-        id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
-        message: toast.message,
-        data: data.data || {},
-        created_at: data.created_at || new Date().toISOString(),
-      };
-      setNotifications((prev) => {
-        if (prev.some((n) => n.id === notif.id)) return prev;
-        return [notif, ...prev];
-      });
+      // Only accumulate in persistent notification state if payload is a domain notification
+      if (data.type === SOCKET_MESSAGE_TYPES.NOTIFICATION && data.message) {
+        const notif: INotification = {
+          id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+          message: data.message,
+          data: data.data || {},
+          created_at: data.created_at || new Date().toISOString(),
+        };
+        setNotifications((prev) => {
+          if (prev.some((n) => n.id === notif.id)) return prev;
+          return [notif, ...prev];
+        });
+      }
 
       if (toast.kind === ToastTypes.SUCCESS) {
         success(toast.message);

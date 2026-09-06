@@ -998,6 +998,7 @@ export const AppLocales = {
     Success: "common.success",
     NotFound: "common.not_found",
     NotFoundDesc: "common.not_found_desc",
+    Retry: "common.retry",
   },
   User: {
     Profile: "user.profile",
@@ -1035,6 +1036,7 @@ export const AppLocales = {
     MicPermissionTitle: "ai.mic_permission_title",
     MicPermissionMessage: "ai.mic_permission_message",
     OpenSettings: "ai.open_settings",
+    Retry: "ai.retry",
     StartRecordingFailed: "ai.ai_start_recording_failed",
     TranscriptionFailed: "ai.ai_transcription_failed",
     SendMessageFailed: "ai.ai_send_message_failed",
@@ -1050,6 +1052,13 @@ export const AppLocales = {
       RenameRoom: "ai.errors.rename_room",
       DeleteRoom: "ai.errors.delete_room",
     },
+  },
+  Speech: {
+    TtsFailed: "speech.tts_failed",
+    SttFailed: "speech.stt_failed",
+    PlaybackFailed: "speech.playback_failed",
+    PermissionDenied: "speech.permission_denied",
+    AudioRequired: "speech.audio_required",
   },
   Payment: {
     Title: "payment.title",

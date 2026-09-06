@@ -10,7 +10,7 @@ import {
   AI_MESSAGE_STATUS,
   AI_SOCKET_EVENTS,
 } from "./constants";
-import SpeechService from "../speech/speech.service";
+import { SpeechController } from "../speech";
 
 const AI_SOCKET_EVENT_TYPES: readonly string[] = [
   AI_SOCKET_EVENTS.RESPONSE_READY,
@@ -68,20 +68,7 @@ class AiController {
     message?: string;
     error?: string;
   }> {
-    const result = await SpeechService.textToSpeech(messageId);
-
-    if (result.success) {
-      return {
-        success: true,
-        message: result.message,
-      };
-    }
-
-    return {
-      success: false,
-      error:
-        result.error || translate(AppLocales.Ai.TtsFailed),
-    };
+    return SpeechController.queueTextToSpeech(messageId);
   }
 
   async getRooms(params?: { page?: number; limit?: number }): Promise<{

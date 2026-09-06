@@ -307,18 +307,28 @@ All three pillars of the Rexone platform are fully aligned at **100% feature par
 ### 2. Real-Time WebSockets (Action Cable / Solid Cable)
 
 - **Endpoint**: `/cable`
-- **Authentication**: JWT token sent during connection initialization or channel subscription params.
-- **Channel**: `NotificationChannel` (`notification_user_{user_id}`).
-- **Standard Broadcast Events**:
-  - `ai_response_ready`: `{ "type": "ai_response_ready", "room_id": "UUID", "message_id": "UUID" }`
-  - `ai_response_failed`: `{ "type": "ai_response_failed", "room_id": "UUID", "error": "Message" }`
-  - `tts_ready`: `{ "type": "tts_ready", "message_id": "UUID", "asset_id": "UUID" }`
-  - `tts_failed`: `{ "type": "tts_failed", "message_id": "UUID", "error": "Message" }`
-  - `asset_updated`: `{ "type": "asset_updated", "id": "UUID", "status": "optimal" | "ready" | "processing", "size_bytes": 12345, "compressed_size_bytes": 12000, "compression_ratio": "2.8%", "compression_passes": 1 }`
-  - `payment_success`: `{ "type": "payment_success", "product_name": "Pro Plan", "amount": "$10.00" }`
-  - `subscription_created` / `subscription_canceled` / `subscription_resumed`: `{ "type": "subscription_canceled", "product_name": "...", "active_until": "ISO8601" }`
-  - `in_app_notification`: `{ "id": "UUID", "title": "...", "message": "...", "link": "/dashboard", "read_at": null, "created_at": "ISO8601", "data": { ... } }`
-  - `welcome`: Sent upon first successful Action Cable subscription.
+- **Authentication**: JWT token sent during connection initialization (`?token=<JWT>`) or channel subscription params.
+- **Channels**:
+  - **`NotificationChannel`** (`notification_user_{user_id}`):
+    - **Standard Broadcast Events**:
+      - `ai_response_ready`: `{ "type": "ai_response_ready", "room_id": "UUID", "message_id": "UUID" }`
+      - `ai_response_failed`: `{ "type": "ai_response_failed", "room_id": "UUID", "error": "Message" }`
+      - `tts_ready`: `{ "type": "tts_ready", "message_id": "UUID", "asset_id": "UUID" }`
+      - `tts_failed`: `{ "type": "tts_failed", "message_id": "UUID", "error": "Message" }`
+      - `asset_updated`: `{ "type": "asset_updated", "id": "UUID", "status": "optimal" | "ready" | "processing", "size_bytes": 12345, "compressed_size_bytes": 12000, "compression_ratio": "2.8%", "compression_passes": 1 }`
+      - `payment_success`: `{ "type": "payment_success", "product_name": "Pro Plan", "amount": "$10.00" }`
+      - `subscription_created` / `subscription_canceled` / `subscription_resumed`: `{ "type": "subscription_canceled", "product_name": "...", "active_until": "ISO8601" }`
+      - `in_app_notification`: `{ "id": "UUID", "title": "...", "message": "...", "link": "/dashboard", "read_at": null, "created_at": "ISO8601", "data": { ... } }`
+      - `welcome`: Sent upon first successful Action Cable subscription.
+  - **`SpeechLiveChannel`** (`speech_live_{user_id}`):
+    - **Subscription Parameters**: `{ "channel": "SpeechLiveChannel", "language": "en-US" }`
+    - **Client Actions (RPC)**:
+      - `audio`: Stream base64-encoded PCM 16-bit 16kHz mono audio chunk: `{ "action": "audio", "chunk": "<base64_pcm>" }`
+      - `stop`: Conclude speech recognition stream and request final transcript: `{ "action": "stop" }`
+    - **Server Broadcast Events**:
+      - `partial`: Interim transcription hypothesis `{ "type": "partial", "text": "interim text", "is_final": false }`
+      - `final`: Final transcription chunk `{ "type": "final", "text": "finalized sentence", "is_final": true }`
+      - `error`: Streaming speech recognition failure `{ "type": "error", "error": "Reason" }`
 
 ### 3. Client Telemetry Contract (`POST /v1/log/clients`)
 

@@ -28,4 +28,17 @@ export interface ITtsQueueResult {
   data?: ITtsQueueResponse;
 }
 
+export interface ISpeechSynthesizeResult {
+  success: boolean;
+  audioUrl?: string;
+  blob?: Blob;
+  error?: string;
+}
+
+export interface ISpeechTranscribeResult {
+  success: boolean;
+  text?: string;
+  error?: string;
+}
+
 export type { TSpeechListenResult };

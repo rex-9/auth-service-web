@@ -480,7 +480,7 @@ export const AiPage: React.FC = () => {
         onConfirm={() => void handleMicPermissionConfirm()}
         title={t(AppLocales.Ai.MicPermissionTitle)}
         message={t(AppLocales.Ai.MicPermissionMessage)}
-        confirmLabel={t(AppLocales.Ai.OpenSettings)}
+        confirmLabel={t(AppLocales.Ai.Retry)}
         cancelLabel={t(AppLocales.Common.Cancel)}
         isDestructive={false}
       />

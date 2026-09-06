@@ -1,6 +1,28 @@
+// src/modules/speech/pcm-processor.ts
+
+declare class AudioWorkletProcessor {
+  readonly port: MessagePort;
+  process(
+    inputs: Float32Array[][],
+    outputs: Float32Array[][],
+    parameters: Record<string, Float32Array>,
+  ): boolean;
+}
+
+declare function registerProcessor(
+  name: string,
+  processorCtor: typeof AudioWorkletProcessor | (new () => AudioWorkletProcessor),
+): void;
+
+declare const sampleRate: number;
+
 const TARGET_SAMPLE_RATE = 16000;
 
-function downsample(input, fromRate, toRate) {
+function downsample(
+  input: Float32Array,
+  fromRate: number,
+  toRate: number,
+): Float32Array {
   if (fromRate === toRate) {
     return input;
   }
@@ -14,17 +36,19 @@ function downsample(input, fromRate, toRate) {
     const index = Math.floor(position);
     const next = Math.min(index + 1, input.length - 1);
     const fraction = position - index;
-    output[i] = input[index] * (1 - fraction) + input[next] * fraction;
+    const start = input[index] ?? 0;
+    const end = input[next] ?? start;
+    output[i] = start * (1 - fraction) + end * fraction;
   }
 
   return output;
 }
 
-function floatToInt16(input) {
+function floatToInt16(input: Float32Array): Int16Array {
   const output = new Int16Array(input.length);
 
   for (let i = 0; i < input.length; i += 1) {
-    const sample = Math.max(-1, Math.min(1, input[i]));
+    const sample = Math.max(-1, Math.min(1, input[i] ?? 0));
     output[i] = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
   }
 
@@ -32,8 +56,8 @@ function floatToInt16(input) {
 }
 
 class PcmProcessor extends AudioWorkletProcessor {
-  process(inputs) {
-    const channel = inputs[0] && inputs[0][0];
+  override process(inputs: Float32Array[][]): boolean {
+    const channel = inputs[0]?.[0];
     if (!channel || channel.length === 0) {
       return true;
     }

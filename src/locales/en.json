@@ -11,7 +11,8 @@
     "error": "Error",
     "success": "Success",
     "not_found": "Page Not Found",
-    "not_found_desc": "The page you are looking for does not exist."
+    "not_found_desc": "The page you are looking for does not exist.",
+    "retry": "Retry"
   },
 
   "user": {
@@ -57,8 +58,9 @@
     "thinking": "AI is thinking",
     "cancel_listening": "Cancel listening",
     "mic_permission_title": "Microphone access required",
-    "mic_permission_message": "Voice input needs microphone access. Open Settings to enable it for this app.",
+    "mic_permission_message": "Voice input needs microphone access. Please allow microphone access in your browser address bar (lock icon) to use voice input.",
     "open_settings": "Open Settings",
+    "retry": "Retry",
     "ai_start_recording_failed": "Failed to start recording",
     "ai_transcription_failed": "Failed to transcribe audio",
     "ai_send_message_failed": "Failed to send message",
@@ -74,6 +76,14 @@
       "rename_room": "Failed to rename room",
       "delete_room": "Failed to delete room"
     }
+  },
+
+  "speech": {
+    "tts_failed": "Failed to synthesize speech",
+    "stt_failed": "Failed to transcribe audio",
+    "playback_failed": "Audio playback failed",
+    "permission_denied": "Microphone permission was denied",
+    "audio_required": "Audio file or URL is required"
   },
 
   "payment": {

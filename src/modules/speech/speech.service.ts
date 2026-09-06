@@ -17,11 +17,13 @@ import {
   SPEECH_WORKLET,
   type TSpeechListenResult,
 } from "./constants";
-import pcmProcessorSource from "./pcm-processor.js?raw";
+import pcmWorkletUrl from "./pcm-processor.ts?worker&url";
 import { bytesToBase64, floatChannelToPcm16, floatToVoiceLevel, pcmBytesToVoiceLevel } from "./pcm";
 import { joinTranscript, mergePartial } from "./transcript";
 import type {
   ISpeechSnapshot,
+  ISpeechSynthesizeResult,
+  ISpeechTranscribeResult,
   IStartListeningOptions,
   ITtsQueueResponse,
   ITtsQueueResult,
@@ -239,6 +241,110 @@ class SpeechService {
     };
   }
 
+  async synthesizeText(
+    text: string,
+    voiceName?: string,
+  ): Promise<ISpeechSynthesizeResult> {
+    if (!text.trim()) {
+      return {
+        success: false,
+        error: "Text is required for speech synthesis",
+      };
+    }
+
+    try {
+      const response = await api.post<Blob>(
+        AppRoutes.server.protected.SPEECH_TTS,
+        { text, voice_name: voiceName },
+        { responseType: "blob" },
+      );
+
+      const rawData = response.data as unknown;
+      if (
+        rawData &&
+        (rawData instanceof Blob ||
+          (typeof rawData === "object" && "size" in rawData))
+      ) {
+        const blob = rawData as Blob;
+        const audioUrl = URL.createObjectURL(blob);
+        return {
+          success: true,
+          audioUrl,
+          blob,
+        };
+      }
+
+      return {
+        success: false,
+        error: response.error || "Failed to synthesize speech",
+      };
+    } catch (err: any) {
+      return {
+        success: false,
+        error: err?.message || "Failed to synthesize speech",
+      };
+    }
+  }
+
+  async playText(text: string, voiceName?: string): Promise<void> {
+    const result = await this.synthesizeText(text, voiceName);
+    if (!result.success || !result.audioUrl) {
+      throw new Error(result.error || "Failed to synthesize speech");
+    }
+    await this.playUrl(result.audioUrl);
+  }
+
+  async transcribeAudio(
+    audio: File | Blob | string,
+  ): Promise<ISpeechTranscribeResult> {
+    try {
+      if (typeof audio === "string") {
+        const response = await api.post<{ text: string }>(
+          AppRoutes.server.protected.SPEECH_STT,
+          { audio_url: audio },
+        );
+        const { status, data } = response.data || {};
+        if (status?.success && data?.text !== undefined) {
+          return { success: true, text: data.text };
+        }
+        return {
+          success: false,
+          error:
+            status?.error ||
+            status?.message ||
+            response.error ||
+            "Failed to transcribe audio",
+        };
+      }
+
+      const formData = new FormData();
+      formData.append("audio", audio);
+
+      const response = await api.post<{ text: string }>(
+        AppRoutes.server.protected.SPEECH_STT,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } },
+      );
+      const { status, data } = response.data || {};
+      if (status?.success && data?.text !== undefined) {
+        return { success: true, text: data.text };
+      }
+      return {
+        success: false,
+        error:
+          status?.error ||
+          status?.message ||
+          response.error ||
+          "Failed to transcribe audio",
+      };
+    } catch (err: any) {
+      return {
+        success: false,
+        error: err?.message || "Failed to transcribe audio",
+      };
+    }
+  }
+
   async playUrl(url: string): Promise<void> {
     this.stopPlayback();
     this.ensurePlayer();
@@ -409,14 +515,18 @@ class SpeechService {
   }
 
   private async loadPcmWorklet(audioContext: AudioContext): Promise<void> {
-    const blob = new Blob([pcmProcessorSource], {
-      type: "application/javascript",
-    });
-    const url = URL.createObjectURL(blob);
     try {
-      await audioContext.audioWorklet.addModule(url);
-    } finally {
-      URL.revokeObjectURL(url);
+      await audioContext.audioWorklet.addModule(pcmWorkletUrl);
+    } catch {
+      const response = await fetch(pcmWorkletUrl);
+      const text = await response.text();
+      const blob = new Blob([text], { type: "application/javascript" });
+      const url = URL.createObjectURL(blob);
+      try {
+        await audioContext.audioWorklet.addModule(url);
+      } finally {
+        URL.revokeObjectURL(url);
+      }
     }
   }
 

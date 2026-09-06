@@ -9,6 +9,11 @@ export type ISocketMessage = {
   channel?: string;
 };
 
+export const SOCKET_MESSAGE_TYPES = {
+  NOTIFICATION: "notification",
+  SPEECH: "speech",
+} as const;
+
 export const SOCKET_CHANNELS = {
   NOTIFICATION: "NotificationChannel",
   SPEECH_LIVE: "SpeechLiveChannel",
@@ -68,12 +73,16 @@ export function isSpeechLiveMessage(data: ISocketMessage): boolean {
     return true;
   }
 
-  const eventType = getSpeechEventType(data);
-  return (
-    eventType === SPEECH_EVENT_TYPES.PARTIAL ||
-    eventType === SPEECH_EVENT_TYPES.FINAL ||
-    eventType === SPEECH_EVENT_TYPES.ERROR
-  );
+  if (data.type === SOCKET_MESSAGE_TYPES.SPEECH) {
+    const eventType = getSpeechEventType(data);
+    return (
+      eventType === SPEECH_EVENT_TYPES.PARTIAL ||
+      eventType === SPEECH_EVENT_TYPES.FINAL ||
+      eventType === SPEECH_EVENT_TYPES.ERROR
+    );
+  }
+
+  return false;
 }
 
 export function getSocketToast(data: ISocketMessage): {
@@ -89,7 +98,7 @@ export function getSocketToast(data: ISocketMessage): {
     return null;
   }
 
-  if (data.type !== "notification" || !message) {
+  if (data.type !== SOCKET_MESSAGE_TYPES.NOTIFICATION || !message) {
     return null;
   }
 
