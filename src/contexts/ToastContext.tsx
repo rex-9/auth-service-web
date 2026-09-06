@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import { translate } from "../locales";
-import { Toast, TToastTypes } from "../design/components/overlay/Toast";
+import { Toast, type TToastTypes } from "../design/components/overlay/Toast";
 
 interface IToastContextType {
   showToast: (type: TToastTypes, message: string, title?: string) => void;
