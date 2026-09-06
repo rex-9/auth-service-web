@@ -27,6 +27,7 @@ export const NOTIFICATION_TOAST_SUCCESS_TYPES = [
   "welcome",
   "ai_response_ready",
   "tts_ready",
+  "asset_compressed",
 ] as const;
 
 export const NOTIFICATION_TOAST_ERROR_TYPES = [
@@ -34,6 +35,7 @@ export const NOTIFICATION_TOAST_ERROR_TYPES = [
   "subscription_canceled",
   "ai_response_failed",
   "tts_failed",
+  "asset_compression_failed",
 ] as const;
 
 export type TSocketToastKind = "success" | "error" | "info" | "none";
