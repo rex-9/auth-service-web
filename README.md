@@ -439,45 +439,45 @@ All frontend environment variables are centralized through [`src/AppConfig.tsx`]
 
 ## Client route surface
 
-| Access    | Route                  | Purpose                                     |
-| --------- | ---------------------- | ------------------------------------------- |
-| Public    | `/`                    | Root experience                             |
-| Public    | `/signin`              | Open the authentication dialog              |
-| Public    | `/signup`              | Enter the account creation flow             |
-| Public    | `/email/confirm`       | Handle confirmation links or code entry     |
-| Public    | `/password/forgot`     | Request account recovery                    |
-| Public    | `/password/reset`      | Complete password reset links               |
-| Public    | `/anapana`             | Anapana interval reminder                   |
-| Protected | `/home`                | Authenticated home                          |
-| Protected | `/profile`             | Current-user profile                        |
-| Protected | `/payment`             | Products and checkout                       |
-| Protected | `/payment/success`     | Checkout success return                     |
-| Protected | `/payment/cancel`      | Checkout cancellation return                |
-| Protected | `/ai`                  | AI workspace                                |
-| Protected | `/signout`             | Sign out and provider cleanup               |
-| Protected | `/admin`                       | Admin panel entry with smart redirect           |
-| Protected | `/admin/users`                 | User management (super admin only)              |
-| Protected | `/admin/users/create`          | User creation console                           |
-| Protected | `/admin/users/:id/edit`        | User edit console                               |
-| Protected | `/admin/roles`                 | Role and permission management                  |
-| Protected | `/admin/roles/create`          | Role creation console                           |
-| Protected | `/admin/roles/:id/edit`        | Role edit console                               |
-| Protected | `/admin/products`              | Product and pricing management                  |
-| Protected | `/admin/products/create`       | Product creation console                        |
-| Protected | `/admin/products/:id/edit`     | Product edit console                            |
-| Protected | `/admin/accesses`              | Entitlements and user access management         |
-| Protected | `/admin/accesses/create`       | Access grant console                            |
-| Protected | `/admin/accesses/:id/edit`     | Access validity extension console               |
-| Protected | `/admin/assets`                | Asset control center & storage overview         |
-| Protected | `/admin/assets/create`         | Asset upload console                            |
-| Protected | `/admin/assets/:id/edit`       | Asset edit and compression console              |
-| Protected | `/admin/notifications`         | Broadcast notification dispatch & templates     |
-| Protected | `/admin/notifications/create`  | Notification template creation console          |
-| Protected | `/admin/notifications/:id/edit`| Notification template edit console              |
-| Protected | `/admin/chat/rooms`            | Chat room moderation                            |
-| Protected | `/admin/chat/messages`         | Chat message moderation                         |
-| Protected | `/admin/feedback`              | User feedback management                        |
-| Protected | `/admin/logs`                  | Client error and telemetry logs                 |
+| Access    | Route                           | Purpose                                     |
+| --------- | ------------------------------- | ------------------------------------------- |
+| Public    | `/`                             | Root experience                             |
+| Public    | `/signin`                       | Open the authentication dialog              |
+| Public    | `/signup`                       | Enter the account creation flow             |
+| Public    | `/email/confirm`                | Handle confirmation links or code entry     |
+| Public    | `/password/forgot`              | Request account recovery                    |
+| Public    | `/password/reset`               | Complete password reset links               |
+| Public    | `/anapana`                      | Anapana interval reminder                   |
+| Protected | `/home`                         | Authenticated home                          |
+| Protected | `/profile`                      | Current-user profile                        |
+| Protected | `/payment`                      | Products and checkout                       |
+| Protected | `/payment/success`              | Checkout success return                     |
+| Protected | `/payment/cancel`               | Checkout cancellation return                |
+| Protected | `/ai`                           | AI workspace                                |
+| Protected | `/signout`                      | Sign out and provider cleanup               |
+| Protected | `/admin`                        | Admin panel entry with smart redirect       |
+| Protected | `/admin/users`                  | User management (super admin only)          |
+| Protected | `/admin/users/create`           | User creation console                       |
+| Protected | `/admin/users/:id/edit`         | User edit console                           |
+| Protected | `/admin/roles`                  | Role and permission management              |
+| Protected | `/admin/roles/create`           | Role creation console                       |
+| Protected | `/admin/roles/:id/edit`         | Role edit console                           |
+| Protected | `/admin/products`               | Product and pricing management              |
+| Protected | `/admin/products/create`        | Product creation console                    |
+| Protected | `/admin/products/:id/edit`      | Product edit console                        |
+| Protected | `/admin/accesses`               | Entitlements and user access management     |
+| Protected | `/admin/accesses/create`        | Access grant console                        |
+| Protected | `/admin/accesses/:id/edit`      | Access validity extension console           |
+| Protected | `/admin/assets`                 | Asset control center & storage overview     |
+| Protected | `/admin/assets/create`          | Asset upload console                        |
+| Protected | `/admin/assets/:id/edit`        | Asset edit and compression console          |
+| Protected | `/admin/notifications`          | Broadcast notification dispatch & templates |
+| Protected | `/admin/notifications/create`   | Notification template creation console      |
+| Protected | `/admin/notifications/:id/edit` | Notification template edit console          |
+| Protected | `/admin/chat/rooms`             | Chat room moderation                        |
+| Protected | `/admin/chat/messages`          | Chat message moderation                     |
+| Protected | `/admin/feedback`               | User feedback management                    |
+| Protected | `/admin/logs`                   | Client error and telemetry logs             |
 
 [`src/AppRoutes.ts`](src/AppRoutes.ts) is the client-side source of truth. Rexone Core's OpenAPI page at `/api-docs` and its `config/routes.rb` remain authoritative for server contracts.
 
@@ -575,7 +575,7 @@ A software engineer, full-stack architect, and long-time practitioner of meditat
 I build systems the same way I approach the path itself: **with a clear mind, deliberate steps, and no unnecessary weight.**
 
 - GitHub: [@rex-9](https://github.com/rex-9)
-- Portfolio: [rex9.vercel.app](https://rex9.vercel.app)
+- Portfolio: [rex9.me](https://rex9.me)
 - LinkedIn: [rex9](https://www.linkedin.com/in/rex9/)
 
 _Built with ❤️ by Rex9 on Rexone Ecosystem_
