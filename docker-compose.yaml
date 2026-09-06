@@ -1,0 +1,34 @@
+# rexone-web/docker-compose.yaml
+# Production Docker Compose for Coolify
+
+services:
+  web:
+    container_name: ${WEB_CONTAINER_NAME:-prod-rexone-web}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_REACT_APP_NAME: ${VITE_REACT_APP_NAME:-rexone.me}
+        VITE_REACT_APP_GOOGLE_CLIENT_ID: ${VITE_REACT_APP_GOOGLE_CLIENT_ID:-}
+        VITE_REACT_APP_GOOGLE_CLIENT_SECRET: ${VITE_REACT_APP_GOOGLE_CLIENT_SECRET:-}
+        VITE_REACT_APP_SERVER_BASE_URL: ${VITE_REACT_APP_SERVER_BASE_URL:-https://api.rexone.me}
+        VITE_REACT_APP_CLIENT_BASE_URL: ${VITE_REACT_APP_CLIENT_BASE_URL:-https://rexone.me}
+        VITE_REACT_APP_SERVER_WS_BASE_URL: ${VITE_REACT_APP_SERVER_WS_BASE_URL:-wss://api.rexone.me}
+        VITE_MEDIA_MAX_NON_VIDEO_SIZE_MB: ${VITE_MEDIA_MAX_NON_VIDEO_SIZE_MB:-10}
+        VITE_MEDIA_MAX_VIDEO_SIZE_MB: ${VITE_MEDIA_MAX_VIDEO_SIZE_MB:-100}
+        VITE_MEDIA_MAX_FILE_COUNT: ${VITE_MEDIA_MAX_FILE_COUNT:-20}
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT_MAP:-80:80}"
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://127.0.0.1/health || exit 1"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+    networks:
+      - rexone-network
+
+networks:
+  rexone-network:
+    name: ${DOCKER_NETWORK:-prod-rexone-net}
+    external: true
