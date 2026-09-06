@@ -1,25 +1,25 @@
 // src/design/elements/colors.ts
 
 export const colors = {
-  // Brand (Rex9 Neon Sunset Coral Palette)
-  primary: "#FF5E62",
-  primaryLight: "#FF8A8D",
-  primaryDark: "#E8334A",
-  secondary: "#FF7556",
-  accent: "#FF2A4B",
+  // Brand (Rex9 Neon Scarlet Red Palette - More Red, Less Pink)
+  primary: "#FF2238",
+  primaryLight: "#FF5263",
+  primaryDark: "#CC1125",
+  secondary: "#FF4D2E",
+  accent: "#FF0D2D",
 
   // Neon Glow Colors
   glowWhite: "#FFF2F4",
-  glowOuter: "#6B1426",
+  glowOuter: "#5C0916",
 
   // Shadow color tokens
   shadows: {
     blackXs: "rgba(0, 0, 0, 0.08)",
     blackSm: "rgba(0, 0, 0, 0.08)",
     blackMd: "rgba(0, 0, 0, 0.10)",
-    glow: "rgba(255, 94, 98, 0.4)",
-    glassCard: "rgba(255, 94, 98, 0.35)",
-    glassHover: "rgba(255, 94, 98, 0.45)",
+    glow: "rgba(255, 34, 56, 0.4)",
+    glassCard: "rgba(255, 34, 56, 0.35)",
+    glassHover: "rgba(255, 34, 56, 0.45)",
     textDark: "rgba(0, 0, 0, 0.9)",
   },
 
@@ -63,11 +63,11 @@ export const colors = {
     form: "rgba(28, 8, 16, 0.65)",
     project: "rgba(18, 6, 12, 0.55)",
     projectHover: "rgba(22, 7, 15, 0.75)",
-    border: "rgba(255, 94, 98, 0.22)",
-    borderHover: "rgba(255, 94, 98, 0.55)",
-    tag: "rgba(255, 94, 98, 0.65)",
-    tagBg: "rgba(255, 94, 98, 0.08)",
-    tagBgHover: "rgba(255, 94, 98, 0.28)",
+    border: "rgba(255, 34, 56, 0.22)",
+    borderHover: "rgba(255, 34, 56, 0.55)",
+    tag: "rgba(255, 34, 56, 0.65)",
+    tagBg: "rgba(255, 34, 56, 0.08)",
+    tagBgHover: "rgba(255, 34, 56, 0.28)",
   },
 
   // Centralized Glow & Text Shadow Effects

@@ -292,4 +292,4 @@ The analytics engine automatically maps presets defined in `AnalyticsConstants::
    - Never hardcode raw string literals.
 5. **Use DaisyUI Theme Colors for Charts**:
    - Backgrounds: `bg-base-100`, borders: `border-base-300`, text: `text-base-content`.
-   - Accents: `primary` (`#FF5E62`), `secondary` (`#FF7556`), `info` (`#38BDF8`), `success` (`#10B981`), `error` (`#EF4444`).
+   - Accents: `primary` (`#FF2238`), `secondary` (`#FF4D2E`), `info` (`#38BDF8`), `success` (`#10B981`), `error` (`#EF4444`).

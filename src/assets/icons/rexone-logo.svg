@@ -9,9 +9,9 @@
 
     <!-- Border Glow -->
     <linearGradient id="neonBorder" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FF5E62" stop-opacity="0.6" />
-      <stop offset="50%" stop-color="#E8334A" stop-opacity="0.2" />
-      <stop offset="100%" stop-color="#FF7556" stop-opacity="0.5" />
+      <stop offset="0%" stop-color="#FF2238" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#CC1125" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#FF4D2E" stop-opacity="0.5" />
     </linearGradient>
 
     <!-- Deep Ambient Glow Filter -->
@@ -36,16 +36,16 @@
   <rect x="4.5" y="4.5" width="91" height="91" rx="25.5" stroke="url(#neonBorder)" stroke-width="1.5" />
 
   <!-- Subtle Ambient Radial Glow -->
-  <circle cx="50" cy="50" r="30" fill="#FF5E62" opacity="0.2" filter="url(#ambientGlow)" />
+  <circle cx="50" cy="50" r="30" fill="#FF2238" opacity="0.2" filter="url(#ambientGlow)" />
 
   <!-- Outer Neon Halo Layer -->
-  <g stroke="#E8334A" stroke-linecap="round" stroke-linejoin="round" opacity="0.75" filter="url(#ambientGlow)">
+  <g stroke="#CC1125" stroke-linecap="round" stroke-linejoin="round" opacity="0.75" filter="url(#ambientGlow)">
     <path d="M 28 72 V 28 C 28 24 38 22 47 27 C 53 30 51 40 43 44 C 36 47 33 49 33 50" stroke-width="10" />
     <path d="M 33 50 C 37 50 44 65 52 70 C 60 74 72 70 76 60 C 80 48 76 34 66 31 C 55 28 50 36 52 44 C 54 50 63 52 70 48" stroke-width="10" />
   </g>
 
   <!-- Middle Vibrant Neon Tube Layer -->
-  <g stroke="#FF5E62" stroke-linecap="round" stroke-linejoin="round" filter="url(#neonGlow)">
+  <g stroke="#FF2238" stroke-linecap="round" stroke-linejoin="round" filter="url(#neonGlow)">
     <path d="M 28 72 V 28 C 28 24 38 22 47 27 C 53 30 51 40 43 44 C 36 47 33 49 33 50" stroke-width="5" />
     <path d="M 33 50 C 37 50 44 65 52 70 C 60 74 72 70 76 60 C 80 48 76 34 66 31 C 55 28 50 36 52 44 C 54 50 63 52 70 48" stroke-width="5" />
   </g>
