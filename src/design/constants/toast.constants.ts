@@ -11,4 +11,4 @@ export const ToastTypes = {
   ERROR: "error",
 } as const;
 
-export type TToastType = (typeof ToastTypes)[keyof typeof ToastTypes];
+export type TToastTypes = (typeof ToastTypes)[keyof typeof ToastTypes];

@@ -6,14 +6,14 @@
 import React, { useEffect } from "react";
 import { iconsLib } from "../../../assets";
 import { cn } from "../../helpers";
-import { ToastTypes, type TToastType } from "../../constants";
+import { ToastTypes, type TToastTypes } from "../../constants";
 
 export { ToastTypes };
-export type { TToastType };
+export type { TToastTypes as TToastType };
 
 export interface IToastProps {
   message: string;
-  type?: TToastType;
+  type?: TToastTypes;
   duration?: number;
   onClose: () => void;
   icon?: React.ReactNode;
