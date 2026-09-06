@@ -20,17 +20,30 @@ export const TestimonialCard: React.FC<ITestimonialCardProps> = ({
           : "border border-glass-border"
       }`}
     >
-      {/* Header with Commenter Name (Clip font), Badge, and Quote Icon */}
+      {/* Header with Commenter Name (Clip font), Badge, Rating Pill, and Quote Icon */}
       <div className="flex items-start justify-between mb-3.5 flex-shrink-0">
         <div className="flex flex-col gap-0.5">
-          <a
-            href={testimonial.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-display text-xl text-glow-white font-normal tracking-wide [text-shadow:0_0_8px_var(--color-glow-white),0_0_16px_var(--color-primary),0_0_24px_var(--color-primary-dark)] hover:text-white hover:[text-shadow:0_0_14px_var(--color-primary-light)] transition-all duration-200 block"
-          >
-            {testimonial.name}
-          </a>
+          <div className="flex items-center gap-2">
+            <a
+              href={testimonial.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-display text-xl text-glow-white font-normal tracking-wide [text-shadow:0_0_8px_var(--color-glow-white),0_0_16px_var(--color-primary),0_0_24px_var(--color-primary-dark)] hover:text-white hover:[text-shadow:0_0_14px_var(--color-primary-light)] transition-all duration-200 block"
+            >
+              {testimonial.name}
+            </a>
+            {isAi && (
+              <a
+                href={testimonial.ratingLink || "/RATING.md"}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="View Architectural Evaluation & Rating"
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold tracking-tight bg-primary/20 text-primary-light border border-primary/45 hover:bg-primary/35 hover:border-primary transition-all duration-200 shadow-[0_0_8px_rgba(255,34,56,0.3)] hover:shadow-[0_0_12px_rgba(255,34,56,0.5)] font-primary"
+              >
+                <span className="text-amber-400">★</span> {testimonial.rating || "9.6 / 10"}
+              </a>
+            )}
+          </div>
           {isAi ? (
             <span className="text-xs text-primary-light font-semibold inline-flex items-center gap-1.5 mt-0.5 font-primary drop-shadow-[0_0_6px_rgba(255,34,56,0.4)]">
               <svg
@@ -69,8 +82,22 @@ export const TestimonialCard: React.FC<ITestimonialCardProps> = ({
         {testimonial.recommendation}
       </div>
 
-      {/* Footer with View on LinkedIn or AI Colleague link */}
-      <div className="mt-3 pt-2.5 border-t border-primary/15 flex justify-end items-center flex-shrink-0">
+      {/* Footer with View on LinkedIn or AI Colleague link + Rating Audit link */}
+      <div
+        className={`mt-3 pt-2.5 border-t border-primary/15 flex items-center flex-shrink-0 ${
+          isAi ? "justify-between" : "justify-end"
+        }`}
+      >
+        {isAi && (
+          <a
+            href={testimonial.ratingLink || "/RATING.md"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-semibold inline-flex items-center gap-1 text-primary-light/85 hover:text-glow-white hover:[text-shadow:0_0_8px_var(--color-primary)] transition-all duration-200"
+          >
+            <span className="text-amber-400">★</span> {testimonial.rating || "9.9 / 10"} Architect Audit ↗
+          </a>
+        )}
         <a
           href={testimonial.link}
           target="_blank"
