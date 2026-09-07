@@ -113,7 +113,7 @@ class AppRoutes {
       SIGN_OUT: "/signout", // DELETE
 
       // Save Client Log Errors
-      CLIENT_LOGS: AppRoutes.api("/log/clients"), // POST
+      CLIENT_LOGS: AppRoutes.api("/client/logs"), // POST
 
       // Users
       USERS: AppRoutes.api("/users"), // GET
@@ -234,20 +234,20 @@ class AppRoutes {
         FEEDBACK_DETAIL: AppRoutes.adminApi("/feedbacks/:id"), // GET, PUT, DELETE
         ACCESSES: AppRoutes.adminApi("/accesses"), // GET, POST
         ACCESS_DETAIL: AppRoutes.adminApi("/accesses/:id"), // GET, PUT, DELETE
-        LOGS: AppRoutes.api("/log/clients"), // GET, POST
-        LOG_DETAIL: AppRoutes.api("/log/clients/:id"), // GET, DELETE
-        LOG_DISCARD: AppRoutes.api("/log/clients/:id/discard"), // POST
-        LOG_UNDISCARD: AppRoutes.api("/log/clients/:id/undiscard"), // POST
-        LOG_RESOLVE: AppRoutes.api("/log/clients/:id/resolve"), // PUT
-        LOG_UNRESOLVE: AppRoutes.api("/log/clients/:id/unresolve"), // PUT
+        LOGS: AppRoutes.api("/client/logs"), // GET, POST
+        LOG_DETAIL: AppRoutes.api("/client/logs/:id"), // GET, DELETE
+        LOG_DISCARD: AppRoutes.api("/client/logs/:id/discard"), // POST
+        LOG_UNDISCARD: AppRoutes.api("/client/logs/:id/undiscard"), // POST
+        LOG_RESOLVE: AppRoutes.api("/client/logs/:id/resolve"), // PUT
+        LOG_UNRESOLVE: AppRoutes.api("/client/logs/:id/unresolve"), // PUT
         ANALYTICS_OVERVIEW: AppRoutes.adminApi("/analytics/overview"), // GET
-        APP_VERSIONS: AppRoutes.adminApi("/versions"), // GET, POST
-        DISCARDED_APP_VERSIONS: AppRoutes.adminApi("/versions/discarded"), // GET
-        APP_VERSION_DETAIL: AppRoutes.adminApi("/versions/:id"), // GET, PUT
-        APP_VERSION_DISCARD: AppRoutes.adminApi("/versions/:id/discard"), // POST
-        APP_VERSION_UNDISCARD: AppRoutes.adminApi("/versions/:id/undiscard"), // POST
-        APP_VERSION_INSTALLS: AppRoutes.adminApi("/versions/:id/user_versions"), // GET
-        APP_INSTALLS: AppRoutes.adminApi("/versions/user_versions"), // GET
+        APP_VERSIONS: AppRoutes.adminApi("/client/versions"), // GET, POST
+        DISCARDED_APP_VERSIONS: AppRoutes.adminApi("/client/versions/discarded"), // GET
+        APP_VERSION_DETAIL: AppRoutes.adminApi("/client/versions/:id"), // GET, PUT
+        APP_VERSION_DISCARD: AppRoutes.adminApi("/client/versions/:id/discard"), // POST
+        APP_VERSION_UNDISCARD: AppRoutes.adminApi("/client/versions/:id/undiscard"), // POST
+        APP_VERSION_INSTALLS: AppRoutes.adminApi("/client/versions/:id/user_versions"), // GET
+        APP_INSTALLS: AppRoutes.adminApi("/client/versions/user_versions"), // GET
       },
     },
   };

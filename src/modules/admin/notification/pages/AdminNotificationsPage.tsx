@@ -134,7 +134,10 @@ export const AdminNotificationsPage: React.FC = () => {
           setValues((v) => ({ ...v, event: firstAvailable.event }));
         }
       } else {
-        setError(templateRes.error || t(AppLocales.Admin.Notifications.Errors.LoadTemplates));
+        setError(
+          templateRes.error ||
+            t(AppLocales.Admin.Notifications.Errors.LoadTemplates),
+        );
       }
 
       if (rolesRes && rolesRes.success) {
@@ -166,7 +169,9 @@ export const AdminNotificationsPage: React.FC = () => {
         setUsers((currentUsers) => mergeUsersById(currentUsers, result.users));
         setRecipientSearchError("");
       } else {
-        setRecipientSearchError(result.error || t(AppLocales.Admin.Users.Errors.LoadListFailed));
+        setRecipientSearchError(
+          result.error || t(AppLocales.Admin.Users.Errors.LoadListFailed),
+        );
       }
     },
     [canReadUsers, setLoading, t],
@@ -341,7 +346,9 @@ export const AdminNotificationsPage: React.FC = () => {
     event.preventDefault();
 
     if (!values.event) {
-      setAlertMessage(t(AppLocales.Admin.Notifications.Validation.EventRequired));
+      setAlertMessage(
+        t(AppLocales.Admin.Notifications.Validation.EventRequired),
+      );
       return;
     }
 
@@ -356,7 +363,9 @@ export const AdminNotificationsPage: React.FC = () => {
       values.audience_type === NOTIFICATION_AUDIENCE_TYPES.USERS &&
       selectedUserIds.length === 0
     ) {
-      setAlertMessage(t(AppLocales.Admin.Notifications.Validation.UserRequired));
+      setAlertMessage(
+        t(AppLocales.Admin.Notifications.Validation.UserRequired),
+      );
       return;
     }
 
@@ -364,7 +373,9 @@ export const AdminNotificationsPage: React.FC = () => {
       values.audience_type === NOTIFICATION_AUDIENCE_TYPES.ROLES &&
       selectedRoleIds.length === 0
     ) {
-      setAlertMessage(t(AppLocales.Admin.Notifications.Validation.RoleRequired));
+      setAlertMessage(
+        t(AppLocales.Admin.Notifications.Validation.RoleRequired),
+      );
       return;
     }
 
@@ -392,7 +403,9 @@ export const AdminNotificationsPage: React.FC = () => {
         event: broadcastTemplates[0]?.event || "",
       });
     } else {
-      setAlertMessage(result.error || t(AppLocales.Admin.Notifications.Errors.Send));
+      setAlertMessage(
+        result.error || t(AppLocales.Admin.Notifications.Errors.Send),
+      );
     }
   };
 
@@ -451,7 +464,9 @@ export const AdminNotificationsPage: React.FC = () => {
                 {/* Field 1: Template */}
                 <div className="space-y-1.5">
                   <label className="text-caption font-semibold text-base-content/80 flex items-center justify-between">
-                    <span>{t(AppLocales.Admin.Notifications.Labels.Event)}</span>
+                    <span>
+                      {t(AppLocales.Admin.Notifications.Labels.Event)}
+                    </span>
                     {selectedTemplate && (
                       <span className="font-mono text-xs opacity-60">
                         {selectedTemplate.event}
@@ -460,7 +475,8 @@ export const AdminNotificationsPage: React.FC = () => {
                   </label>
                   {broadcastTemplates.length === 0 ? (
                     <div className="p-3 rounded-lg bg-base-200/60 border border-base-300 text-caption text-base-content/70 text-xs">
-                      No broadcast templates available. Create or enable &quot;Broadcast&quot; on templates in the Templates tab.
+                      No broadcast templates available. Create or enable
+                      &quot;Broadcast&quot; on templates in the Templates tab.
                     </div>
                   ) : (
                     <Dropdown
@@ -499,15 +515,20 @@ export const AdminNotificationsPage: React.FC = () => {
                   {values.audience_type === NOTIFICATION_AUDIENCE_TYPES.ALL && (
                     <div className="flex items-center gap-2 p-2.5 rounded-lg bg-base-200/50 border border-base-300/50 text-caption text-base-content/70 text-xs">
                       <iconsLib.info className="h-4 w-4 text-primary shrink-0" />
-                      <span>Will be dispatched to all confirmed users across the platform.</span>
+                      <span>
+                        Will be dispatched to all confirmed users across the
+                        platform.
+                      </span>
                     </div>
                   )}
 
-                  {values.audience_type === NOTIFICATION_AUDIENCE_TYPES.ROLES && (
+                  {values.audience_type ===
+                    NOTIFICATION_AUDIENCE_TYPES.ROLES && (
                     <div className="space-y-2 pt-1">
                       <div className="flex items-center justify-between text-xs">
                         <span className="text-base-content/70 font-medium">
-                          Select Target Roles ({selectedRoleIds.length} of {sortedRoles.length})
+                          Select Target Roles ({selectedRoleIds.length} of{" "}
+                          {sortedRoles.length})
                         </span>
                         <div className="flex items-center gap-2 text-xs">
                           <button
@@ -559,13 +580,15 @@ export const AdminNotificationsPage: React.FC = () => {
                       </div>
                       {selectedRoleIds.length === 0 && (
                         <div className="text-caption text-warning text-xs">
-                          Please select at least one role to receive this broadcast.
+                          Please select at least one role to receive this
+                          broadcast.
                         </div>
                       )}
                     </div>
                   )}
 
-                  {values.audience_type === NOTIFICATION_AUDIENCE_TYPES.USERS && (
+                  {values.audience_type ===
+                    NOTIFICATION_AUDIENCE_TYPES.USERS && (
                     <div className="space-y-2 pt-1">
                       <div className="relative">
                         <SearchInput
@@ -632,7 +655,7 @@ export const AdminNotificationsPage: React.FC = () => {
                               key={user.id}
                               className="inline-flex items-center gap-1.5 rounded-md bg-base-200 px-2 py-0.5 text-xs font-medium text-base-content border border-base-300/50 shadow-sm"
                             >
-                              <span className="truncate max-w-[150px]">
+                              <span className="truncate max-w-37.5">
                                 {user.name || user.email || user.username}
                               </span>
                               <button
@@ -878,4 +901,3 @@ export const AdminNotificationsPage: React.FC = () => {
     </div>
   );
 };
-

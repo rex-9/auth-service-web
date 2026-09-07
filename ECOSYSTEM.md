@@ -99,7 +99,7 @@ All tables use **UUID** primary keys (`gen_random_uuid()`), utilize **Discard** 
 | **Entitlements**     | `Access`                                                                                     | Granted/revoked/expired access records tied to `User` and `Product`.                                                                                                                                                                                                                                   |
 | **AI / Chat**        | `Chat::Room`, `Chat::Message`                                                                | Conversational rooms, messages with roles (`user`, `assistant`), `ai_status` (`queued`, `processing`, `completed`, `failed`), system prompts, temperature, max tokens, metadata.                                                                                                                       |
 | **Media**            | `Asset`                                                                                      | Unified media metadata (`storage_key` for Garage/S3/Cloudinary/Local, format, size_bytes, original_size_bytes, compressed_size_bytes, compression_ratio, compression_passes, status enum: `pending`/`processing`/`ready`/`optimal`, duration_secs, type, polymorphic `assetable_type`/`assetable_id`). |
-| **Telemetry**        | `Log::Client`                                                                                | Frontend error ingest (stack traces, device, OS, browser, URL, severity, occurrences, local/session storage keys, cookies, resolution status).                                                                                                                                                         |
+| **Telemetry**        | `Client::Log`                                                                                | Frontend error ingest (stack traces, device, OS, browser, URL, severity, occurrences, local/session storage keys, cookies, resolution status).                                                                                                                                                         |
 | **Feedback**         | `Feedback`                                                                                   | Intelligent in-place feedback (1-10 rating, auto-inferred category: `bug`/`feature_request`/`improvement`/`general`, priority: `low`/`normal`/`high`/`urgent`, status, automated device/route telemetry).                                                                                              |
 | **Notifications**    | `Notification`, `UserNotification`                                                           | Multi-channel notification repository (In-App, Push, Email) with dynamic variable interpolation; persistent user in-app inbox receipts with immutable snapshots, read tracking, and Pagy pagination.                                                                                                   |
 
@@ -227,7 +227,7 @@ Rexone Mobile has a strictly governed design system accessible via `lib/design/d
 - **Stripe & Billing**: In-app Stripe Checkout WebView (`CheckoutPage`), subscription state cards, billing history, and confirmation-guarded cancellation/resumption.
 - **AI Assistant**: Persistent multi-room chat, background processing indicator, real-time completion toasts via WebSocket, and chat history management.
 - **Real-Time WebSockets**: Action Cable client (`SocketService`) paired with `SocketController` for global notification dispatching and deduplication.
-- **Client Telemetry**: Automatic global capture of Flutter errors and platform dispatcher errors dispatched to Core's `POST /v1/log/clients`.
+- **Client Telemetry**: Automatic global capture of Flutter errors and platform dispatcher errors dispatched to Core's `POST /v1/client/logs`.
 - **Localization**: 100% translated in English (`en_US`), Spanish (`es_ES`), and Burmese (`my_MM`). Synchronizes `X-Locale` and `Accept-Language` headers on every HTTP request.
 
 ---
@@ -246,7 +246,7 @@ All three pillars of the Rexone platform are fully aligned at **100% feature par
 | **Multi-Language Localization (`en`, `es`, `my`)**                               |      ✅       |          ✅          |            ✅            |
 | **HTTP `X-Locale` / `Accept-Language` Sync**                                     |      ✅       |          ✅          |            ✅            |
 | **Destructive Action Confirmation Prompts**                                      |      N/A      | ✅ (`ConfirmDialog`) | ✅ (`AppDialog.confirm`) |
-| **Error Telemetry Ingest & Storage (`/v1/log/clients`)**                         |      ✅       |          ✅          |            ✅            |
+| **Error Telemetry Ingest & Storage (`/v1/client/logs`)**                         |      ✅       |          ✅          |            ✅            |
 | **Stripe: Product & Pricing Catalogue**                                          |      ✅       |          ✅          |            ✅            |
 | **Stripe: Checkout Session Handoff**                                             |      ✅       |    ✅ (Redirect)     |       ✅ (WebView)       |
 | **Stripe: Subscriptions & Cancellation/Resumption**                              |      ✅       |          ✅          |            ✅            |
@@ -330,7 +330,7 @@ All three pillars of the Rexone platform are fully aligned at **100% feature par
       - `final`: Final transcription chunk `{ "type": "final", "text": "finalized sentence", "is_final": true }`
       - `error`: Streaming speech recognition failure `{ "type": "error", "error": "Reason" }`
 
-### 3. Client Telemetry Contract (`POST /v1/log/clients`)
+### 3. Client Telemetry Contract (`POST /v1/client/logs`)
 
 Payload sent on uncaught errors in Web and Mobile:
 
@@ -382,7 +382,7 @@ Payload sent on uncaught errors in Web and Mobile:
     - Governance & RBAC (User management, role assignment, permission matrix, lifecycle recovery).
     - Commerce Catalogue (Product creation, Free vs. Premium rules, entitlements).
     - User Feedback Inbox & Triage (Ratings, category taxonomy, priority levels, status workflows).
-    - Client Telemetry (`Log::Client` capturing browser/mobile JS crashes that never touch Rails RED).
+    - Client Telemetry (`Client::Log` capturing browser/mobile JS crashes that never touch Rails RED).
 - **Strict Non-Duplication Rule**: Never duplicate server CPU/memory, queue depths, or database query telemetry inside the Client Admin Panel. Prioritize business domain operations and client-side observability.
 
 ---
