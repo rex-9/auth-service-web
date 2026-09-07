@@ -21,6 +21,8 @@ export interface IAdminFeedback {
   priority: AdminFeedbackPriority | string;
   status: AdminFeedbackStatus | string;
   platform?: string | null;
+  version_id?: string | null;
+  version_code?: string | null;
   app_version?: string | null;
   os?: string | null;
   device?: string | null;

@@ -8,7 +8,11 @@ import { useToast } from "../../../../contexts/ToastContext";
 import { useDocumentTitle, usePermissions } from "../../../../hooks";
 import { iconsLib } from "../../../../assets";
 import { Button, StatusBadge } from "../../../../design";
-import { BadgeVariants, ButtonVariants } from "../../../../design/constants";
+import {
+  BadgeVariants,
+  ButtonTypes,
+  ButtonVariants,
+} from "../../../../design/constants";
 import { formatAdminDate } from "../../../../helpers";
 import { ADMIN_LOG_SEVERITY } from "../constants";
 import type { IAdminLog } from "../types";
@@ -211,9 +215,33 @@ export const AdminLogDetailPage: React.FC = () => {
                 </div>
                 <div>
                   <span className="font-semibold">Device Spec:</span>{" "}
-                  {[log.browser, log.os, log.device, log.app_version]
+                  {[log.browser, log.os, log.device]
                     .filter(Boolean)
-                    .join(" • ") || "N/A"}
+                    .join(" • ")}
+                  {(log.browser || log.os || log.device) &&
+                    (log.app_version || log.version_id) &&
+                    " • "}
+                  {log.app_version && log.version_id ? (
+                    <Button
+                      type={ButtonTypes.BUTTON}
+                      variant={ButtonVariants.TERTIARY}
+                      className="h-auto min-h-0 p-0 font-mono text-xs font-medium text-primary underline-offset-2 hover:underline"
+                      onClick={() => {
+                        if (!log.version_id) return;
+                        navigate(
+                          AppRoutes.withId(
+                            AppRoutes.client.protected.admin.VERSION_INSTALLS,
+                            log.version_id,
+                          ),
+                        );
+                      }}
+                    >
+                      {log.app_version}
+                    </Button>
+                  ) : (
+                    log.app_version ||
+                    (!(log.browser || log.os || log.device) ? "N/A" : null)
+                  )}
                 </div>
               </div>
             </div>
