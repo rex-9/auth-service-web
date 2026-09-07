@@ -13,6 +13,7 @@ export interface IAdminLog {
   platform?: TAdminLogPlatform | string | null;
   environment?: TAdminLogEnvironment | string | null;
   app_version?: string | null;
+  version_id?: string | null;
   browser?: string | null;
   user_agent?: string | null;
   os?: string | null;

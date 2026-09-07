@@ -9,6 +9,7 @@ import {
   IAssetUploadOptions,
 } from "../../models";
 import { api } from "../../services";
+import type { ICurrentUserUpdateValues } from "./types";
 
 class UserService {
   async peekUser(email: string): Promise<
@@ -31,6 +32,14 @@ class UserService {
     return await api.get<{ user: IUser; token: string }>(
       AppRoutes.server.protected.CURRENT_USER,
     );
+  }
+
+  async updateCurrentUser(
+    values: ICurrentUserUpdateValues,
+  ): Promise<IApiResponse<IApiEnvelope<{ user: IUser }>>> {
+    return api.put<{ user: IUser }>(AppRoutes.server.protected.CURRENT_USER, {
+      user: values,
+    });
   }
 
   async uploadImage(

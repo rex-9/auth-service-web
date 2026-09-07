@@ -162,6 +162,7 @@ The client admin panel architecture provides a protected workspace for managing 
   - **Notifications**: Broadcast dispatch and templates (`/admin/notifications`), template creation (`/admin/notifications/create`), and template edit (`/admin/notifications/:id/edit`) powered by `AdminNotificationForm`.
   - **Accesses**: Entitlements and access management (`/admin/accesses`), access grant console (`/admin/accesses/create`), and validity extension console (`/admin/accesses/:id/edit`) powered by `AdminAccessForm`.
   - **Assets**: Asset control center (`/admin/assets`), batch upload console (`/admin/assets/create`), and asset edit console (`/admin/assets/:id/edit`) powered by `AdminAssetForm`. Canonical server-generated video thumbnails are consumed from the asset response and updated live through `asset_thumbnail_generated`; clients only show placeholders while generation is pending. Super admins additionally receive Garage and VPS capacity telemetry with separate object and byte usage for the `dev/`, `uat/`, and `prod/` storage partitions; regular admins never request or render these statistics.
+  - **Versions**: Super-admin-only version catalogue (`/admin/versions`), create (`/admin/versions/create`), edit (`/admin/versions/:id/edit`), recycle bin (`/admin/versions/bin`), and user versions (`/admin/user-versions`, `GET /v1/admin/versions/user_versions`). Nested user versions for one version remain at `/admin/versions/:id/user-versions` (`GET /v1/admin/versions/:id/user_versions`). Updates use PUT. There is no hard delete.
   - **Chat**: Moderation tools for chat rooms and messages.
   - **Feedbacks & Logs**: User feedback review and client runtime error telemetry.
 - **Form Component Unification**: Every admin module featuring Create and Edit shares a single, reusable `Admin[Entity]Form` component (`mode: CREATE | EDIT`) between its dedicated create and edit route pages. Modals and dialogs are retired in favor of full pages.
@@ -478,6 +479,12 @@ All frontend environment variables are centralized through [`src/AppConfig.tsx`]
 | Protected | `/admin/chat/messages`          | Chat message moderation                     |
 | Protected | `/admin/feedback`               | User feedback management                    |
 | Protected | `/admin/logs`                   | Client error and telemetry logs             |
+| Protected | `/admin/versions`               | App versions (super admin only)             |
+| Protected | `/admin/versions/create`        | App version create console                  |
+| Protected | `/admin/versions/:id/edit`      | App version edit console                    |
+| Protected | `/admin/versions/bin`           | Discarded app versions                      |
+| Protected | `/admin/user-versions`          | All current user versions (super admin)     |
+| Protected | `/admin/versions/:id/user-versions` | User versions for one version           |
 
 [`src/AppRoutes.ts`](src/AppRoutes.ts) is the client-side source of truth. Rexone Core's OpenAPI page at `/api-docs` and its `config/routes.rb` remain authoritative for server contracts.
 

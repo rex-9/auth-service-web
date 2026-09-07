@@ -57,6 +57,14 @@ const STATUS_VARIANT_MAP: Record<string, BadgeVariant> = {
   custom: BadgeVariants.PRIMARY,
   system: BadgeVariants.DEFAULT,
   general: BadgeVariants.DEFAULT,
+
+  //Version Status
+  yanked: BadgeVariants.ERROR,
+  published: BadgeVariants.SUCCESS,
+  draft: BadgeVariants.WARNING,
+  ios: BadgeVariants.INFO,
+  android: BadgeVariants.INFO,
+  web: BadgeVariants.INFO,
 };
 
 const formatStatusText = (status: string): string => {

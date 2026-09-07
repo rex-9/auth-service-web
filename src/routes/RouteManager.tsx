@@ -67,6 +67,11 @@ import {
   AdminDiscardedAssetsPage,
   AdminAssetCreatePage,
   AdminAssetEditPage,
+  AdminVersionsPage,
+  AdminDiscardedVersionsPage,
+  AdminVersionCreatePage,
+  AdminVersionEditPage,
+  AdminUserVersionsPage,
 } from "../modules/admin";
 
 const router = createBrowserRouter(
@@ -583,6 +588,80 @@ const router = createBrowserRouter(
             <Route
               path={AppRoutes.client.protected.admin.ASSET_EDIT}
               element={<AdminAssetEditPage />}
+            />
+          </Route>
+          <Route
+            element={
+              <AdminRootRoute
+                action={ADMIN_ACTIONS.READ}
+                resource={ADMIN_RESOURCES.VERSIONS}
+                superAdminOnly
+              />
+            }
+          >
+            <Route
+              path={AppRoutes.client.protected.admin.VERSIONS}
+              element={<AdminVersionsPage />}
+            />
+          </Route>
+          <Route
+            element={
+              <AdminRootRoute
+                action={ADMIN_ACTIONS.DELETE}
+                resource={ADMIN_RESOURCES.VERSIONS}
+                superAdminOnly
+              />
+            }
+          >
+            <Route
+              path={AppRoutes.client.protected.admin.VERSIONS_RECYCLE_BIN}
+              element={<AdminDiscardedVersionsPage />}
+            />
+          </Route>
+          <Route
+            element={
+              <AdminRootRoute
+                action={ADMIN_ACTIONS.CREATE}
+                resource={ADMIN_RESOURCES.VERSIONS}
+                superAdminOnly
+              />
+            }
+          >
+            <Route
+              path={AppRoutes.client.protected.admin.VERSION_CREATE}
+              element={<AdminVersionCreatePage />}
+            />
+          </Route>
+          <Route
+            element={
+              <AdminRootRoute
+                action={ADMIN_ACTIONS.UPDATE}
+                resource={ADMIN_RESOURCES.VERSIONS}
+                superAdminOnly
+              />
+            }
+          >
+            <Route
+              path={AppRoutes.client.protected.admin.VERSION_EDIT}
+              element={<AdminVersionEditPage />}
+            />
+          </Route>
+          <Route
+            element={
+              <AdminRootRoute
+                action={ADMIN_ACTIONS.READ}
+                resource={ADMIN_RESOURCES.USER_VERSIONS}
+                superAdminOnly
+              />
+            }
+          >
+            <Route
+              path={AppRoutes.client.protected.admin.USER_VERSIONS}
+              element={<AdminUserVersionsPage />}
+            />
+            <Route
+              path={AppRoutes.client.protected.admin.VERSION_INSTALLS}
+              element={<AdminUserVersionsPage />}
             />
           </Route>
         </Route>

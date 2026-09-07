@@ -13,12 +13,17 @@ import {
 import type { IApiPagination } from "../../../../models";
 import { iconsLib } from "../../../../assets";
 import {
+  Button,
   Dropdown,
   DropdownSizes,
   getCategoryBadgeVariant,
   getPriorityBadgeVariant,
   StatusBadge,
 } from "../../../../design";
+import {
+  ButtonTypes,
+  ButtonVariants,
+} from "../../../../design/constants";
 import { formatAdminDate } from "../../../../helpers";
 import type { IAdminFeedback } from "../types";
 import {
@@ -190,7 +195,28 @@ export const AdminFeedbacksPage: React.FC = () => {
             </div>
             {item.platform && (
               <div className="text-caption text-base-content opacity-60 text-xs">
-                {item.platform} • {item.app_version || "web"}
+                {item.platform}
+                {" • "}
+                {item.app_version && item.version_id ? (
+                  <Button
+                    type={ButtonTypes.BUTTON}
+                    variant={ButtonVariants.TERTIARY}
+                    className="h-auto min-h-0 p-0 text-xs font-medium text-primary underline-offset-2 hover:underline"
+                    onClick={() => {
+                      if (!item.version_id) return;
+                      navigate(
+                        AppRoutes.withId(
+                          AppRoutes.client.protected.admin.VERSION_INSTALLS,
+                          item.version_id,
+                        ),
+                      );
+                    }}
+                  >
+                    {item.app_version}
+                  </Button>
+                ) : (
+                  item.app_version || "web"
+                )}
               </div>
             )}
           </div>
@@ -241,7 +267,7 @@ export const AdminFeedbacksPage: React.FC = () => {
         ),
       },
     ],
-    [t],
+    [navigate, t],
   );
 
   return (

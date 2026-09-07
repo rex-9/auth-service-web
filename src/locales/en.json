@@ -17,13 +17,22 @@
 
   "user": {
     "profile": "User Profile",
-    "change_avatar": "Change Avatar",
-    "avatar_hint": "Upload a new profile picture (PNG, JPG, WebP supported)",
-    "select_image": "Choose Image",
-    "upload_avatar": "Upload Avatar",
     "account_info": "Account Information",
     "roles": "Roles",
-    "permissions": "Permissions"
+    "permissions": "Permissions",
+    "edit_avatar": "Change profile photo",
+    "avatar_hint": "Upload a new profile picture (PNG, JPG, WebP supported)",
+    "email": {
+      "label": "Email",
+      "helper": "Email cannot be changed."
+    },
+    "errors": {
+      "update": "Failed to update profile",
+      "upload_avatar": "Failed to upload profile photo"
+    },
+    "toasts": {
+      "update_success": "Profile updated successfully"
+    }
   },
 
   "feedback": {
@@ -287,7 +296,8 @@
         "iam": "IAM",
         "support": "Support",
         "observability": "Observability",
-        "media": "Media"
+        "media": "Media",
+        "version_management": "Version Management"
       },
       "items": {
         "analytics": "Analytics",
@@ -300,7 +310,9 @@
         "roles": "Roles",
         "feedback": "Feedback Inbox",
         "logs": "Client Logs & Telemetry",
-        "assets": "Assets"
+        "assets": "Assets",
+        "versions": "Versions",
+        "user_versions": "User Versions"
       }
     },
     "common": {
@@ -1128,6 +1140,99 @@
         "online": "Online",
         "refresh": "Refresh Stats",
         "refreshing": "Refreshing..."
+      }
+    },
+    "versions": {
+      "title": "Versions",
+      "description": "Publish app versions, force updates, and review install counts.",
+      "recycle_title": "Discarded Versions",
+      "recycle_description": "Restore discarded app versions. Versions are never permanently destroyed.",
+      "create_title": "Create Version",
+      "edit_title": "Edit Version",
+      "tabs": {
+        "active_versions": "Active Versions",
+        "recycle_bin": "Recycle Bin"
+      },
+      "status": {
+        "draft": "Draft",
+        "published": "Published",
+        "yanked": "Yanked"
+      },
+      "filters": {
+        "status": "Status",
+        "all_statuses": "All statuses"
+      },
+      "table": {
+        "number": "Number",
+        "title": "Title",
+        "status": "Status",
+        "force_update": "Force update",
+        "force": "Force",
+        "installs": "Installs",
+        "released_at": "Released"
+      },
+      "form": {
+        "number_label": "Version number",
+        "number_placeholder": "1.4.0",
+        "number_helper": "Semver in the form x.y.z. Must be unique among active versions.",
+        "number_error": "Enter a valid semver number such as 1.4.0.",
+        "title_label": "Title",
+        "title_placeholder": "Release title",
+        "title_error": "Title is required.",
+        "description_label": "Release notes",
+        "description_placeholder": "What changed in this version",
+        "status_label": "Status",
+        "force_update_label": "Force update",
+        "ios_build_label": "iOS build number",
+        "android_build_label": "Android build number",
+        "build_placeholder": "Optional",
+        "build_helper": "Optional integer greater than 0. Leave empty to clear.",
+        "build_number_error": "Build number must be an integer greater than 0.",
+        "released_at_label": "Released at",
+        "install_count_label": "Install count",
+        "not_released": "Not released yet",
+        "create_version": "Create version",
+        "save_version": "Save version"
+      },
+      "toasts": {
+        "create_success": "App version created successfully",
+        "update_success": "App version updated successfully",
+        "discard_success": "App version discarded successfully",
+        "restore_success": "App version restored successfully"
+      },
+      "errors": {
+        "load_list": "Failed to load app versions",
+        "load_one": "Failed to load app version",
+        "create": "Failed to create app version",
+        "update": "Failed to update app version",
+        "discard": "Failed to discard app version",
+        "restore": "Failed to restore app version"
+      }
+    },
+    "user_versions": {
+      "title": "User Versions",
+      "title_with_version": "{{number}} — {{title}}",
+      "description": "Current install snapshot per user and platform across every version.",
+      "scoped_description": "Current install snapshot per user and platform for this version.",
+      "back_to_versions": "Back to versions",
+      "empty_desc": "No installs have been reported yet.",
+      "filters": {
+        "platform": "Platform",
+        "all_platforms": "All platforms"
+      },
+      "platforms": {
+        "ios": "iOS",
+        "android": "Android"
+      },
+      "table": {
+        "user": "User",
+        "platform": "Platform",
+        "number": "Number",
+        "build": "Build",
+        "last_seen": "Last seen"
+      },
+      "errors": {
+        "load_list": "Failed to load app installs"
       }
     }
   },

@@ -15,6 +15,7 @@ export interface IFileInputProps {
   fullWidth?: boolean;
   className?: string;
   multiple?: boolean;
+  trigger?: React.ReactNode;
   onChange?: (file: File | null) => void;
   onFilesChange?: (files: File[]) => void;
 }
@@ -29,6 +30,7 @@ export const FileInput: React.FC<IFileInputProps> = ({
   fullWidth = true,
   className,
   multiple = false,
+  trigger,
   onChange,
   onFilesChange,
 }) => {
@@ -53,6 +55,29 @@ export const FileInput: React.FC<IFileInputProps> = ({
     e.target.value = "";
   };
 
+  const triggerControl = trigger ? (
+    <div
+      className="inline-flex"
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        handleClick();
+      }}
+    >
+      {trigger}
+    </div>
+  ) : (
+    <Button
+      variant={ButtonVariants.SECONDARY}
+      size={ComponentSizes.MD}
+      disabled={disabled}
+      onClick={handleClick}
+      className="w-full sm:w-auto"
+    >
+      {buttonText}
+    </Button>
+  );
+
   return (
     <div
       className={cn("flex flex-col gap-1", fullWidth && "w-full", className)}
@@ -75,15 +100,7 @@ export const FileInput: React.FC<IFileInputProps> = ({
         aria-hidden="true"
       />
 
-      <Button
-        variant={ButtonVariants.SECONDARY}
-        size={ComponentSizes.MD}
-        disabled={disabled}
-        onClick={handleClick}
-        className="w-full sm:w-auto"
-      >
-        {buttonText}
-      </Button>
+      {triggerControl}
 
       {displayText && (
         <span

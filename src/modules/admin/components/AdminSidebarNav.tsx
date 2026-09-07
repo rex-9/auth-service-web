@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import AppRoutes from "../../../AppRoutes";
 import { useAuth } from "../../../contexts";
 import { usePermissions } from "../../../hooks";
-import { ADMIN_ROLE_NAMES, hasAdminRole } from "../role";
+import { hasAdminRole } from "../role";
 import type { AdminResource } from "../role";
 import {
   ADMIN_ACTIONS,
@@ -109,6 +109,26 @@ const navSections: IAdminNavSection[] = [
     ],
   },
   {
+    id: "version-management",
+    labelKey: AppLocales.Admin.Nav.Sections.VersionManagement,
+    items: [
+      {
+        labelKey: AppLocales.Admin.Nav.Items.Versions,
+        to: AppRoutes.client.protected.admin.VERSIONS,
+        resource: ADMIN_RESOURCES.VERSIONS,
+        icon: iconsLib.tag,
+        superAdminOnly: true,
+      },
+      {
+        labelKey: AppLocales.Admin.Nav.Items.UserVersions,
+        to: AppRoutes.client.protected.admin.USER_VERSIONS,
+        resource: ADMIN_RESOURCES.USER_VERSIONS,
+        icon: iconsLib.devicePhoneMobile,
+        superAdminOnly: true,
+      },
+    ],
+  },
+  {
     id: "media",
     labelKey: AppLocales.Admin.Nav.Sections.Media,
     items: [
@@ -155,10 +175,8 @@ export const AdminSidebarNav: React.FC<IAdminSidebarNavProps> = ({
     Record<string, boolean>
   >({});
   const { currentUser } = useAuth();
-  const { can, isLoading } = usePermissions();
+  const { can, isLoading, isSuperAdmin } = usePermissions();
   const hasAdminAccess = hasAdminRole(currentUser?.role_names);
-  const isSuperAdmin =
-    currentUser?.role_names?.includes(ADMIN_ROLE_NAMES.SUPER_ADMIN) ?? false;
 
   const enabledItems = useMemo(
     () =>
