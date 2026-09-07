@@ -117,7 +117,7 @@ class AppRoutes {
 
       // Users
       USERS: AppRoutes.api("/users"), // GET
-      CURRENT_USER: AppRoutes.api("/users/current"), // GET
+      CURRENT_USER: AppRoutes.api("/users/current"), // GET, PUT
 
       IAM_PERMISSIONS: AppRoutes.api("/iam/permissions/current"), // GET
       IAM_ROLES: AppRoutes.api("/iam/roles/current"), // GET

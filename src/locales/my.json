@@ -17,13 +17,22 @@
 
   "user": {
     "profile": "ပရိုဖိုင်",
-    "change_avatar": "ပုံပြောင်းမည်",
-    "avatar_hint": "ပရိုဖိုင်ပုံအသစ် တင်ပါ (PNG, JPG, WebP)",
-    "select_image": "ပုံရွေးပါ",
-    "upload_avatar": "ပုံတင်မည်",
     "account_info": "အကောင့် အချက်အလက်",
     "roles": "ရာထူးများ",
-    "permissions": "ခွင့်ပြုချက်များ"
+    "permissions": "ခွင့်ပြုချက်များ",
+    "edit_avatar": "ပရိုဖိုင်ပုံ ပြောင်းမည်",
+    "avatar_hint": "ပရိုဖိုင်ပုံအသစ် တင်ပါ (PNG, JPG, WebP)",
+    "email": {
+      "label": "အီးမေးလ်",
+      "helper": "အီးမေးလ် ပြောင်း၍ မရပါ။"
+    },
+    "errors": {
+      "update": "ပရိုဖိုင် ပြင်ဆင်ခြင်း မအောင်မြင်ပါ",
+      "upload_avatar": "ပရိုဖိုင်ပုံ တင်ခြင်း မအောင်မြင်ပါ"
+    },
+    "toasts": {
+      "update_success": "ပရိုဖိုင် ပြင်ဆင်ပြီးပါပြီ"
+    }
   },
 
   "feedback": {

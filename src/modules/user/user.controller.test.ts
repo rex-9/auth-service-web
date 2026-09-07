@@ -9,6 +9,7 @@ vi.mock("./user.service", () => ({
   default: {
     peekUser: vi.fn(),
     getCurrentUser: vi.fn(),
+    updateCurrentUser: vi.fn(),
     uploadImage: vi.fn(),
   },
 }));
@@ -111,6 +112,58 @@ describe("UserController", () => {
 
       const user = await UserController.getCurrentUser();
       expect(user).toBeNull();
+    });
+  });
+
+  describe("updateCurrentUser", () => {
+    it("returns the updated user from data.user", async () => {
+      const updatedUser = {
+        ...mockUser,
+        name: "Alice Updated",
+        username: "alice_new",
+      };
+
+      vi.mocked(UserService.updateCurrentUser).mockResolvedValue({
+        data: {
+          status: { code: 200, success: true, message: "Updated" },
+          data: { user: updatedUser },
+        },
+      } as never);
+
+      const result = await UserController.updateCurrentUser({
+        name: "Alice Updated",
+        username: "alice_new",
+      });
+
+      expect(UserService.updateCurrentUser).toHaveBeenCalledWith({
+        name: "Alice Updated",
+        username: "alice_new",
+      });
+      expect(result.success).toBe(true);
+      expect(result.user).toEqual(updatedUser);
+      expect(result.message).toBe("Updated");
+    });
+
+    it("returns error when username is taken", async () => {
+      vi.mocked(UserService.updateCurrentUser).mockResolvedValue({
+        data: {
+          status: {
+            code: 422,
+            success: false,
+            message: "Unprocessable",
+            error: "Username has already been taken",
+          },
+          data: null,
+        },
+      } as never);
+
+      const result = await UserController.updateCurrentUser({
+        name: "Alice Updated",
+        username: "taken",
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.error).toBe("Username has already been taken");
     });
   });
 

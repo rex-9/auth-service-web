@@ -17,13 +17,22 @@
 
   "user": {
     "profile": "User Profile",
-    "change_avatar": "Change Avatar",
-    "avatar_hint": "Upload a new profile picture (PNG, JPG, WebP supported)",
-    "select_image": "Choose Image",
-    "upload_avatar": "Upload Avatar",
     "account_info": "Account Information",
     "roles": "Roles",
-    "permissions": "Permissions"
+    "permissions": "Permissions",
+    "edit_avatar": "Change profile photo",
+    "avatar_hint": "Upload a new profile picture (PNG, JPG, WebP supported)",
+    "email": {
+      "label": "Email",
+      "helper": "Email cannot be changed."
+    },
+    "errors": {
+      "update": "Failed to update profile",
+      "upload_avatar": "Failed to upload profile photo"
+    },
+    "toasts": {
+      "update_success": "Profile updated successfully"
+    }
   },
 
   "feedback": {

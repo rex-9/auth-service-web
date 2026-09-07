@@ -1103,13 +1103,20 @@ export const AppLocales = {
   },
   User: {
     Profile: "user.profile",
-    ChangeAvatar: "user.change_avatar",
-    AvatarHint: "user.avatar_hint",
-    SelectImage: "user.select_image",
-    UploadAvatar: "user.upload_avatar",
     AccountInfo: "user.account_info",
     Roles: "user.roles",
     Permissions: "user.permissions",
+    EditAvatar: "user.edit_avatar",
+    AvatarHint: "user.avatar_hint",
+    EmailLabel: "user.email.label",
+    EmailHelper: "user.email.helper",
+    Errors: {
+      Update: "user.errors.update",
+      UploadAvatar: "user.errors.upload_avatar",
+    },
+    Toasts: {
+      UpdateSuccess: "user.toasts.update_success",
+    },
   },
   Feedback: {
     Title: "feedback.title",
