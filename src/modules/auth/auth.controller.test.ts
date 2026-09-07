@@ -150,6 +150,30 @@ describe("AuthController", () => {
       expect(result.success).toBe(true);
       expect(result.token).toBe("complete-jwt");
     });
+
+    it("handles failure when completing Google sign-in with error response", async () => {
+      vi.mocked(AuthService.completeGoogleSignIn).mockResolvedValue({
+        data: {
+          status: { code: 422, success: false, message: "Challenge expired or invalid", error: "Invalid challenge token" },
+          data: null as any,
+        },
+      });
+
+      const result = await AuthController.completeGoogleSignIn("123456", "expired-chal");
+      expect(result.success).toBe(false);
+      expect(result.errorMessage).toBe("Invalid challenge token");
+      expect(result.statusCode).toBe(422);
+    });
+
+    it("handles network rejection gracefully", async () => {
+      vi.mocked(AuthService.completeGoogleSignIn).mockRejectedValue(
+        new Error("Network connection dropped"),
+      );
+
+      await expect(
+        AuthController.completeGoogleSignIn("123456", "bad-chal"),
+      ).rejects.toThrow("Network connection dropped");
+    });
   });
 
   describe("signUpWithEmail", () => {

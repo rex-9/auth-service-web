@@ -939,10 +939,10 @@ d3-timer@^3.0.1:
   resolved "https://registry.npmjs.org/d3-timer/-/d3-timer-3.0.1.tgz"
   integrity sha512-ndfJ/JxxMd3nw31uyKoY2naivF+r29V+Lc0svZxe1JvvIRmi8hUsrMvdOwgS1o6uBHmiz91geQ0ylPP0aj1VUA==
 
-daisyui@^5.6.22:
-  version "5.6.22"
-  resolved "https://registry.npmjs.org/daisyui/-/daisyui-5.6.22.tgz"
-  integrity sha512-V5OWQSty2aNGiHxvLIDq3hGkV9MQLZfZdcFUm4t7raz3va2a85dMBbW17s6X7VNoDyFAm5c6y+NQHWC7u8ZP+A==
+daisyui@^5.7.28:
+  version "5.7.28"
+  resolved "https://registry.npmjs.org/daisyui/-/daisyui-5.7.28.tgz"
+  integrity sha512-BxQap2QOj7NQy5nEsjTHRmybmUZP3t+O5G6vfdidZuptBsh/QyKN9wbdrGDZk198fMI3UyYnA/rCWlggZIhGnw==
 
 debug@^4.1.0, debug@^4.3.1, debug@^4.3.2, debug@^4.4.1, debug@^4.4.3, debug@4:
   version "4.4.3"

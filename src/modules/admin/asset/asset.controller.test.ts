@@ -77,6 +77,93 @@ describe("AdminAssetController", () => {
         search: "avatar",
       });
     });
+
+    it("handles server 500 error response gracefully on page load", async () => {
+      const mock500Response = {
+        data: {
+          status: {
+            code: 500,
+            success: false,
+            message: "Internal Server Error",
+            error: "Internal Server Error",
+          },
+          data: null,
+        },
+      };
+
+      vi.mocked(AdminAssetService.getAssets).mockResolvedValue(
+        mock500Response as never,
+      );
+
+      const result = await AdminAssetController.getAssets({
+        page: 1,
+        limit: 20,
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.assets).toEqual([]);
+      expect(result.pagination).toBeNull();
+      expect(result.error).toBe("Internal Server Error");
+    });
+
+    it("handles network error or rejected promise during assets fetch", async () => {
+      vi.mocked(AdminAssetService.getAssets).mockRejectedValue(
+        new Error("Network Error: 500"),
+      );
+
+      await expect(
+        AdminAssetController.getAssets({ page: 1 }),
+      ).rejects.toThrow("Network Error: 500");
+    });
+  });
+
+  describe("getAsset", () => {
+    it("returns parsed asset details on success", async () => {
+      const mockResponse = {
+        data: {
+          status: { code: 200, success: true, message: "OK" },
+          data: {
+            asset: {
+              id: "a1",
+              name: "dev/admin/avatar.png",
+              url: "https://example.com/avatar.png",
+              type: "avatar",
+            },
+          },
+        },
+      };
+
+      vi.mocked(AdminAssetService.getAsset).mockResolvedValue(
+        mockResponse as never,
+      );
+
+      const result = await AdminAssetController.getAsset("a1");
+      expect(result.success).toBe(true);
+      expect(result.asset?.name).toBe("dev/admin/avatar.png");
+    });
+
+    it("returns error and failure when asset belongs to another environment (404 Not Found)", async () => {
+      const mock404Response = {
+        data: {
+          status: {
+            code: 404,
+            success: false,
+            message: "Asset not found",
+            error: "Not Found",
+          },
+          data: null,
+        },
+      };
+
+      vi.mocked(AdminAssetService.getAsset).mockResolvedValue(
+        mock404Response as never,
+      );
+
+      const result = await AdminAssetController.getAsset("foreign-env-asset-id");
+      expect(result.success).toBe(false);
+      expect(result.asset).toBeUndefined();
+      expect(result.error).toBe("Not Found");
+    });
   });
 
   describe("uploadAsset", () => {
