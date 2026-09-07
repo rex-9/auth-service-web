@@ -59,6 +59,7 @@ import { formatAdminDate } from "../../../../helpers";
 import { usePermissions } from "../../../../hooks/usePermissions";
 import { AdminAssetStorageStats } from "../components";
 import { Admin } from "../..";
+import { NOTIFICATION_SOCKET_TYPES } from "../../../notification";
 
 interface IAdminAssetsPageProps {
   view?: TAdminViewMode;
@@ -108,7 +109,15 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
   const [isDiscarding, setIsDiscarding] = useState(false);
   const [compressingId, setCompressingId] = useState<string | null>(null);
   const pendingSocketUpdates = useRef<
-    Map<string, { status: string; size_bytes?: number; url?: string }>
+    Map<
+      string,
+      {
+        status: string;
+        size_bytes?: number;
+        url?: string;
+        thumbnail?: IAsset["thumbnail"];
+      }
+    >
   >(new Map());
 
   // Discarded view state
@@ -187,9 +196,10 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
       const eventType =
         typeof event.data?.type === "string" ? event.data.type : "";
       if (
-        eventType !== "asset_compressed" &&
-        eventType !== "asset_compression_failed" &&
-        eventType !== "asset_compressing"
+        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSED &&
+        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSION_FAILED &&
+        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSING &&
+        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_THUMBNAIL_GENERATED
       ) {
         return;
       }
@@ -206,6 +216,10 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
           : undefined;
       const url =
         typeof event.data?.url === "string" ? event.data.url : undefined;
+      const thumbnail =
+        event.data?.thumbnail && typeof event.data.thumbnail === "object"
+          ? (event.data.thumbnail as IAsset["thumbnail"])
+          : undefined;
 
       setAssets((prevAssets) => {
         let matched = false;
@@ -217,6 +231,7 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
               status: (status as IAsset["status"]) || a.status,
               size_bytes: sizeBytes !== undefined ? sizeBytes : a.size_bytes,
               url: url !== undefined ? url : a.url,
+              thumbnail: thumbnail !== undefined ? thumbnail : a.thumbnail,
             };
           }
           return a;
@@ -227,6 +242,7 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
             status,
             size_bytes: sizeBytes,
             url,
+            thumbnail,
           });
           return prevAssets;
         }
@@ -502,12 +518,13 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
         className: "w-14",
         render: (asset) => {
           const isImg = isImageAsset(asset);
+          const previewUrl = asset.thumbnail?.url || (isImg ? asset.url : null);
 
           return (
             <div className="w-10 h-10 rounded overflow-hidden bg-base-200 flex items-center justify-center">
-              {isImg ? (
+              {previewUrl ? (
                 <Image
-                  src={asset.url}
+                  src={previewUrl}
                   alt={asset.name}
                   referrerPolicy="no-referrer"
                   className={`w-full h-full object-cover ${!isActive ? "opacity-50 grayscale" : ""}`}
@@ -738,10 +755,12 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
               {
                 value: ADMIN_VIEW_MODES.ACTIVE,
                 label: t(AppLocales.Admin.Assets.Tabs.ActiveAssets),
+                icon: iconsLib.photo,
               },
               {
                 value: ADMIN_VIEW_MODES.DISCARDED,
                 label: t(AppLocales.Admin.Assets.Tabs.RecycleBin),
+                icon: iconsLib.trash,
               },
             ]}
           />

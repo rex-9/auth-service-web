@@ -36,10 +36,10 @@ export const Toast: React.FC<IToastProps> = ({
   }, [duration, onClose]);
 
   const typeClasses: Record<TToastTypes, string> = {
-    success: "alert-success",
-    info: "alert-info",
-    warning: "alert-warning",
-    error: "alert-error",
+    success: "bg-success/15 border-success/30",
+    info: "bg-info/15 border-info/30",
+    warning: "bg-warning/15 border-warning/30",
+    error: "bg-error/15 border-error/30",
   };
 
   const defaultIcons: Record<TToastTypes, React.ReactNode> = {
@@ -65,7 +65,7 @@ export const Toast: React.FC<IToastProps> = ({
   };
 
   return (
-    <div className="toast toast-top toast-center z-[9999] animate-fade-in">
+    <div className="toast toast-top toast-center z-9999 animate-fade-in">
       <div
         className={cn(
           "alert shadow-lg max-w-md border border-base-300",
@@ -85,7 +85,7 @@ export const Toast: React.FC<IToastProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="btn btn-ghost btn-xs btn-square flex-shrink-0 opacity-70 hover:opacity-100"
+            className="btn btn-ghost btn-xs btn-square shrink-0 opacity-70 hover:opacity-100"
             aria-label="Close alert"
           >
             <iconsLib.close className="w-4 h-4" />

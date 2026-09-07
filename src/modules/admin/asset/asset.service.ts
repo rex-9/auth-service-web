@@ -102,6 +102,41 @@ class AssetService {
     );
   }
 
+  async getDownloadUrl(
+    id: string,
+  ): Promise<IApiResponse<IApiEnvelope<{ download_url: string }>>> {
+    return api.get<{ download_url: string }>(
+      AppRoutes.withId(AppRoutes.server.protected.admin.ASSET_DOWNLOAD, id),
+    );
+  }
+
+  async regenerateThumbnail(
+    id: string,
+  ): Promise<IApiResponse<IApiEnvelope<{ asset: IAdminAsset }>>> {
+    return api.post<{ asset: IAdminAsset }>(
+      AppRoutes.withId(
+        AppRoutes.server.protected.admin.ASSET_THUMBNAIL_REGENERATE,
+        id,
+      ),
+    );
+  }
+
+  async uploadThumbnail(
+    id: string,
+    file: File,
+  ): Promise<IApiResponse<IApiEnvelope<{ asset: IAdminAsset }>>> {
+    const formData = new FormData();
+    formData.append("file", file);
+    return api.post<{ asset: IAdminAsset }>(
+      AppRoutes.withId(
+        AppRoutes.server.protected.admin.ASSET_THUMBNAIL_UPLOAD,
+        id,
+      ),
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } },
+    );
+  }
+
   async getStorageStats(): Promise<
     IApiResponse<IApiEnvelope<{ stats: IStorageStats }>>
   > {

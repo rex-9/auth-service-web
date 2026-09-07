@@ -240,6 +240,31 @@ class AssetController {
     };
   }
 
+  async getDownloadUrl(id: string) {
+    const response = await Admin.AssetService.getDownloadUrl(id);
+    const { status, data } = response.data || {};
+    if (status?.success && data && "download_url" in data) {
+      return { success: true, url: data.download_url as string };
+    }
+    return { success: false, error: getApiError(response, "Failed to download asset") };
+  }
+
+  async regenerateThumbnail(id: string) {
+    const response = await Admin.AssetService.regenerateThumbnail(id);
+    const { status, data } = response.data || {};
+    return status?.success
+      ? { success: true, asset: data && "asset" in data ? parseRecord(data.asset) : undefined, message: status.message }
+      : { success: false, error: getApiError(response, "Failed to regenerate thumbnail") };
+  }
+
+  async uploadThumbnail(id: string, file: File) {
+    const response = await Admin.AssetService.uploadThumbnail(id, file);
+    const { status, data } = response.data || {};
+    return status?.success
+      ? { success: true, asset: data && "asset" in data ? parseRecord(data.asset) : undefined, message: status.message }
+      : { success: false, error: getApiError(response, "Failed to upload thumbnail") };
+  }
+
   async getStorageStats(): Promise<{
     success: boolean;
     stats?: IStorageStats;
