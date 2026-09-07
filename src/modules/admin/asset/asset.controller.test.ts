@@ -298,6 +298,11 @@ describe("AdminAssetController", () => {
         bucket: "rexone",
         bucket_bytes: 500000,
         bucket_objects: 12,
+        partitions: {
+          dev: { bytes: 100000, objects: 3 },
+          uat: { bytes: 150000, objects: 4 },
+          prod: { bytes: 250000, objects: 5 },
+        },
         disk_available_bytes: 40000000000,
         disk_total_bytes: 50000000000,
         disk_used_percent: 20,
@@ -328,6 +333,7 @@ describe("AdminAssetController", () => {
       expect(result.stats).toEqual(mockStats);
       expect(result.stats?.provider).toBe("garage");
       expect(result.stats?.bucket_bytes).toBe(500000);
+      expect(result.stats?.partitions?.prod.bytes).toBe(250000);
       expect(AdminAssetService.getStorageStats).toHaveBeenCalled();
     });
   });

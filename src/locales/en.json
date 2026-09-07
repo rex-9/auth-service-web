@@ -1108,6 +1108,9 @@
         "vps_used": "Used",
         "vps_low_warning": "Warning: VPS disk space is critically low (<15% free). Consider upgrading VPS disk capacity soon.",
         "db_assets": "Tracked Assets",
+        "partitions_title": "Garage Environment Partitions",
+        "partitions_description": "Actual object storage usage across every environment namespace.",
+        "partition_occupied": "storage occupied",
         "refresh": "Refresh Stats",
         "refreshing": "Refreshing..."
       }

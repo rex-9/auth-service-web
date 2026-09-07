@@ -54,6 +54,17 @@ export const ASSET_STATUSES = {
 
 export type TAssetStatus = (typeof ASSET_STATUSES)[keyof typeof ASSET_STATUSES];
 
+export const STORAGE_PARTITIONS = {
+  DEV: "dev",
+  UAT: "uat",
+  PROD: "prod",
+} as const;
+
+export type TStoragePartition =
+  (typeof STORAGE_PARTITIONS)[keyof typeof STORAGE_PARTITIONS];
+
+export const STORAGE_PARTITION_VALUES = Object.values(STORAGE_PARTITIONS);
+
 export const IMAGE_ASSET_TYPES: readonly string[] = [
   ASSET_TYPES.AVATAR,
   ASSET_TYPES.THUMBNAIL,

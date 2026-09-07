@@ -13,7 +13,7 @@ import {
 } from "../../../../design/constants";
 import { AppLocales, useTranslate } from "../../../../locales";
 import { AdminKpiCard } from "../../components";
-import { formatAssetFileSize } from "../constants";
+import { formatAssetFileSize, STORAGE_PARTITION_VALUES } from "../constants";
 import type { IStorageStats } from "../types";
 import { Admin } from "../..";
 
@@ -78,7 +78,7 @@ export const AdminAssetStorageStats: React.FC<IAdminAssetStorageStatsProps> = ({
         className={`rounded-md border border-error/30 bg-base-100 p-4 flex items-center justify-between shadow-sm ${className}`}
       >
         <div className="flex items-center gap-2 text-error text-body-s">
-          <iconsLib.warning className="w-5 h-5 flex-shrink-0" />
+          <iconsLib.warning className="w-5 h-5 shrink-0" />
           <span>{error}</span>
         </div>
         <Button
@@ -107,6 +107,11 @@ export const AdminAssetStorageStats: React.FC<IAdminAssetStorageStatsProps> = ({
 
   const providerLabel =
     stats.provider === "garage" ? "Garage S3" : stats.provider.toUpperCase();
+  const partitions = STORAGE_PARTITION_VALUES.map((name) => ({
+    name,
+    bytes: stats.partitions?.[name]?.bytes ?? 0,
+    objects: stats.partitions?.[name]?.objects ?? 0,
+  }));
 
   return (
     <div className={`space-y-4 ${className}`}>
@@ -212,10 +217,47 @@ export const AdminAssetStorageStats: React.FC<IAdminAssetStorageStatsProps> = ({
         />
       </div>
 
+      {stats.provider === "garage" && (
+        <div className="rounded-xl border border-base-200 bg-base-100 p-4">
+          <div className="mb-3">
+            <h4 className="font-semibold text-body-s text-base-content">
+              {t(AppLocales.Admin.Assets.StorageStats.PartitionsTitle)}
+            </h4>
+            <p className="mt-1 text-caption text-base-content/60">
+              {t(AppLocales.Admin.Assets.StorageStats.PartitionsDescription)}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {partitions.map((partition) => (
+              <div
+                key={partition.name}
+                className="rounded-lg border border-base-200 bg-base-200/30 p-4"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-mono text-caption font-semibold uppercase text-primary">
+                    {partition.name}/
+                  </span>
+                  <Badge variant="secondary" className="text-xs">
+                    {partition.objects.toLocaleString()}{" "}
+                    {t(AppLocales.Admin.Assets.StorageStats.Objects)}
+                  </Badge>
+                </div>
+                <div className="mt-3 text-heading-s font-semibold text-base-content">
+                  {formatAssetFileSize(partition.bytes)}
+                </div>
+                <div className="mt-1 text-caption text-base-content/60">
+                  {t(AppLocales.Admin.Assets.StorageStats.PartitionOccupied)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Critical Low Disk Warning if free space < 15% */}
       {isLowDisk && (
         <div className="rounded-md border border-warning/30 bg-warning/10 p-3.5 flex items-center gap-2.5 text-warning text-caption">
-          <iconsLib.warning className="w-5 h-5 flex-shrink-0" />
+          <iconsLib.warning className="w-5 h-5 shrink-0" />
           <span>{t(AppLocales.Admin.Assets.StorageStats.VpsLowWarning)}</span>
         </div>
       )}

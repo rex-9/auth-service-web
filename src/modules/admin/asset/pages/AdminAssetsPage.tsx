@@ -78,7 +78,7 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
 
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { can } = usePermissions();
+  const { can, isSuperAdmin } = usePermissions();
 
   const page = parseInt(searchParams.get("page") || "1", 10);
   const searchQuery = searchParams.get("search") || "";
@@ -528,7 +528,7 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
         sortKey: ADMIN_ASSET_COLUMNS.NAME,
         className: "w-56 max-w-[220px] sm:max-w-[260px]",
         render: (asset) => (
-          <div className="flex flex-col min-w-0 max-w-[220px] sm:max-w-[260px]">
+          <div className="flex flex-col min-w-0 max-w-55 sm:max-w-65">
             <span
               className="font-medium text-base-content truncate"
               title={asset.name}
@@ -748,7 +748,7 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
         )}
       </PageHeader>
 
-      {isActive && <AdminAssetStorageStats />}
+      {isActive && isSuperAdmin && <AdminAssetStorageStats />}
 
       {isActive && (
         <div className="flex flex-col sm:flex-row gap-4 items-center bg-base-100 p-4 rounded-xl border border-base-200">

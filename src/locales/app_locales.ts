@@ -980,6 +980,10 @@ export const AppLocales = {
         VpsUsed: "admin.assets.storage_stats.vps_used",
         VpsLowWarning: "admin.assets.storage_stats.vps_low_warning",
         DbAssets: "admin.assets.storage_stats.db_assets",
+        PartitionsTitle: "admin.assets.storage_stats.partitions_title",
+        PartitionsDescription:
+          "admin.assets.storage_stats.partitions_description",
+        PartitionOccupied: "admin.assets.storage_stats.partition_occupied",
         Refresh: "admin.assets.storage_stats.refresh",
         Refreshing: "admin.assets.storage_stats.refreshing",
       },
