@@ -1,11 +1,11 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
-import { useAuth } from "../contexts";
-import { NotFoundPage } from "../design/pages";
-import { usePermissions } from "../hooks";
-import type { AdminAction, AdminResource } from "../modules/admin/role";
-import { hasAdminRole } from "../modules/admin/role";
-import { AdminLayout } from "../modules/admin/components/AdminLayout";
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import { useAuth } from '../contexts';
+import { NotFoundPage } from '../design/pages';
+import { usePermissions } from '../hooks';
+import type { AdminAction, AdminResource } from '../modules/admin/role';
+import { hasAdminRole } from '../modules/admin/role';
+import { AdminLayout } from '../modules/admin/components/AdminLayout';
 
 interface IAdminRootRouteProps {
   action: AdminAction;
@@ -34,11 +34,5 @@ export const AdminRootRoute: React.FC<IAdminRootRouteProps> = ({
     ? isSuperAdmin
     : hasAdminAccess && can(action, resource);
 
-  return isAllowed ? (
-    <AdminLayout>
-      <Outlet />
-    </AdminLayout>
-  ) : (
-    <NotFoundPage />
-  );
+  return <AdminLayout>{isAllowed ? <Outlet /> : <NotFoundPage />}</AdminLayout>;
 };
