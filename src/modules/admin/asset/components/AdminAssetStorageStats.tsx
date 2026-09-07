@@ -5,14 +5,16 @@ import {
   Button,
   ButtonSizes,
   ButtonVariants,
+  MetricIndicators,
+  MetricOverviewCard,
   ProgressBar,
+  SegmentedProgressBar,
 } from "../../../../design";
 import {
   ProgressBarSizes,
   ProgressBarVariants,
 } from "../../../../design/constants";
 import { AppLocales, useTranslate } from "../../../../locales";
-import { AdminKpiCard } from "../../components";
 import { formatAssetFileSize, STORAGE_PARTITION_VALUES } from "../constants";
 import type { IStorageStats } from "../types";
 import { Admin } from "../..";
@@ -50,6 +52,8 @@ export const AdminAssetStorageStats: React.FC<IAdminAssetStorageStatsProps> = ({
   }, []);
 
   useEffect(() => {
+    // Initial remote synchronization intentionally drives this component's loading state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchStats();
   }, [fetchStats]);
 
@@ -112,6 +116,12 @@ export const AdminAssetStorageStats: React.FC<IAdminAssetStorageStatsProps> = ({
     bytes: stats.partitions?.[name]?.bytes ?? 0,
     objects: stats.partitions?.[name]?.objects ?? 0,
   }));
+  const trackedPartitions = STORAGE_PARTITION_VALUES.map((name) => ({
+    name,
+    bytes: stats.tracked_partitions?.[name]?.bytes ?? 0,
+    objects: stats.tracked_partitions?.[name]?.objects ?? 0,
+  }));
+  const partitionColors = ["bg-info", "bg-warning", "bg-success"];
 
   return (
     <div className={`space-y-4 ${className}`}>
@@ -148,111 +158,145 @@ export const AdminAssetStorageStats: React.FC<IAdminAssetStorageStatsProps> = ({
         </Button>
       </div>
 
-      {/* Main KPI Cards Grid (4-Column Layout matching Analytics Page) */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Card 1: Garage Storage Occupied */}
-        <AdminKpiCard
-          title={t(AppLocales.Admin.Assets.StorageStats.Occupied)}
-          value={formatAssetFileSize(stats.bucket_bytes)}
-          icon={iconsLib.archiveBox}
-          subtitle={`${stats.bucket_objects ?? 0} ${t(AppLocales.Admin.Assets.StorageStats.Objects)} stored in ${stats.bucket || "bucket"}`}
-        />
-
-        {/* Card 2: VPS Host Disk Space */}
-        <AdminKpiCard
-          title={t(AppLocales.Admin.Assets.StorageStats.VpsDisk)}
-          value={
-            hasDiskData
-              ? `${stats.disk_free_percent ?? 0}% ${t(AppLocales.Admin.Assets.StorageStats.VpsAvailable)}`
-              : "N/A"
-          }
-          icon={iconsLib.cube}
-          iconClassName={
-            isLowDisk
-              ? "text-warning bg-warning/10"
-              : "text-primary bg-base-200"
-          }
-          extra={
-            hasDiskData ? (
-              <ProgressBar
-                value={stats.disk_used_percent || 0}
-                size={ProgressBarSizes.SM}
-                variant={progressVariant}
-              />
-            ) : undefined
-          }
-          subtitle={
-            hasDiskData
-              ? `${formatAssetFileSize(stats.disk_available_bytes)} ${t(AppLocales.Admin.Assets.StorageStats.VpsAvailable).toLowerCase()} / ${formatAssetFileSize(stats.disk_total_bytes)} ${t(AppLocales.Admin.Assets.StorageStats.VpsTotal).toLowerCase()}`
-              : stats.provider === "garage"
-                ? "Host disk unmetered"
-                : "Unmetered / Cloud"
-          }
-        />
-
-        {/* Card 3: Tracked Assets in DB */}
-        <AdminKpiCard
-          title={t(AppLocales.Admin.Assets.StorageStats.DbAssets)}
-          value={stats.db_assets_count.toLocaleString()}
-          icon={iconsLib.document}
-          subtitle={`${formatAssetFileSize(stats.db_assets_bytes)} tracked in database`}
-        />
-
-        {/* Card 4: Cluster Health / Provider Status */}
-        <AdminKpiCard
-          title={t(AppLocales.Admin.Assets.StorageStats.Provider)}
-          value={providerLabel}
-          icon={iconsLib.check}
-          iconClassName="text-emerald-500 bg-emerald-500/10"
-          badge={
-            <span className="rounded bg-emerald-500/10 px-2 py-0.5 text-caption font-semibold text-emerald-500">
-              Online
-            </span>
-          }
-          subtitle={
-            stats.node_capacity_bytes && stats.node_capacity_bytes > 0
-              ? `Capacity: ${formatAssetFileSize(stats.node_capacity_bytes)}`
-              : "Active & Connected"
-          }
-        />
-      </div>
-
-      {stats.provider === "garage" && (
-        <div className="rounded-xl border border-base-200 bg-base-100 p-4">
-          <div className="mb-3">
-            <h4 className="font-semibold text-body-s text-base-content">
-              {t(AppLocales.Admin.Assets.StorageStats.PartitionsTitle)}
-            </h4>
-            <p className="mt-1 text-caption text-base-content/60">
-              {t(AppLocales.Admin.Assets.StorageStats.PartitionsDescription)}
-            </p>
-          </div>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {partitions.map((partition) => (
-              <div
-                key={partition.name}
-                className="rounded-lg border border-base-200 bg-base-200/30 p-4"
-              >
+      <MetricOverviewCard
+        sections={[
+          {
+            key: "storage",
+            content: (
+              <div className="space-y-3">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="font-mono text-caption font-semibold uppercase text-primary">
-                    {partition.name}/
-                  </span>
-                  <Badge variant="secondary" className="text-xs">
-                    {partition.objects.toLocaleString()}{" "}
-                    {t(AppLocales.Admin.Assets.StorageStats.Objects)}
-                  </Badge>
+                  <div>
+                    <div className="text-body-s font-medium text-base-content/70">
+                      {t(AppLocales.Admin.Assets.StorageStats.Occupied)}
+                    </div>
+                    <div className="mt-2 text-heading-m font-bold">
+                      {formatAssetFileSize(stats.bucket_bytes)}
+                    </div>
+                  </div>
+                  <iconsLib.archiveBox className="h-5 w-5 text-primary" />
                 </div>
-                <div className="mt-3 text-heading-s font-semibold text-base-content">
-                  {formatAssetFileSize(partition.bytes)}
-                </div>
-                <div className="mt-1 text-caption text-base-content/60">
-                  {t(AppLocales.Admin.Assets.StorageStats.PartitionOccupied)}
-                </div>
+                <SegmentedProgressBar
+                  ariaLabel={t(AppLocales.Admin.Assets.StorageStats.PartitionsTitle)}
+                  items={partitions.map((partition, index) => ({
+                    label: partition.name,
+                    value: partition.bytes,
+                    className: partitionColors[index],
+                  }))}
+                />
+                <MetricIndicators
+                  items={[
+                    {
+                      label: t(AppLocales.Admin.Assets.StorageStats.Total),
+                      value: formatAssetFileSize(stats.bucket_bytes),
+                      detail: `${stats.bucket_objects ?? 0} ${t(AppLocales.Admin.Assets.StorageStats.Objects)}`,
+                    },
+                    ...partitions.map((partition) => ({
+                      label: `${partition.name}/`,
+                      value: formatAssetFileSize(partition.bytes),
+                      detail: `${partition.objects.toLocaleString()} ${t(AppLocales.Admin.Assets.StorageStats.Objects)}`,
+                    })),
+                  ]}
+                />
               </div>
-            ))}
-          </div>
-        </div>
-      )}
+            ),
+          },
+          {
+            key: "disk",
+            content: (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <div className="text-body-s font-medium text-base-content/70">
+                      {t(AppLocales.Admin.Assets.StorageStats.VpsDisk)}
+                    </div>
+                    <div className="mt-2 text-heading-m font-bold">
+                      {hasDiskData
+                        ? `${stats.disk_free_percent ?? 0}% ${t(AppLocales.Admin.Assets.StorageStats.VpsAvailable)}`
+                        : "N/A"}
+                    </div>
+                  </div>
+                  <iconsLib.cube className="h-5 w-5 text-primary" />
+                </div>
+                {hasDiskData && (
+                  <ProgressBar
+                    value={stats.disk_used_percent || 0}
+                    size={ProgressBarSizes.SM}
+                    variant={progressVariant}
+                  />
+                )}
+                <MetricIndicators
+                  items={[
+                    {
+                      label: t(AppLocales.Admin.Assets.StorageStats.VpsUsed),
+                      value: `${stats.disk_used_percent ?? 0}%`,
+                      detail: formatAssetFileSize(
+                        (stats.disk_total_bytes ?? 0) -
+                          (stats.disk_available_bytes ?? 0),
+                      ),
+                    },
+                    {
+                      label: t(AppLocales.Admin.Assets.StorageStats.VpsAvailable),
+                      value: `${stats.disk_free_percent ?? 0}%`,
+                      detail: formatAssetFileSize(stats.disk_available_bytes),
+                    },
+                    {
+                      label: t(AppLocales.Admin.Assets.StorageStats.VpsTotal),
+                      value: formatAssetFileSize(stats.disk_total_bytes),
+                      detail: stats.node_capacity_bytes
+                        ? `${t(AppLocales.Admin.Assets.StorageStats.NodeCapacity)} ${formatAssetFileSize(stats.node_capacity_bytes)}`
+                        : undefined,
+                    },
+                  ]}
+                />
+              </div>
+            ),
+          },
+          {
+            key: "tracked",
+            content: (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <div className="text-body-s font-medium text-base-content/70">
+                      {t(AppLocales.Admin.Assets.StorageStats.DbAssets)}
+                    </div>
+                    <div className="mt-2 text-heading-m font-bold">
+                      {stats.db_assets_count.toLocaleString()}
+                    </div>
+                  </div>
+                  <span className="rounded bg-success/10 px-2 py-1 text-caption font-semibold text-success">
+                    {providerLabel} · {t(AppLocales.Admin.Assets.StorageStats.Online)}
+                  </span>
+                </div>
+                <SegmentedProgressBar
+                  ariaLabel={t(
+                    AppLocales.Admin.Assets.StorageStats.TrackedPartitions,
+                  )}
+                  items={trackedPartitions.map((partition, index) => ({
+                    label: partition.name,
+                    value: partition.objects,
+                    className: partitionColors[index],
+                  }))}
+                />
+                <MetricIndicators
+                  items={[
+                    {
+                      label: t(AppLocales.Admin.Assets.StorageStats.Total),
+                      value: `${stats.db_assets_count.toLocaleString()} ${t(AppLocales.Admin.Assets.StorageStats.Objects)}`,
+                      detail: formatAssetFileSize(stats.db_assets_bytes),
+                    },
+                    ...trackedPartitions.map((partition) => ({
+                      label: `${partition.name}/`,
+                      value: `${partition.objects.toLocaleString()} ${t(AppLocales.Admin.Assets.StorageStats.Objects)}`,
+                      detail: formatAssetFileSize(partition.bytes),
+                    })),
+                  ]}
+                />
+              </div>
+            ),
+          },
+        ]}
+      />
 
       {/* Critical Low Disk Warning if free space < 15% */}
       {isLowDisk && (

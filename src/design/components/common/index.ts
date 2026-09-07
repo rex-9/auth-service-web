@@ -12,3 +12,18 @@ export type { IPageHeaderProps } from "./PageHeader";
 export { Tabs, TabVariants } from "./Tabs";
 export type { ITabItem, ITabsProps, TabVariant } from "./Tabs";
 export { ProgressBar } from "./ProgressBar";
+export { MetricIndicators } from "./MetricIndicators";
+export type {
+  IMetricIndicator,
+  IMetricIndicatorsProps,
+} from "./MetricIndicators";
+export { MetricOverviewCard } from "./MetricOverviewCard";
+export type {
+  IMetricOverviewCardProps,
+  IMetricOverviewSection,
+} from "./MetricOverviewCard";
+export { SegmentedProgressBar } from "./SegmentedProgressBar";
+export type {
+  ISegmentedProgressBarItem,
+  ISegmentedProgressBarProps,
+} from "./SegmentedProgressBar";

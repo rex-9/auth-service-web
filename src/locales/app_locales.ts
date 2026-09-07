@@ -981,9 +981,10 @@ export const AppLocales = {
         VpsLowWarning: "admin.assets.storage_stats.vps_low_warning",
         DbAssets: "admin.assets.storage_stats.db_assets",
         PartitionsTitle: "admin.assets.storage_stats.partitions_title",
-        PartitionsDescription:
-          "admin.assets.storage_stats.partitions_description",
-        PartitionOccupied: "admin.assets.storage_stats.partition_occupied",
+        TrackedPartitions: "admin.assets.storage_stats.tracked_partitions",
+        Total: "admin.assets.storage_stats.total",
+        NodeCapacity: "admin.assets.storage_stats.node_capacity",
+        Online: "admin.assets.storage_stats.online",
         Refresh: "admin.assets.storage_stats.refresh",
         Refreshing: "admin.assets.storage_stats.refreshing",
       },

@@ -14,6 +14,10 @@ export interface IStorageStats {
   bucket_bytes?: number;
   bucket_objects?: number;
   partitions?: Record<TStoragePartition, { bytes: number; objects: number }>;
+  tracked_partitions?: Record<
+    TStoragePartition,
+    { bytes: number; objects: number }
+  >;
   disk_available_bytes?: number;
   disk_total_bytes?: number;
   disk_used_percent?: number | null;
