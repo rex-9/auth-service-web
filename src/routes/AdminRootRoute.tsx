@@ -6,7 +6,6 @@ import { usePermissions } from "../hooks";
 import type { AdminAction, AdminResource } from "../modules/admin/role";
 import { hasAdminRole } from "../modules/admin/role";
 import { AdminLayout } from "../modules/admin/components/AdminLayout";
-import { ADMIN_ROLE_NAMES } from "../modules/admin";
 
 interface IAdminRootRouteProps {
   action: AdminAction;
@@ -20,10 +19,8 @@ export const AdminRootRoute: React.FC<IAdminRootRouteProps> = ({
   superAdminOnly = false,
 }) => {
   const { currentUser } = useAuth();
-  const { can, isLoading } = usePermissions();
+  const { can, isLoading, isSuperAdmin } = usePermissions();
   const hasAdminAccess = hasAdminRole(currentUser?.role_names);
-  const isSuperAdmin =
-    currentUser?.role_names?.includes(ADMIN_ROLE_NAMES.SUPER_ADMIN) ?? false;
 
   if (isLoading) {
     return (

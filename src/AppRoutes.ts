@@ -76,6 +76,12 @@ class AppRoutes {
         CHAT_MESSAGES: AppRoutes.admin("/chat/messages"),
         CHAT_MESSAGES_RECYCLE_BIN: AppRoutes.admin("/chat/messages/bin"),
         CHAT_MESSAGE_EDIT: AppRoutes.admin("/chat/messages/:id/edit"),
+        VERSIONS: AppRoutes.admin("/versions"),
+        VERSIONS_RECYCLE_BIN: AppRoutes.admin("/versions/bin"),
+        VERSION_CREATE: AppRoutes.admin("/versions/create"),
+        VERSION_EDIT: AppRoutes.admin("/versions/:id/edit"),
+        VERSION_INSTALLS: AppRoutes.admin("/versions/:id/user-versions"),
+        USER_VERSIONS: AppRoutes.admin("/user-versions"),
       },
     },
   };
@@ -228,6 +234,13 @@ class AppRoutes {
         LOG_RESOLVE: AppRoutes.api("/log/clients/:id/resolve"), // PUT
         LOG_UNRESOLVE: AppRoutes.api("/log/clients/:id/unresolve"), // PUT
         ANALYTICS_OVERVIEW: AppRoutes.adminApi("/analytics/overview"), // GET
+        APP_VERSIONS: AppRoutes.adminApi("/versions"), // GET, POST
+        DISCARDED_APP_VERSIONS: AppRoutes.adminApi("/versions/discarded"), // GET
+        APP_VERSION_DETAIL: AppRoutes.adminApi("/versions/:id"), // GET, PUT
+        APP_VERSION_DISCARD: AppRoutes.adminApi("/versions/:id/discard"), // POST
+        APP_VERSION_UNDISCARD: AppRoutes.adminApi("/versions/:id/undiscard"), // POST
+        APP_VERSION_INSTALLS: AppRoutes.adminApi("/versions/:id/user_versions"), // GET
+        APP_INSTALLS: AppRoutes.adminApi("/versions/user_versions"), // GET
       },
     },
   };

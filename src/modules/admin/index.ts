@@ -9,6 +9,7 @@ import { FeedbackController, FeedbackService } from "./feedback";
 import { LogController, LogService } from "./log";
 import { AccessController, AccessService } from "./access";
 import { AssetController, AssetService } from "./asset";
+import { VersionController, VersionService } from "./version";
 
 export * from "./analytics";
 export * from "./chat";
@@ -20,6 +21,7 @@ export * from "./log";
 export * from "./role";
 export * from "./user";
 export * from "./asset";
+export * from "./version";
 export * from "./components";
 export * from "./helpers/admin.helper";
 export * from "./constants";
@@ -45,4 +47,6 @@ export const Admin = {
   LogService,
   AssetController,
   AssetService,
+  VersionController,
+  VersionService,
 };

@@ -51,6 +51,8 @@ export const ADMIN_RESOURCES = {
   FEEDBACKS: "feedbacks",
   CLIENTS: "clients",
   ASSETS: "assets",
+  VERSIONS: "versions",
+  USER_VERSIONS: "user_versions",
 } as const;
 
 export type TAdminResourceName =
@@ -86,6 +88,7 @@ export const ADMIN_NAV_SECTION_LABELS = {
   SUPPORT: "Support",
   OBSERVABILITY: "Observability",
   MEDIA: "Media",
+  VERSION_MANAGEMENT: "Version Management",
 } as const;
 
 export const ADMIN_NAV_LABELS = {
@@ -100,6 +103,8 @@ export const ADMIN_NAV_LABELS = {
   ROLES: "Roles",
   USERS: "Users",
   ASSETS: "Assets",
+  VERSIONS: "Versions",
+  USER_VERSIONS: "User Versions",
 } as const;
 
 export const ANALYTICS_PERIODS = {
