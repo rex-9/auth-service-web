@@ -931,6 +931,19 @@ export const AppLocales = {
         MinSizeTooltip: "admin.assets.compression.min_size_tooltip",
         TriggerTooltip: "admin.assets.compression.trigger_tooltip",
       },
+      Download: {
+        Action: "admin.assets.download.action",
+        Failed: "admin.assets.download.failed",
+      },
+      Thumbnail: {
+        Regenerate: "admin.assets.thumbnail.regenerate",
+        Regenerating: "admin.assets.thumbnail.regenerating",
+        Upload: "admin.assets.thumbnail.upload",
+        Uploading: "admin.assets.thumbnail.uploading",
+        Queued: "admin.assets.thumbnail.queued",
+        Replaced: "admin.assets.thumbnail.replaced",
+        Failed: "admin.assets.thumbnail.failed",
+      },
       Picker: {
         Title: "admin.assets.picker.title",
         SearchPlaceholder: "admin.assets.picker.search_placeholder",

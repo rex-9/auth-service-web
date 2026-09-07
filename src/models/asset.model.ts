@@ -13,6 +13,13 @@ export interface IAsset {
   status?: string | null;
   assetable_type?: string | null;
   assetable_id?: string | null;
+  parent_asset_id?: string | null;
+  thumbnail?: {
+    id: string;
+    url: string;
+    status: string;
+    size_bytes?: number | null;
+  } | null;
   created_by_id?: string | null;
   created_at: string;
   updated_at: string;

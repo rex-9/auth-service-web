@@ -93,8 +93,10 @@ export const Tabs = <T extends string = string>({
                 isActive && activeTabClassName,
               )}
             >
-              {Icon && <Icon className="h-4 w-4 shrink-0" />}
-              <span>{tab.label}</span>
+              <span className={cn("inline-flex items-center gap-1.5", Icon && "max-sm:flex-col max-sm:gap-1")}>
+                {Icon && <Icon className="h-4 w-4 shrink-0" />}
+                <span>{tab.label}</span>
+              </span>
               {typeof tab.count === "number" && (
                 <span
                   className={cn(
@@ -147,8 +149,10 @@ export const Tabs = <T extends string = string>({
               isActive && activeTabClassName,
             )}
           >
-            {Icon && <Icon className="h-4 w-4 shrink-0" />}
-            <span>{tab.label}</span>
+            <span className={cn("inline-flex items-center gap-1.5", Icon && "max-sm:flex-col max-sm:gap-1")}>
+              {Icon && <Icon className="h-4 w-4 shrink-0" />}
+              <span>{tab.label}</span>
+            </span>
             {typeof tab.count === "number" && (
               <span
                 className={cn(

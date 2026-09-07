@@ -7,6 +7,7 @@ import type { IAdminAsset } from "../types";
 import {
   ASSET_TYPE_OPTIONS,
   ASSET_TYPES,
+  ASSET_FORMATS,
   ASSET_STATUSES,
   formatAssetFileSize,
   isImageAsset,
@@ -52,7 +53,11 @@ export interface IAdminAssetFormProps {
   ) => Promise<void>;
   onSubmitEdit?: (values: IAdminAssetEditFormValues) => Promise<void>;
   onCompress?: () => Promise<void>;
+  onDownload?: () => Promise<void>;
+  onRegenerateThumbnail?: () => Promise<void>;
+  onUploadThumbnail?: (file: File) => Promise<void>;
   isCompressing?: boolean;
+  isUpdatingThumbnail?: boolean;
   onCancel: () => void;
 }
 
@@ -62,7 +67,11 @@ export const AdminAssetForm: React.FC<IAdminAssetFormProps> = ({
   onUploadBatch,
   onSubmitEdit,
   onCompress,
+  onDownload,
+  onRegenerateThumbnail,
+  onUploadThumbnail,
   isCompressing = false,
+  isUpdatingThumbnail = false,
   onCancel,
 }) => {
   const t = useTranslate();
@@ -182,8 +191,8 @@ export const AdminAssetForm: React.FC<IAdminAssetFormProps> = ({
           setUploadStatusMessage(msg);
         },
       );
-    } catch (err: any) {
-      setAlertMessage(err?.message || "Upload failed");
+    } catch (err: unknown) {
+      setAlertMessage(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setIsUploading(false);
     }
@@ -568,9 +577,9 @@ export const AdminAssetForm: React.FC<IAdminAssetFormProps> = ({
             </h3>
 
             <div className="w-full aspect-video rounded-lg overflow-hidden bg-base-200 flex items-center justify-center border border-base-300">
-              {isImageAsset(asset) ? (
+              {isImageAsset(asset) || asset.thumbnail?.url ? (
                 <Image
-                  src={asset.url}
+                  src={asset.thumbnail?.url || asset.url}
                   alt={asset.name}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-contain"
@@ -632,6 +641,55 @@ export const AdminAssetForm: React.FC<IAdminAssetFormProps> = ({
                   {formatAdminDate(asset.created_at)}
                 </span>
               </div>
+            </div>
+
+            <div className="grid gap-2 pt-2">
+              {onDownload && (
+                <Button
+                  variant={ButtonVariants.SECONDARY}
+                  size={ComponentSizes.SM}
+                  className="w-full flex items-center justify-center gap-1.5"
+                  onClick={onDownload}
+                >
+                  <iconsLib.download className="w-4 h-4" />
+                  {t(AppLocales.Admin.Assets.Download.Action)}
+                </Button>
+              )}
+
+              {asset.format === ASSET_FORMATS.VIDEO &&
+                onRegenerateThumbnail && (
+                  <Button
+                    variant={ButtonVariants.SECONDARY}
+                    size={ComponentSizes.SM}
+                    className="w-full flex items-center justify-center gap-1.5"
+                    onClick={onRegenerateThumbnail}
+                    isLoading={isUpdatingThumbnail}
+                    disabled={isUpdatingThumbnail}
+                  >
+                    <iconsLib.arrowPath className="w-4 h-4" />
+                    {t(AppLocales.Admin.Assets.Thumbnail.Regenerate)}
+                  </Button>
+                )}
+
+              {asset.format === ASSET_FORMATS.VIDEO && onUploadThumbnail && (
+                <FileInput
+                  accept="image/*"
+                  disabled={isUpdatingThumbnail}
+                  onChange={(file) => {
+                    if (file) void onUploadThumbnail(file);
+                  }}
+                  buttonText={
+                    <span className="inline-flex items-center gap-1.5">
+                    <iconsLib.upload className="w-4 h-4" />
+                    {t(
+                      isUpdatingThumbnail
+                        ? AppLocales.Admin.Assets.Thumbnail.Uploading
+                        : AppLocales.Admin.Assets.Thumbnail.Upload,
+                    )}
+                    </span>
+                  }
+                />
+              )}
             </div>
 
             {onCompress &&

@@ -8,7 +8,7 @@ import { ButtonVariants, ComponentSizes } from "../../constants";
 export interface IFileInputProps {
   label?: string;
   accept?: string;
-  buttonText?: string;
+  buttonText?: React.ReactNode;
   helperText?: string;
   error?: string;
   disabled?: boolean;

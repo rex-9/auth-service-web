@@ -22,6 +22,7 @@ import {
   type IAdminAssetEditFormValues,
 } from "./AdminAssetForm";
 import { Admin } from "../..";
+import { NOTIFICATION_SOCKET_TYPES } from "../../../notification";
 
 export const AdminAssetEditPage: React.FC = () => {
   const t = useTranslate();
@@ -36,6 +37,7 @@ export const AdminAssetEditPage: React.FC = () => {
   const [error, setError] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [isCompressing, setIsCompressing] = useState(false);
+  const [isUpdatingThumbnail, setIsUpdatingThumbnail] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -45,9 +47,11 @@ export const AdminAssetEditPage: React.FC = () => {
       const eventType =
         typeof event.data?.type === "string" ? event.data.type : "";
       if (
-        eventType !== "asset_compressed" &&
-        eventType !== "asset_compression_failed" &&
-        eventType !== "asset_compressing"
+        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSED &&
+        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSION_FAILED &&
+        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSING &&
+        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_THUMBNAIL_GENERATED &&
+        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_THUMBNAIL_FAILED
       ) {
         return;
       }
@@ -67,13 +71,22 @@ export const AdminAssetEditPage: React.FC = () => {
 
       setAsset((prev) => {
         if (!prev) return null;
+        const thumbnail =
+          eventType === NOTIFICATION_SOCKET_TYPES.ASSET_THUMBNAIL_GENERATED &&
+          event.data?.thumbnail
+            ? (event.data.thumbnail as IAdminAsset["thumbnail"])
+            : prev.thumbnail;
         return {
           ...prev,
           status: status || prev.status,
           size_bytes: sizeBytes !== undefined ? sizeBytes : prev.size_bytes,
           url: url !== undefined ? url : prev.url,
+          thumbnail,
         };
       });
+      if (eventType.startsWith("asset_thumbnail_")) {
+        setIsUpdatingThumbnail(false);
+      }
     };
 
     SocketService.addListener(handleSocketMessage);
@@ -158,6 +171,47 @@ export const AdminAssetEditPage: React.FC = () => {
     navigate(AppRoutes.client.protected.admin.ASSETS);
   };
 
+  const handleDownload = async () => {
+    if (!id) return;
+    const result = await Admin.AssetController.getDownloadUrl(id);
+    if (!result.success || !result.url) {
+      toast.error(result.error || t(AppLocales.Admin.Assets.Download.Failed));
+      return;
+    }
+    const link = document.createElement("a");
+    link.href = result.url;
+    link.rel = "noopener";
+    link.click();
+  };
+
+  const handleRegenerateThumbnail = async () => {
+    if (!id) return;
+    setIsUpdatingThumbnail(true);
+    const result = await Admin.AssetController.regenerateThumbnail(id);
+    if (result.success) {
+      if (result.asset) setAsset(result.asset);
+      toast.info(result.message || t(AppLocales.Admin.Assets.Thumbnail.Queued));
+    } else {
+      setIsUpdatingThumbnail(false);
+      toast.error(result.error || t(AppLocales.Admin.Assets.Thumbnail.Failed));
+    }
+  };
+
+  const handleUploadThumbnail = async (file: File) => {
+    if (!id) return;
+    setIsUpdatingThumbnail(true);
+    const result = await Admin.AssetController.uploadThumbnail(id, file);
+    setIsUpdatingThumbnail(false);
+    if (result.success) {
+      if (result.asset) setAsset(result.asset);
+      toast.success(
+        result.message || t(AppLocales.Admin.Assets.Thumbnail.Replaced),
+      );
+    } else {
+      toast.error(result.error || t(AppLocales.Admin.Assets.Thumbnail.Failed));
+    }
+  };
+
   return (
     <div className="space-y-6">
       <AlertDialog
@@ -192,7 +246,11 @@ export const AdminAssetEditPage: React.FC = () => {
           asset={asset}
           onSubmitEdit={handleSubmitEdit}
           onCompress={handleCompress}
+          onDownload={handleDownload}
+          onRegenerateThumbnail={handleRegenerateThumbnail}
+          onUploadThumbnail={handleUploadThumbnail}
           isCompressing={isCompressing}
+          isUpdatingThumbnail={isUpdatingThumbnail}
           onCancel={handleCancel}
         />
       ) : null}

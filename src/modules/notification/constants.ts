@@ -24,4 +24,6 @@ export const NOTIFICATION_SOCKET_TYPES = {
   ASSET_COMPRESSED: "asset_compressed",
   ASSET_COMPRESSION_FAILED: "asset_compression_failed",
   ASSET_COMPRESSING: "asset_compressing",
+  ASSET_THUMBNAIL_GENERATED: "asset_thumbnail_generated",
+  ASSET_THUMBNAIL_FAILED: "asset_thumbnail_failed",
 } as const;

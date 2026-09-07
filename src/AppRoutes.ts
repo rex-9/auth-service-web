@@ -208,6 +208,13 @@ class AppRoutes {
         ASSET_DISCARD: AppRoutes.adminApi("/assets/:id/discard"), // POST
         ASSET_UNDISCARD: AppRoutes.adminApi("/assets/:id/undiscard"), // POST
         ASSET_COMPRESS: AppRoutes.adminApi("/assets/:id/compress"), // POST
+        ASSET_DOWNLOAD: AppRoutes.adminApi("/assets/:id/download"), // GET
+        ASSET_THUMBNAIL_REGENERATE: AppRoutes.adminApi(
+          "/assets/:id/thumbnail/regenerate",
+        ), // POST
+        ASSET_THUMBNAIL_UPLOAD: AppRoutes.adminApi(
+          "/assets/:id/thumbnail/upload",
+        ), // POST
         ASSET_STORAGE_STATS: AppRoutes.adminApi("/assets/storage_stats"), // GET
         ASSET_EMPTY_RECYCLE_BIN: AppRoutes.adminApi("/assets/bin"), // DELETE
         ASSETS_BATCH_DISCARD: AppRoutes.adminApi("/assets/discard_batch"), // POST
