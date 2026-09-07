@@ -14,7 +14,11 @@ vi.mock("react", () => ({
   useMemo: (fn: () => unknown) => (fn as () => unknown)(),
 }));
 
-import { getAdminRoleResourceScope } from "./usePermissions";
+import {
+  getAdminPermissions,
+  getAdminRoleResourceScope,
+  getScopedAdminPermissions,
+} from "./usePermissions";
 import {
   isAdminRoleName,
   hasAdminRole,
@@ -137,6 +141,59 @@ describe("getAdminRoleResourceScope", () => {
   it("handles an empty array without errors", () => {
     const scope = getAdminRoleResourceScope([]);
     expect(scope.size).toBe(0);
+  });
+});
+
+describe("getAdminPermissions", () => {
+  it("uses the returned admin permission map as the source of truth for admin roles", () => {
+    const permissions = getAdminPermissions(
+      {
+        [ADMIN_RESOURCES.NOTIFICATIONS]: ["read", "create", "update", "delete"],
+        [ADMIN_RESOURCES.USERS]: ["read"],
+        [ADMIN_RESOURCES.PRODUCTS]: ["read"],
+      },
+      ["notification_admin"],
+    );
+
+    expect(permissions).toContainEqual({
+      action: "read",
+      resource: ADMIN_RESOURCES.USERS,
+    });
+    expect(permissions).toContainEqual({
+      action: "read",
+      resource: ADMIN_RESOURCES.PRODUCTS,
+    });
+  });
+
+  it("does not grant admin permissions to non-admin roles", () => {
+    const permissions = getAdminPermissions(
+      {
+        [ADMIN_RESOURCES.USERS]: ["read"],
+      },
+      ["user"],
+    );
+
+    expect(permissions).toEqual([]);
+  });
+});
+
+describe("getScopedAdminPermissions", () => {
+  it("keeps older combined permission payloads scoped to the admin role prefix", () => {
+    const permissions = getScopedAdminPermissions(
+      {
+        [ADMIN_RESOURCES.USERS]: ["read"],
+        [ADMIN_RESOURCES.PRODUCTS]: ["read"],
+        [ADMIN_RESOURCES.NOTIFICATIONS]: ["read"],
+      },
+      ["notification_admin"],
+    );
+
+    expect(permissions).toEqual([
+      {
+        action: "read",
+        resource: ADMIN_RESOURCES.NOTIFICATIONS,
+      },
+    ]);
   });
 });
 

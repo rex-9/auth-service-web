@@ -1,7 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
+import { useLocation } from "react-router-dom";
+import AppRoutes from "../AppRoutes";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
-import { getSocketToast, SOCKET_MESSAGE_TYPES } from "../helpers/socket.helpers";
+import {
+  getSocketToast,
+  isAssetSocketToast,
+  SOCKET_MESSAGE_TYPES,
+} from "../helpers/socket.helpers";
 import SocketService, { ISocketMessage } from "../services/socket.service";
 import { ToastTypes } from "../constants";
 
@@ -15,6 +21,7 @@ export interface INotification {
 export const useSocket = () => {
   const { token, isAuthenticated } = useAuth();
   const { success, error, info } = useToast();
+  const location = useLocation();
   const [notifications, setNotifications] = useState<INotification[]>([]);
 
   useEffect(() => {
@@ -25,6 +32,14 @@ export const useSocket = () => {
     }
 
     const handleNotification = (data: ISocketMessage) => {
+      const isAdminAssetPage = location.pathname.startsWith(
+        AppRoutes.client.protected.admin.ASSETS,
+      );
+
+      if (isAssetSocketToast(data) && !isAdminAssetPage) {
+        return;
+      }
+
       const toast = getSocketToast(data);
       if (!toast) {
         return;
@@ -63,7 +78,7 @@ export const useSocket = () => {
       SocketService.removeListener(handleNotification);
       // Don't disconnect here - let the effect handle it
     };
-  }, [token, isAuthenticated, success, error, info]);
+  }, [token, isAuthenticated, success, error, info, location.pathname]);
 
   const sendMessage = useCallback(
     (channel: string, message: string, data: Record<string, unknown> = {}) => {

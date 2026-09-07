@@ -13,6 +13,7 @@ import { useAtom } from "jotai";
 import { IUser } from "../models/user.model";
 import atoms from "../atoms";
 import { isTokenExpired } from "../helpers";
+import UserService from "../modules/user/user.service";
 import { useLoading } from "./LoadingContext";
 
 interface IAuthContextType {
@@ -22,6 +23,7 @@ interface IAuthContextType {
   setCurrentUser: (user: IUser | null) => void;
   signin: (token: string, user: IUser) => void;
   signout: () => void;
+  refreshCurrentUser: () => Promise<void>;
   googleChallengeToken: string | null;
   setGoogleChallengeToken: (token: string | null) => void;
 }
@@ -91,6 +93,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     [setToken, setCurrentUser, setGoogleChallengeToken],
   );
 
+  const refreshCurrentUser = useCallback(async () => {
+    if (!token || isTokenExpired(token)) return;
+
+    const response = await UserService.getCurrentUser();
+    if (response.data?.data.user) {
+      setCurrentUser(response.data.data.user);
+    }
+  }, [setCurrentUser, token]);
+
   const value = useMemo(
     () => ({
       isAuthenticated,
@@ -99,6 +110,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setCurrentUser,
       signin,
       signout,
+      refreshCurrentUser,
       googleChallengeToken,
       setGoogleChallengeToken,
     }),
@@ -109,6 +121,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setCurrentUser,
       signin,
       signout,
+      refreshCurrentUser,
       googleChallengeToken,
     ],
   );

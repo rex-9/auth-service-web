@@ -34,6 +34,8 @@ const ADMIN_ROLE_RESOURCE_PREFIXES: Record<AdminResource, readonly string[]> = {
   [ADMIN_RESOURCES.USER_VERSIONS]: ["user_versions", "user_version"],
 };
 
+const ADMIN_RESOURCE_VALUES = Object.values(ADMIN_RESOURCES) as string[];
+
 interface IUsePermissionsResult {
   permissions: IPermission[];
   isSuperAdmin: boolean;
@@ -42,6 +44,40 @@ interface IUsePermissionsResult {
   can: (action: AdminAction, resource: AdminResource) => boolean;
   refresh: () => Promise<void>;
 }
+
+export const getAdminPermissions = (
+  permissionMap: unknown,
+  roleNames: AdminRoleName[] | null | undefined,
+): IPermission[] => {
+  if (!hasAdminRole(roleNames) || Array.isArray(permissionMap)) {
+    return [];
+  }
+
+  return Object.entries(permissionMap ?? {}).flatMap(([resource, actions]) => {
+    if (!ADMIN_RESOURCE_VALUES.includes(resource)) {
+      return [];
+    }
+
+    return Array.isArray(actions)
+      ? actions.map((action) => ({
+          action: action as AdminAction,
+          resource: resource as AdminResource,
+        }))
+      : [];
+  });
+};
+
+export const getScopedAdminPermissions = (
+  permissionMap: unknown,
+  roleNames: AdminRoleName[] | null | undefined,
+): IPermission[] => {
+  const permissions = getAdminPermissions(permissionMap, roleNames);
+  const scopedResources = getAdminRoleResourceScope(roleNames);
+
+  return permissions.filter((permission) =>
+    scopedResources.has(permission.resource),
+  );
+};
 
 export const getAdminRoleResourceScope = (
   roleNames: AdminRoleName[] | null | undefined,
@@ -77,7 +113,7 @@ export const getAdminRoleResourceScope = (
 };
 
 export const usePermissions = (): IUsePermissionsResult => {
-  const { currentUser, isAuthenticated } = useAuth();
+  const { currentUser, isAuthenticated, refreshCurrentUser } = useAuth();
   const isLoading = isAuthenticated && !currentUser;
   const roleNames = currentUser?.role_names ?? currentUser?.roles;
 
@@ -91,30 +127,10 @@ export const usePermissions = (): IUsePermissionsResult => {
   );
 
   const permissions = useMemo<IPermission[]>(() => {
-    // Non-admin roles (user, etc.) NEVER grant access to admin capabilities
-    if (!hasAdminRole(roleNames)) {
-      return [];
-    }
-
-    const scopedResources = getAdminRoleResourceScope(roleNames);
-    const permissionMap = !Array.isArray(currentUser?.permissions)
-      ? (currentUser?.permissions ?? {})
-      : {};
-
-    return Object.entries(permissionMap).flatMap(([resource, actions]) => {
-      const adminResource = resource as AdminResource;
-
-      // Filter strictly: only accept permissions for resources covered by the user's admin roles
-      if (scopedResources.has(adminResource)) {
-        return (actions ?? []).map((action: AdminAction) => ({
-          action,
-          resource: adminResource,
-        }));
-      }
-
-      return [];
-    });
-  }, [currentUser?.permissions, roleNames]);
+    return currentUser?.admin_permissions
+      ? getAdminPermissions(currentUser.admin_permissions, roleNames)
+      : getScopedAdminPermissions(currentUser?.permissions, roleNames);
+  }, [currentUser?.admin_permissions, currentUser?.permissions, roleNames]);
 
   const permissionKeys = useMemo(
     () =>
@@ -135,7 +151,9 @@ export const usePermissions = (): IUsePermissionsResult => {
     [isSuperAdmin, permissionKeys, roleNames],
   );
 
-  const refresh = useCallback(async () => undefined, []);
+  const refresh = useCallback(async () => {
+    await refreshCurrentUser();
+  }, [refreshCurrentUser]);
 
   return { permissions, isSuperAdmin, isLoading, error: "", can, refresh };
 };

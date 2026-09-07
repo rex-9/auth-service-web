@@ -16,6 +16,8 @@ export interface IUser {
   role_ids?: string[];
   role_names?: AdminRoleName[];
   permissions?: IUserPermissionMap | string[];
+  admin_permissions?: IUserPermissionMap;
+  non_admin_permissions?: IUserPermissionMap;
   is_admin?: boolean;
   is_super_admin?: boolean;
   created_at: Date | string;

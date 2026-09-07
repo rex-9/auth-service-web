@@ -70,6 +70,20 @@ export function getSpeechEventType(data: ISocketMessage): string {
   return typeof data.data?.type === "string" ? data.data.type : "";
 }
 
+export const ASSET_SOCKET_TOAST_TYPES = [
+  NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSING,
+  NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSED,
+  NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSION_FAILED,
+  NOTIFICATION_SOCKET_TYPES.ASSET_THUMBNAIL_GENERATED,
+  NOTIFICATION_SOCKET_TYPES.ASSET_THUMBNAIL_FAILED,
+] as const;
+
+export function isAssetSocketToast(data: ISocketMessage): boolean {
+  return (ASSET_SOCKET_TOAST_TYPES as readonly string[]).includes(
+    getSpeechEventType(data),
+  );
+}
+
 export function isSpeechLiveMessage(data: ISocketMessage): boolean {
   if (data.channel === SOCKET_CHANNELS.SPEECH_LIVE) {
     return true;
