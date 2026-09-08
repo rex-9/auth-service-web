@@ -145,9 +145,13 @@ export const AdminFeedbacksPage: React.FC = () => {
   ]);
 
   useEffect(() => {
-    if (!permissionsLoading) {
+    if (permissionsLoading) return;
+
+    const timeoutId = window.setTimeout(() => {
       void loadFeedbacks();
-    }
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [loadFeedbacks, permissionsLoading]);
 
   const columns: IAdminTableColumn<IAdminFeedback>[] = useMemo(
@@ -277,11 +281,9 @@ export const AdminFeedbacksPage: React.FC = () => {
         description={t(AppLocales.Admin.Feedback.Description)}
       />
 
-      {/* Dropdown Filters */}
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 xl:max-w-3xl xl:grid-cols-3">
         <Dropdown
-          size={DropdownSizes.SM}
-          containerClassName="w-auto min-w-44"
+          size={DropdownSizes.MD}
           value={statusFilter}
           onValueChange={(val) => updateFilters({ status: val, page: 1 })}
           options={[
@@ -309,8 +311,7 @@ export const AdminFeedbacksPage: React.FC = () => {
         />
 
         <Dropdown
-          size={DropdownSizes.SM}
-          containerClassName="w-auto min-w-44"
+          size={DropdownSizes.MD}
           value={categoryFilter}
           onValueChange={(val) => updateFilters({ category: val, page: 1 })}
           options={[
@@ -338,8 +339,7 @@ export const AdminFeedbacksPage: React.FC = () => {
         />
 
         <Dropdown
-          size={DropdownSizes.SM}
-          containerClassName="w-auto min-w-44"
+          size={DropdownSizes.MD}
           value={priorityFilter}
           onValueChange={(val) => updateFilters({ priority: val, page: 1 })}
           options={[

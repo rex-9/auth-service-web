@@ -1,11 +1,9 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import { useAuth } from '../contexts';
-import { NotFoundPage } from '../design/pages';
-import { usePermissions } from '../hooks';
-import type { AdminAction, AdminResource } from '../modules/admin/role';
-import { hasAdminRole } from '../modules/admin/role';
-import { AdminLayout } from '../modules/admin/components/AdminLayout';
+import React from "react";
+import { Outlet } from "react-router-dom";
+import { NotFoundPage } from "../design/pages";
+import { usePermissions } from "../hooks";
+import type { AdminAction, AdminResource } from "../modules/admin/role";
+import { AdminLayout } from "../modules/admin/components/AdminLayout";
 
 interface IAdminRootRouteProps {
   action: AdminAction;
@@ -18,9 +16,7 @@ export const AdminRootRoute: React.FC<IAdminRootRouteProps> = ({
   resource,
   superAdminOnly = false,
 }) => {
-  const { currentUser } = useAuth();
-  const { can, isLoading, isSuperAdmin } = usePermissions();
-  const hasAdminAccess = hasAdminRole(currentUser?.role_names);
+  const { can, isAdmin, isLoading, isSuperAdmin } = usePermissions();
 
   if (isLoading) {
     return (
@@ -32,7 +28,17 @@ export const AdminRootRoute: React.FC<IAdminRootRouteProps> = ({
 
   const isAllowed = superAdminOnly
     ? isSuperAdmin
-    : hasAdminAccess && can(action, resource);
+    : isAdmin && can(action, resource);
 
-  return <AdminLayout>{isAllowed ? <Outlet /> : <NotFoundPage />}</AdminLayout>;
+  return (
+    <AdminLayout>
+      {isAllowed ? (
+        <Outlet />
+      ) : (
+        <div className="flex min-h-[calc(100vh-10rem)] items-center justify-center">
+          <NotFoundPage />
+        </div>
+      )}
+    </AdminLayout>
+  );
 };

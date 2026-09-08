@@ -11,7 +11,12 @@ import {
 } from "../../../../hooks";
 import type { IApiPagination } from "../../../../models";
 import { iconsLib } from "../../../../assets";
-import { Button, StatusBadge } from "../../../../design";
+import {
+  Button,
+  Dropdown,
+  DropdownSizes,
+  StatusBadge,
+} from "../../../../design";
 import { ButtonVariants } from "../../../../design/constants";
 import type { IAdminVersion } from "../types";
 import VersionController from "../version.controller";
@@ -21,7 +26,6 @@ import {
   AdminTableActions,
   AdminTable,
   ConfirmDialog,
-  Dropdown,
   PageHeader,
   Tabs,
   type IAdminTableColumn,
@@ -372,6 +376,8 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
 
       {view === ADMIN_VIEW_MODES.ACTIVE && (
         <Dropdown
+          size={DropdownSizes.MD}
+          containerClassName="w-full sm:max-w-sm"
           label={t(AppLocales.Admin.Versions.Filters.Status)}
           value={statusFilter}
           onValueChange={(value) => updateFilters({ status: value })}

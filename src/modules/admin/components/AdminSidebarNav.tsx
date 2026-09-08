@@ -1,14 +1,9 @@
 import React, { useMemo, useState } from "react";
 import { NavLink } from "react-router-dom";
 import AppRoutes from "../../../AppRoutes";
-import { useAuth } from "../../../contexts";
 import { usePermissions } from "../../../hooks";
-import { hasAdminRole } from "../role";
 import type { AdminResource } from "../role";
-import {
-  ADMIN_ACTIONS,
-  ADMIN_RESOURCES,
-} from "../constants";
+import { ADMIN_ACTIONS, ADMIN_RESOURCES } from "../constants";
 import { cn } from "../../../design/helpers";
 import { iconsLib } from "../../../assets";
 import { useTranslate, AppLocales } from "../../../locales";
@@ -65,31 +60,7 @@ const navSections: IAdminNavSection[] = [
     ],
   },
   {
-    id: "communication",
-    labelKey: AppLocales.Admin.Nav.Sections.Communication,
-    items: [
-      {
-        labelKey: AppLocales.Admin.Nav.Items.Notifications,
-        to: AppRoutes.client.protected.admin.NOTIFICATIONS,
-        resource: ADMIN_RESOURCES.NOTIFICATIONS,
-        icon: iconsLib.bellAlert,
-      },
-      {
-        labelKey: AppLocales.Admin.Nav.Items.ChatRooms,
-        to: AppRoutes.client.protected.admin.CHAT_ROOMS,
-        resource: ADMIN_RESOURCES.ROOMS,
-        icon: iconsLib.chatBubbleLeftRight,
-      },
-      {
-        labelKey: AppLocales.Admin.Nav.Items.ChatMessages,
-        to: AppRoutes.client.protected.admin.CHAT_MESSAGES,
-        resource: ADMIN_RESOURCES.MESSAGES,
-        icon: iconsLib.inboxStack,
-      },
-    ],
-  },
-  {
-    id: "access",
+    id: "iam",
     labelKey: AppLocales.Admin.Nav.Sections.Iam,
     items: [
       {
@@ -97,33 +68,12 @@ const navSections: IAdminNavSection[] = [
         to: AppRoutes.client.protected.admin.USERS,
         resource: ADMIN_RESOURCES.USERS,
         icon: iconsLib.userGroup,
-        superAdminOnly: true,
       },
       {
         labelKey: AppLocales.Admin.Nav.Items.Roles,
         to: AppRoutes.client.protected.admin.ROLES,
         resource: ADMIN_RESOURCES.ROLES,
         icon: iconsLib.key,
-        superAdminOnly: true,
-      },
-    ],
-  },
-  {
-    id: "version-management",
-    labelKey: AppLocales.Admin.Nav.Sections.VersionManagement,
-    items: [
-      {
-        labelKey: AppLocales.Admin.Nav.Items.Versions,
-        to: AppRoutes.client.protected.admin.VERSIONS,
-        resource: ADMIN_RESOURCES.VERSIONS,
-        icon: iconsLib.tag,
-        superAdminOnly: true,
-      },
-      {
-        labelKey: AppLocales.Admin.Nav.Items.UserVersions,
-        to: AppRoutes.client.protected.admin.USER_VERSIONS,
-        resource: ADMIN_RESOURCES.USER_VERSIONS,
-        icon: iconsLib.devicePhoneMobile,
         superAdminOnly: true,
       },
     ],
@@ -164,6 +114,50 @@ const navSections: IAdminNavSection[] = [
       },
     ],
   },
+  {
+    id: "communication",
+    labelKey: AppLocales.Admin.Nav.Sections.Communication,
+    items: [
+      {
+        labelKey: AppLocales.Admin.Nav.Items.Notifications,
+        to: AppRoutes.client.protected.admin.NOTIFICATIONS,
+        resource: ADMIN_RESOURCES.NOTIFICATIONS,
+        icon: iconsLib.bellAlert,
+      },
+      {
+        labelKey: AppLocales.Admin.Nav.Items.ChatRooms,
+        to: AppRoutes.client.protected.admin.CHAT_ROOMS,
+        resource: ADMIN_RESOURCES.ROOMS,
+        icon: iconsLib.chatBubbleLeftRight,
+      },
+      {
+        labelKey: AppLocales.Admin.Nav.Items.ChatMessages,
+        to: AppRoutes.client.protected.admin.CHAT_MESSAGES,
+        resource: ADMIN_RESOURCES.MESSAGES,
+        icon: iconsLib.inboxStack,
+      },
+    ],
+  },
+  {
+    id: "version-management",
+    labelKey: AppLocales.Admin.Nav.Sections.VersionManagement,
+    items: [
+      {
+        labelKey: AppLocales.Admin.Nav.Items.Versions,
+        to: AppRoutes.client.protected.admin.VERSIONS,
+        resource: ADMIN_RESOURCES.VERSIONS,
+        icon: iconsLib.tag,
+        superAdminOnly: true,
+      },
+      {
+        labelKey: AppLocales.Admin.Nav.Items.UserVersions,
+        to: AppRoutes.client.protected.admin.USER_VERSIONS,
+        resource: ADMIN_RESOURCES.USER_VERSIONS,
+        icon: iconsLib.devicePhoneMobile,
+        superAdminOnly: true,
+      },
+    ],
+  },
 ];
 
 export const AdminSidebarNav: React.FC<IAdminSidebarNavProps> = ({
@@ -174,9 +168,7 @@ export const AdminSidebarNav: React.FC<IAdminSidebarNavProps> = ({
   const [collapsedSections, setCollapsedSections] = useState<
     Record<string, boolean>
   >({});
-  const { currentUser } = useAuth();
-  const { can, isLoading, isSuperAdmin } = usePermissions();
-  const hasAdminAccess = hasAdminRole(currentUser?.role_names);
+  const { can, isAdmin, isLoading, isSuperAdmin } = usePermissions();
 
   const enabledItems = useMemo(
     () =>
@@ -184,7 +176,7 @@ export const AdminSidebarNav: React.FC<IAdminSidebarNavProps> = ({
         .map((section) => ({
           ...section,
           items: section.items.filter((item) =>
-            !hasAdminAccess
+            !isAdmin
               ? false
               : item.superAdminOnly
                 ? isSuperAdmin
@@ -193,7 +185,7 @@ export const AdminSidebarNav: React.FC<IAdminSidebarNavProps> = ({
           ),
         }))
         .filter((section) => section.items.length > 0),
-    [can, hasAdminAccess, isLoading, isSuperAdmin],
+    [can, isAdmin, isLoading, isSuperAdmin],
   );
 
   const toggleSection = (sectionId: string) => {

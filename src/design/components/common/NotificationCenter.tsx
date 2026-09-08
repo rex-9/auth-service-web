@@ -5,18 +5,23 @@ import { useNavigate } from "react-router-dom";
 import { iconsLib } from "../../../assets";
 import { AppLocales, translate } from "../../../locales";
 import {
-  IUserNotification,
+  type IUserNotification,
   NotificationController,
-  NotificationFilter,
+  type NotificationFilter,
   NOTIFICATION_FILTERS,
+  NOTIFICATION_SOCKET_TYPES,
 } from "../../../modules/notification";
-import socketService, { ISocketMessage } from "../../../services/socket.service";
+import socketService, {
+  ISocketMessage,
+} from "../../../services/socket.service";
 import { Button } from "../button";
 import { Dropdown, DropdownSizes } from "../form/Dropdown";
 import { ButtonTypes, ButtonVariants, ComponentSizes } from "../../constants";
 import { cn } from "../../helpers";
 import { formatDateTime } from "../../../helpers/date.helper";
 import type { IApiPagination } from "../../../models";
+import { useAuth } from "../../../contexts";
+import AppRoutes from "../../../AppRoutes";
 
 export interface INotificationCenterProps {
   className?: string;
@@ -26,11 +31,14 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
   className,
 }) => {
   const navigate = useNavigate();
+  const { refreshCurrentUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifications, setNotifications] = useState<IUserNotification[]>([]);
   const [pagination, setPagination] = useState<IApiPagination | null>(null);
-  const [filter, setFilter] = useState<NotificationFilter>(NOTIFICATION_FILTERS.ALL);
+  const [filter, setFilter] = useState<NotificationFilter>(
+    NOTIFICATION_FILTERS.ALL,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -77,15 +85,20 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
 
   // Initial load of unread count
   useEffect(() => {
-    fetchUnreadCount();
+    const timeoutId = window.setTimeout(() => void fetchUnreadCount(), 0);
+    return () => window.clearTimeout(timeoutId);
   }, [fetchUnreadCount]);
 
   // When opening or filter changing, load notifications
   useEffect(() => {
-    if (isOpen) {
-      fetchNotifications(1, filter);
-      fetchUnreadCount();
-    }
+    if (!isOpen) return;
+
+    const timeoutId = window.setTimeout(() => {
+      void fetchNotifications(1, filter);
+      void fetchUnreadCount();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [isOpen, filter, fetchNotifications, fetchUnreadCount]);
 
   // Handle outside click & Esc key
@@ -120,21 +133,21 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
   useEffect(() => {
     const handleSocketMessage = (msg: ISocketMessage) => {
       // If message is an in-app notification payload
-      const raw = (msg as any).data || msg;
-      const notificationId = raw.id || (msg as any).id;
-      const title = raw.title || msg.message;
+      const envelope = msg as ISocketMessage & Partial<IUserNotification>;
+      const notificationId = envelope.id;
+      const title = envelope.title || msg.message;
 
       if (notificationId && title) {
         const newNotification: IUserNotification = {
           id: notificationId,
           title: title,
-          message: raw.message || "",
-          link: raw.link || null,
-          data: raw.data || {},
+          message: envelope.message || "",
+          link: envelope.link || null,
+          data: envelope.data || {},
           read: false,
           read_at: null,
-          notification_id: raw.notification_id || null,
-          created_at: raw.created_at || new Date().toISOString(),
+          notification_id: envelope.notification_id || null,
+          created_at: envelope.created_at || new Date().toISOString(),
         };
 
         setUnreadCount((prev) => prev + 1);
@@ -160,7 +173,9 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
       // Optimistic update
       setNotifications((prev) =>
         prev.map((n) =>
-          n.id === item.id ? { ...n, read: true, read_at: new Date().toISOString() } : n,
+          n.id === item.id
+            ? { ...n, read: true, read_at: new Date().toISOString() }
+            : n,
         ),
       );
       setUnreadCount((prev) => Math.max(0, prev - 1));
@@ -170,6 +185,19 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
       } catch (err) {
         console.error("Failed to mark as read:", err);
       }
+    }
+
+    if (item.data.type === NOTIFICATION_SOCKET_TYPES.IAM_UPDATED) {
+      const refreshedUser = await refreshCurrentUser();
+      setIsOpen(false);
+
+      if (refreshedUser && !refreshedUser.iam?.is_admin) {
+        navigate(AppRoutes.client.protected.HOME, { replace: true });
+        return;
+      }
+
+      window.location.reload();
+      return;
     }
 
     if (item.link) {
@@ -184,7 +212,11 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
 
     // Optimistic update
     setNotifications((prev) =>
-      prev.map((n) => ({ ...n, read: true, read_at: new Date().toISOString() })),
+      prev.map((n) => ({
+        ...n,
+        read: true,
+        read_at: new Date().toISOString(),
+      })),
     );
     setUnreadCount(0);
 
@@ -217,9 +249,18 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
 
   // Filter options for Dropdown
   const filterOptions = [
-    { value: NOTIFICATION_FILTERS.ALL, label: translate(AppLocales.Notifications.FilterAll) },
-    { value: NOTIFICATION_FILTERS.UNREAD, label: translate(AppLocales.Notifications.FilterUnread) },
-    { value: NOTIFICATION_FILTERS.READ, label: translate(AppLocales.Notifications.FilterRead) },
+    {
+      value: NOTIFICATION_FILTERS.ALL,
+      label: translate(AppLocales.Notifications.FilterAll),
+    },
+    {
+      value: NOTIFICATION_FILTERS.UNREAD,
+      label: translate(AppLocales.Notifications.FilterUnread),
+    },
+    {
+      value: NOTIFICATION_FILTERS.READ,
+      label: translate(AppLocales.Notifications.FilterRead),
+    },
   ];
 
   return (
@@ -262,7 +303,10 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
               </h3>
               {unreadCount > 0 && (
                 <span className="badge badge-primary badge-sm font-semibold">
-                  {unreadCount} {translate(AppLocales.Notifications.FilterUnread).toLowerCase()}
+                  {unreadCount}{" "}
+                  {translate(
+                    AppLocales.Notifications.FilterUnread,
+                  ).toLowerCase()}
                 </span>
               )}
             </div>
@@ -301,7 +345,7 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
           </div>
 
           {/* Notifications List */}
-          <div className="flex-1 overflow-y-auto divide-y divide-base-200/60 min-h-[160px] max-h-[460px]">
+          <div className="flex-1 overflow-y-auto divide-y divide-base-200/60 min-h-40 max-h-115">
             {isLoading ? (
               <div className="p-4 space-y-3">
                 {[1, 2, 3].map((i) => (
@@ -325,7 +369,7 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
                       ? translate(AppLocales.Notifications.EmptyRead)
                       : translate(AppLocales.Notifications.EmptyAll)}
                 </p>
-                <p className="text-caption text-base-content/50 mt-1 max-w-[240px]">
+                <p className="text-caption text-base-content/50 mt-1 max-w-60">
                   {translate(AppLocales.Notifications.EmptyDesc)}
                 </p>
               </div>
@@ -391,7 +435,12 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
                 <button
                   type="button"
                   disabled={isLoadingMore}
-                  onClick={() => fetchNotifications((pagination.current_page || 1) + 1, filter)}
+                  onClick={() =>
+                    fetchNotifications(
+                      (pagination.current_page || 1) + 1,
+                      filter,
+                    )
+                  }
                   className="text-body-s font-medium text-primary hover:text-primary-focus transition-colors disabled:opacity-50 cursor-pointer py-1 px-3 rounded-lg hover:bg-primary/10"
                 >
                   {isLoadingMore

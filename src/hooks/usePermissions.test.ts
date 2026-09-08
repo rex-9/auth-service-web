@@ -1,237 +1,61 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-// Mock the contexts module to avoid importing React context/Jotai dependencies
 vi.mock("../contexts", () => ({
-  useAuth: () => ({
-    currentUser: null,
-    isAuthenticated: false,
-  }),
+  useAuth: vi.fn(),
 }));
+import { getAdminPermissions } from "./usePermissions";
+import type { IUserIam } from "../models";
 
-// Mock react hooks since we're in node environment
-vi.mock("react", () => ({
-  useCallback: (fn: unknown) => fn,
-  useMemo: (fn: () => unknown) => (fn as () => unknown)(),
-}));
-
-import {
-  getAdminPermissions,
-  getAdminRoleResourceScope,
-  getScopedAdminPermissions,
-} from "./usePermissions";
-import {
-  isAdminRoleName,
-  hasAdminRole,
-  ADMIN_ROLE_NAMES,
-} from "../modules/admin/role/constants";
-import { ADMIN_RESOURCES } from "../modules/admin/constants";
-
-// =========================================================================
-// Pure authorization logic tests for the admin panel permission system.
-//
-// These test the core business rules that determine which admin resources
-// a user can access based on their role names — the security backbone of
-// the admin panel's client-side RBAC enforcement.
-// =========================================================================
-
-describe("getAdminRoleResourceScope", () => {
-  it("returns an empty set for null or undefined role names", () => {
-    expect(getAdminRoleResourceScope(null).size).toBe(0);
-    expect(getAdminRoleResourceScope(undefined).size).toBe(0);
-  });
-
-  it("returns an empty set for a user with only the 'user' role", () => {
-    const scope = getAdminRoleResourceScope(["user"]);
-    expect(scope.size).toBe(0);
-  });
-
-  it("returns all resources for the 'admin' role", () => {
-    const scope = getAdminRoleResourceScope(["admin"]);
-    const allResources = Object.values(ADMIN_RESOURCES);
-    expect(scope.size).toBe(allResources.length);
-    allResources.forEach((resource) => {
-      expect(scope.has(resource)).toBe(true);
-    });
-  });
-
-  it("returns all resources for 'super_admin' role", () => {
-    const scope = getAdminRoleResourceScope(["super_admin"]);
-    const allResources = Object.values(ADMIN_RESOURCES);
-    expect(scope.size).toBe(allResources.length);
-    allResources.forEach((resource) => {
-      expect(scope.has(resource)).toBe(true);
-    });
-  });
-
-  it("maps 'notification_admin' to notifications resource", () => {
-    const scope = getAdminRoleResourceScope(["notification_admin"]);
-    expect(scope.has(ADMIN_RESOURCES.NOTIFICATIONS)).toBe(true);
-    expect(scope.size).toBe(1);
-  });
-
-  it("maps 'product_admin' to products resource", () => {
-    const scope = getAdminRoleResourceScope(["product_admin"]);
-    expect(scope.has(ADMIN_RESOURCES.PRODUCTS)).toBe(true);
-    expect(scope.size).toBe(1);
-  });
-
-  it("maps 'user_admin' to users resource", () => {
-    const scope = getAdminRoleResourceScope(["user_admin"]);
-    expect(scope.has(ADMIN_RESOURCES.USERS)).toBe(true);
-    expect(scope.size).toBe(1);
-  });
-
-  it("maps 'role_admin' to roles resource", () => {
-    const scope = getAdminRoleResourceScope(["role_admin"]);
-    expect(scope.has(ADMIN_RESOURCES.ROLES)).toBe(true);
-    expect(scope.size).toBe(1);
-  });
-
-  it("maps 'chat_admin' to both rooms and messages resources", () => {
-    const scope = getAdminRoleResourceScope(["chat_admin"]);
-    expect(scope.has(ADMIN_RESOURCES.ROOMS)).toBe(true);
-    expect(scope.has(ADMIN_RESOURCES.MESSAGES)).toBe(true);
-    expect(scope.size).toBe(2);
-  });
-
-  it("combines multiple partial admin roles into a union of scopes", () => {
-    const scope = getAdminRoleResourceScope([
-      "user",
-      "notification_admin",
-      "product_admin",
-    ]);
-    expect(scope.has(ADMIN_RESOURCES.NOTIFICATIONS)).toBe(true);
-    expect(scope.has(ADMIN_RESOURCES.PRODUCTS)).toBe(true);
-    expect(scope.size).toBe(2);
-  });
-
-  it("ignores roles without the _admin suffix", () => {
-    const scope = getAdminRoleResourceScope(["editor", "viewer", "moderator"]);
-    expect(scope.size).toBe(0);
-  });
-
-  it("ignores unknown _admin prefixes that don't match any resource", () => {
-    const scope = getAdminRoleResourceScope(["finance_admin"]);
-    expect(scope.size).toBe(0);
-  });
-
-  it("maps 'log_admin' to clients (telemetry) resource", () => {
-    const scope = getAdminRoleResourceScope(["log_admin"]);
-    expect(scope.has(ADMIN_RESOURCES.CLIENTS)).toBe(true);
-    expect(scope.size).toBe(1);
-  });
-
-  it("strictly scopes 'chat_admin' and ignores permissions under 'user' role", () => {
-    const scope = getAdminRoleResourceScope(["chat_admin", "user"]);
-    expect(scope.has(ADMIN_RESOURCES.ROOMS)).toBe(true);
-    expect(scope.has(ADMIN_RESOURCES.MESSAGES)).toBe(true);
-    expect(scope.has(ADMIN_RESOURCES.CLIENTS)).toBe(false);
-    expect(scope.has(ADMIN_RESOURCES.USERS)).toBe(false);
-    expect(scope.size).toBe(2);
-  });
-
-  it("scopes 'log_admin' and 'user' to allow logs but block other resources", () => {
-    const scope = getAdminRoleResourceScope(["log_admin", "user"]);
-    expect(scope.has(ADMIN_RESOURCES.CLIENTS)).toBe(true);
-    expect(scope.has(ADMIN_RESOURCES.ROOMS)).toBe(false);
-    expect(scope.has(ADMIN_RESOURCES.PRODUCTS)).toBe(false);
-    expect(scope.size).toBe(1);
-  });
-
-  it("handles an empty array without errors", () => {
-    const scope = getAdminRoleResourceScope([]);
-    expect(scope.size).toBe(0);
-  });
+const iam = (overrides: Partial<IUserIam> = {}): IUserIam => ({
+  is_admin: true,
+  is_super_admin: false,
+  roles: [],
+  admin_roles: [],
+  non_admin_roles: [],
+  permissions: [],
+  admin_permissions: [],
+  non_admin_permissions: [],
+  ...overrides,
 });
 
 describe("getAdminPermissions", () => {
-  it("uses the returned admin permission map as the source of truth for admin roles", () => {
+  it("uses only permissions granted through admin roles", () => {
     const permissions = getAdminPermissions(
-      {
-        [ADMIN_RESOURCES.NOTIFICATIONS]: ["read", "create", "update", "delete"],
-        [ADMIN_RESOURCES.USERS]: ["read"],
-        [ADMIN_RESOURCES.PRODUCTS]: ["read"],
-      },
-      ["notification_admin"],
-    );
-
-    expect(permissions).toContainEqual({
-      action: "read",
-      resource: ADMIN_RESOURCES.USERS,
-    });
-    expect(permissions).toContainEqual({
-      action: "read",
-      resource: ADMIN_RESOURCES.PRODUCTS,
-    });
-  });
-
-  it("does not grant admin permissions to non-admin roles", () => {
-    const permissions = getAdminPermissions(
-      {
-        [ADMIN_RESOURCES.USERS]: ["read"],
-      },
-      ["user"],
-    );
-
-    expect(permissions).toEqual([]);
-  });
-});
-
-describe("getScopedAdminPermissions", () => {
-  it("keeps older combined permission payloads scoped to the admin role prefix", () => {
-    const permissions = getScopedAdminPermissions(
-      {
-        [ADMIN_RESOURCES.USERS]: ["read"],
-        [ADMIN_RESOURCES.PRODUCTS]: ["read"],
-        [ADMIN_RESOURCES.NOTIFICATIONS]: ["read"],
-      },
-      ["notification_admin"],
+      iam({
+        admin_permissions: [
+          {
+            id: "permission-1",
+            type: "permission",
+            attributes: {
+              id: "permission-1",
+              name: "read_feedbacks",
+              action: "read",
+              resource: "feedbacks",
+            },
+          },
+        ],
+        non_admin_permissions: [
+          {
+            id: "permission-2",
+            type: "permission",
+            attributes: {
+              id: "permission-2",
+              name: "delete_users",
+              action: "delete",
+              resource: "users",
+            },
+          },
+        ],
+      }),
     );
 
     expect(permissions).toEqual([
-      {
-        action: "read",
-        resource: ADMIN_RESOURCES.NOTIFICATIONS,
-      },
+      { action: "read", resource: "feedbacks" },
     ]);
   });
-});
 
-describe("isAdminRoleName", () => {
-  it("returns true for 'admin'", () => {
-    expect(isAdminRoleName(ADMIN_ROLE_NAMES.ADMIN)).toBe(true);
-  });
-
-  it("returns true for roles ending with '_admin'", () => {
-    expect(isAdminRoleName("notification_admin")).toBe(true);
-    expect(isAdminRoleName("product_admin")).toBe(true);
-    expect(isAdminRoleName("super_admin")).toBe(true);
-    expect(isAdminRoleName("chat_admin")).toBe(true);
-  });
-
-  it("returns false for non-admin roles", () => {
-    expect(isAdminRoleName(ADMIN_ROLE_NAMES.USER)).toBe(false);
-    expect(isAdminRoleName("editor")).toBe(false);
-    expect(isAdminRoleName("administrator")).toBe(false);
-  });
-});
-
-describe("hasAdminRole", () => {
-  it("returns true when at least one role is an admin role", () => {
-    expect(hasAdminRole(["user", "notification_admin"])).toBe(true);
-    expect(hasAdminRole(["admin"])).toBe(true);
-  });
-
-  it("returns false when no roles are admin roles", () => {
-    expect(hasAdminRole(["user", "editor"])).toBe(false);
-  });
-
-  it("returns false for null or undefined", () => {
-    expect(hasAdminRole(null)).toBe(false);
-    expect(hasAdminRole(undefined)).toBe(false);
-  });
-
-  it("returns false for empty array", () => {
-    expect(hasAdminRole([])).toBe(false);
+  it("returns no admin permissions for a non-admin or missing IAM", () => {
+    expect(getAdminPermissions(iam({ is_admin: false }))).toEqual([]);
+    expect(getAdminPermissions(undefined)).toEqual([]);
   });
 });

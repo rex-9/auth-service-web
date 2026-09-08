@@ -1,12 +1,11 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import AppRoutes from "../AppRoutes";
-import { useAuth } from "../contexts";
 import { NotFoundPage } from "../design/pages";
 import { usePermissions } from "../hooks";
 import type { AdminResource } from "../modules/admin/role";
-import { hasAdminRole } from "../modules/admin/role";
 import { ADMIN_ACTIONS, ADMIN_RESOURCES } from "../modules/admin";
+import { AdminLayout } from "../modules/admin/components/AdminLayout";
 
 const adminEntryRoutes: Array<{
   action?: typeof ADMIN_ACTIONS.READ | typeof ADMIN_ACTIONS.CREATE;
@@ -21,7 +20,6 @@ const adminEntryRoutes: Array<{
   {
     resource: ADMIN_RESOURCES.USERS,
     path: AppRoutes.client.protected.admin.USERS,
-    superAdminOnly: true,
   },
   {
     resource: ADMIN_RESOURCES.VERSIONS,
@@ -29,21 +27,25 @@ const adminEntryRoutes: Array<{
     superAdminOnly: true,
   },
   {
-    resource:ADMIN_RESOURCES.NOTIFICATIONS,
+    resource: ADMIN_RESOURCES.NOTIFICATIONS,
     path: AppRoutes.client.protected.admin.NOTIFICATIONS,
   },
-  { resource: ADMIN_RESOURCES.PRODUCTS, path: AppRoutes.client.protected.admin.PRODUCTS },
-  { resource: ADMIN_RESOURCES.ROOMS, path: AppRoutes.client.protected.admin.CHAT_ROOMS },
   {
-    resource:ADMIN_RESOURCES.MESSAGES,
+    resource: ADMIN_RESOURCES.PRODUCTS,
+    path: AppRoutes.client.protected.admin.PRODUCTS,
+  },
+  {
+    resource: ADMIN_RESOURCES.ROOMS,
+    path: AppRoutes.client.protected.admin.CHAT_ROOMS,
+  },
+  {
+    resource: ADMIN_RESOURCES.MESSAGES,
     path: AppRoutes.client.protected.admin.CHAT_MESSAGES,
   },
 ];
 
 export const AdminHomeRoute: React.FC = () => {
-  const { currentUser } = useAuth();
-  const { can, isLoading, isSuperAdmin } = usePermissions();
-  const hasAdminAccess = hasAdminRole(currentUser?.role_names);
+  const { can, isAdmin, isLoading, isSuperAdmin } = usePermissions();
 
   if (isLoading) {
     return (
@@ -53,13 +55,22 @@ export const AdminHomeRoute: React.FC = () => {
     );
   }
 
-  const entry = hasAdminAccess
-    ? adminEntryRoutes.find((item) =>
-        item.superAdminOnly
-          ? isSuperAdmin
-          : can(item.action ?? ADMIN_ACTIONS.READ, item.resource),
-      )
-    : null;
+  const entry =
+    isAdmin
+      ? adminEntryRoutes.find((item) =>
+          item.superAdminOnly
+            ? isSuperAdmin
+            : can(item.action ?? ADMIN_ACTIONS.READ, item.resource),
+        )
+      : null;
 
-  return entry ? <Navigate to={entry.path} replace /> : <NotFoundPage />;
+  return entry ? (
+    <Navigate to={entry.path} replace />
+  ) : (
+    <AdminLayout>
+      <div className="flex min-h-[calc(100vh-10rem)] items-center justify-center">
+        <NotFoundPage />
+      </div>
+    </AdminLayout>
+  );
 };

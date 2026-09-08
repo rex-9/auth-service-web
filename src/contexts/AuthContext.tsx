@@ -8,13 +8,14 @@ import React, {
   ReactNode,
   useState,
   useEffect,
+  useRef,
 } from "react";
 import { useAtom } from "jotai";
 import { IUser } from "../models/user.model";
 import atoms from "../atoms";
 import { isTokenExpired } from "../helpers";
-import UserService from "../modules/user/user.service";
 import { useLoading } from "./LoadingContext";
+import UserController from "../modules/user/user.controller";
 
 interface IAuthContextType {
   isAuthenticated: boolean;
@@ -23,7 +24,7 @@ interface IAuthContextType {
   setCurrentUser: (user: IUser | null) => void;
   signin: (token: string, user: IUser) => void;
   signout: () => void;
-  refreshCurrentUser: () => Promise<void>;
+  refreshCurrentUser: () => Promise<IUser | null>;
   googleChallengeToken: string | null;
   setGoogleChallengeToken: (token: string | null) => void;
 }
@@ -39,6 +40,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     string | null
   >(null);
   const { setLoading } = useLoading();
+  const userRefreshRef = useRef<Promise<IUser | null> | null>(null);
 
   // Check if authenticated using token expiry from JWT
   const isAuthenticated = useMemo(() => {
@@ -93,14 +95,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     [setToken, setCurrentUser, setGoogleChallengeToken],
   );
 
-  const refreshCurrentUser = useCallback(async () => {
-    if (!token || isTokenExpired(token)) return;
+  const refreshCurrentUser = useCallback((): Promise<IUser | null> => {
+    if (userRefreshRef.current) return userRefreshRef.current;
 
-    const response = await UserService.getCurrentUser();
-    if (response.data?.data.user) {
-      setCurrentUser(response.data.data.user);
-    }
-  }, [setCurrentUser, token]);
+    const request = UserController.getCurrentUser()
+      .then((user) => {
+        if (user) setCurrentUser(user);
+        return user;
+      })
+      .finally(() => {
+        userRefreshRef.current = null;
+      });
+
+    userRefreshRef.current = request;
+    return request;
+  }, [setCurrentUser]);
 
   const value = useMemo(
     () => ({

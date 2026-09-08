@@ -167,6 +167,11 @@ class AppRoutes {
       NOTIFICATIONS_READ_ALL: AppRoutes.api("/notifications/read_all"), // PUT
       NOTIFICATION_DELETE: AppRoutes.api("/notifications/:id"), // DELETE
 
+      IAM_USER_ROLES: AppRoutes.api("/iam/users/:user_id/roles"), // POST
+      IAM_USER_ROLE: AppRoutes.api(
+        "/iam/users/:user_id/roles/:role_id",
+      ), // DELETE
+
       // API for Client Admin Dashboard
       admin: {
         USERS: AppRoutes.adminApi("/users"), // GET, POST

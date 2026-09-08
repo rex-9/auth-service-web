@@ -47,8 +47,7 @@ import { BadgeSizes } from "../../../../design/constants";
 import { formatAdminDate } from "../../../../helpers";
 
 const renderUserRoles = (user: IAdminUser, unassignedLabel: string) => {
-  const roles: string[] =
-    user.role_names ?? user.roles ?? (user.role ? [user.role] : []);
+  const roles = user.iam?.roles.map((role) => role.attributes.name) ?? [];
   if (!roles.length) {
     return (
       <span className="text-caption text-base-content opacity-50">
@@ -104,7 +103,7 @@ export const AdminUsersPage: React.FC<IAdminUsersPageProps> = ({
 
   const [searchInput, setSearchInput] = useState(searchQuery);
   const toast = useToast();
-  const { can, isLoading: permissionsLoading } = usePermissions();
+  const { can, isLoading: permissionsLoading, isSuperAdmin } = usePermissions();
   const { isLoading, setLoading } = useLoading();
   const [users, setUsers] = useState<IAdminUser[]>([]);
   const [pagination, setPagination] = useState<IApiPagination | null>(null);
@@ -137,7 +136,8 @@ export const AdminUsersPage: React.FC<IAdminUsersPageProps> = ({
 
   // Keep local search input in sync if URL search param changes externally
   useEffect(() => {
-    setSearchInput(searchQuery);
+    const timeoutId = window.setTimeout(() => setSearchInput(searchQuery), 0);
+    return () => window.clearTimeout(timeoutId);
   }, [searchQuery]);
 
   // Debounce search input by 300ms before updating URL and querying API
@@ -180,9 +180,13 @@ export const AdminUsersPage: React.FC<IAdminUsersPageProps> = ({
   }, [can, page, searchQuery, setLoading, sortBy, sortOrder, t, view]);
 
   useEffect(() => {
-    if (!permissionsLoading) {
+    if (permissionsLoading) return;
+
+    const timeoutId = window.setTimeout(() => {
       void loadUsers();
-    }
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [loadUsers, permissionsLoading]);
 
   const openLifecycleDialog = (
@@ -325,7 +329,8 @@ export const AdminUsersPage: React.FC<IAdminUsersPageProps> = ({
     }
   };
 
-  const canCreate = can(ADMIN_ACTIONS.CREATE, ADMIN_RESOURCES.USERS);
+  const canCreate =
+    isSuperAdmin && can(ADMIN_ACTIONS.CREATE, ADMIN_RESOURCES.USERS);
 
   return (
     <div className="space-y-6">
@@ -354,7 +359,7 @@ export const AdminUsersPage: React.FC<IAdminUsersPageProps> = ({
         }
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          {can(ADMIN_ACTIONS.DELETE, ADMIN_RESOURCES.USERS) && (
+          {isSuperAdmin && can(ADMIN_ACTIONS.DELETE, ADMIN_RESOURCES.USERS) && (
             <Tabs
               value={view}
               onChange={(tab) => {
@@ -439,4 +444,3 @@ export const AdminUsersPage: React.FC<IAdminUsersPageProps> = ({
     </div>
   );
 };
-
