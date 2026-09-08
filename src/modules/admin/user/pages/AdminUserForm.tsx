@@ -34,7 +34,10 @@ export const AdminUserForm: React.FC<IAdminUserFormProps> = ({
   onCancel,
 }) => {
   const t = useTranslate();
-  const initialRoleIds = useMemo(() => user?.role_ids ?? [], [user]);
+  const initialRoleIds = useMemo(
+    () => user?.iam?.roles.map((role) => role.id) ?? [],
+    [user],
+  );
 
   const [username, setUsername] = useState(user?.username ?? "");
   const [name, setName] = useState(user?.name ?? "");
@@ -183,7 +186,7 @@ export const AdminUserForm: React.FC<IAdminUserFormProps> = ({
               </span>
             </div>
 
-            <div className="grid gap-2 sm:grid-cols-3">
+            <div className="grid gap-2 sm:grid-cols-5">
               {roles.map((role) => {
                 const isSelected = selectedRoleIds.includes(role.id);
                 return (

@@ -168,7 +168,6 @@ const router = createBrowserRouter(
               <AdminRootRoute
                 action={ADMIN_ACTIONS.READ}
                 resource={ADMIN_RESOURCES.USERS}
-                superAdminOnly
               />
             }
           >
@@ -176,6 +175,16 @@ const router = createBrowserRouter(
               path={AppRoutes.client.protected.admin.USERS}
               element={<AdminUsersPage />}
             />
+          </Route>
+          <Route
+            element={
+              <AdminRootRoute
+                action={ADMIN_ACTIONS.DELETE}
+                resource={ADMIN_RESOURCES.USERS}
+                superAdminOnly
+              />
+            }
+          >
             <Route
               path={AppRoutes.client.protected.admin.USERS_RECYCLE_BIN}
               element={<AdminDiscardedUsersPage />}
