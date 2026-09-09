@@ -843,6 +843,7 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
               sortBy={sortBy}
               sortOrder={sortOrder}
               onSort={handleSort}
+              onRowClick={(asset) => navigate(AppRoutes.withId(AppRoutes.client.protected.admin.ASSET_DETAIL, asset.id))}
               selectable={canDelete}
               selectedRowKeys={selectedIds}
               onSelectRow={(id, selected) => {

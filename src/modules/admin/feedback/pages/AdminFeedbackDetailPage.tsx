@@ -6,26 +6,23 @@ import AppRoutes from "../../../../AppRoutes";
 import { useLoading } from "../../../../contexts/LoadingContext";
 import { useToast } from "../../../../contexts/ToastContext";
 import { useDocumentTitle } from "../../../../hooks";
-import { iconsLib } from "../../../../assets";
 import {
-  Button,
   Dropdown,
   StatusBadge,
   TextArea,
 } from "../../../../design/components";
 import {
   BadgeVariants,
-  ButtonVariants,
   DropdownSizes,
 } from "../../../../design/constants";
 import { formatAdminDate } from "../../../../helpers";
 import type { IAdminFeedback } from "../types";
 import {
   AlertDialog,
+  AdminDetailHeader,
   AdminState,
   FormActionRow,
   FormContainer,
-  PageHeader,
 } from "../../components";
 import { ADMIN_FEEDBACK_PRIORITY, ADMIN_FEEDBACK_STATUS } from "../constants";
 import { useTranslate, AppLocales } from "../../../../locales";
@@ -33,7 +30,9 @@ import { Admin } from "../..";
 
 export const AdminFeedbackDetailPage: React.FC = () => {
   const t = useTranslate();
-  useDocumentTitle(`${t(AppLocales.Admin.Feedback.Drawer.Title)} | Admin`);
+  useDocumentTitle(
+    `${t(AppLocales.Admin.Feedback.Drawer.Title)} | ${t(AppLocales.Admin.Common.Detail.Admin)}`,
+  );
 
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -151,18 +150,18 @@ export const AdminFeedbackDetailPage: React.FC = () => {
         onClose={() => setAlertMessage("")}
       />
 
-      <PageHeader
+      <AdminDetailHeader
+        breadcrumbs={[
+          { label: t(AppLocales.Admin.Common.Detail.Admin), to: AppRoutes.client.protected.admin.HOME },
+          {
+            label: t(AppLocales.Admin.Feedback.Title),
+            to: AppRoutes.client.protected.admin.FEEDBACK,
+          },
+          { label: t(AppLocales.Admin.Feedback.Drawer.Title) },
+        ]}
         title={t(AppLocales.Admin.Feedback.Drawer.Title)}
-        description="Inspect user feedback submission and manage triage status"
-        action={
-          <Button
-            variant={ButtonVariants.SECONDARY}
-            onClick={() => navigate(AppRoutes.client.protected.admin.FEEDBACK)}
-          >
-            <iconsLib.arrowLeft className="w-5 h-5 mr-2" />
-            Back
-          </Button>
-        }
+        description={t(AppLocales.Admin.Feedback.Detail.Description)}
+        backTo={AppRoutes.client.protected.admin.FEEDBACK}
       />
 
       {error && !feedback ? (
@@ -175,7 +174,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
           {/* Feedback Metadata Card */}
           <div className="lg:col-span-1 bg-base-100 rounded-xl border border-base-200 p-6 space-y-4">
             <h3 className="font-semibold text-base-content text-lg">
-              Submission Info
+              {t(AppLocales.Admin.Feedback.Detail.SubmissionInfo)}
             </h3>
 
             <div className="space-y-3 pt-2 text-sm">
@@ -184,7 +183,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
                   {t(AppLocales.Admin.Feedback.Table.User)}
                 </span>
                 <span className="font-medium text-base-content">
-                  {feedback.user_name || feedback.user_email || "Anonymous"}
+                  {feedback.user_name || feedback.user_email || t(AppLocales.Admin.Feedback.Detail.Anonymous)}
                 </span>
               </div>
 
@@ -199,14 +198,14 @@ export const AdminFeedbackDetailPage: React.FC = () => {
               </div>
 
               <div className="flex justify-between items-center py-1.5 border-b border-base-200">
-                <span className="text-base-content/60">Rating</span>
+                <span className="text-base-content/60">{t(AppLocales.Admin.Feedback.Table.Rating)}</span>
                 <span className="text-warning font-semibold">
-                  {feedback.rating ? `⭐ ${feedback.rating}/10` : "None"}
+                  {feedback.rating ? `⭐ ${feedback.rating}/10` : t(AppLocales.Admin.Feedback.Detail.None)}
                 </span>
               </div>
 
               <div className="flex justify-between items-center py-1.5 border-b border-base-200">
-                <span className="text-base-content/60">Created</span>
+                <span className="text-base-content/60">{t(AppLocales.Admin.Common.Detail.Created)}</span>
                 <span className="text-base-content/70">
                   {formatAdminDate(feedback.created_at)}
                 </span>
@@ -214,7 +213,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
 
               {feedback.platform && (
                 <div className="flex justify-between items-center py-1.5 border-b border-base-200">
-                  <span className="text-base-content/60">Platform</span>
+                  <span className="text-base-content/60">{t(AppLocales.Admin.Feedback.Detail.Platform)}</span>
                   <StatusBadge
                     status={feedback.platform}
                     variant={BadgeVariants.INFO}
@@ -224,7 +223,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
 
               {(feedback.device || feedback.browser || feedback.os) && (
                 <div className="pt-2 text-xs opacity-60 font-mono space-y-1">
-                  <div>Device Telemetry:</div>
+                  <div>{t(AppLocales.Admin.Feedback.Detail.DeviceTelemetry)}:</div>
                   <div className="p-2 rounded bg-base-200 break-all">
                     {[
                       feedback.platform,
@@ -271,8 +270,8 @@ export const AdminFeedbackDetailPage: React.FC = () => {
                 </div>
 
                 <TextArea
-                  label="Admin Moderation Notes"
-                  placeholder="Enter internal moderation and resolution notes..."
+                  label={t(AppLocales.Admin.Feedback.Detail.AdminNotes)}
+                  placeholder={t(AppLocales.Admin.Feedback.Detail.AdminNotesPlaceholder)}
                   value={adminNotes}
                   onChange={(e) => setAdminNotes(e.target.value)}
                   rows={4}

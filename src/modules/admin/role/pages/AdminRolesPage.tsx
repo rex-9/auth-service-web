@@ -290,6 +290,7 @@ export const AdminRolesPage: React.FC<IAdminRolesPageProps> = ({
           sortBy={sortBy}
           sortOrder={sortOrder}
           onSort={handleSort}
+          onRowClick={(role) => navigate(AppRoutes.withId(AppRoutes.client.protected.admin.ROLE_DETAIL, role.id))}
         />
       )}
 
@@ -307,4 +308,3 @@ export const AdminRolesPage: React.FC<IAdminRolesPageProps> = ({
     </div>
   );
 };
-

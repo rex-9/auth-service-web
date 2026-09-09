@@ -40,7 +40,7 @@ export const CacheSourceBadge: React.FC<ICacheSourceBadgeProps> = ({
         )}
       >
         <iconsLib.shieldCheck className="h-3.5 w-3.5" />
-        <span>{t(AppLocales.Admin.Analytics.Cache.RedisCache)}</span>
+        <span>{t(AppLocales.Admin.Analytics.Cache.SolidCache)}</span>
       </div>
     );
   }
@@ -59,4 +59,3 @@ export const CacheSourceBadge: React.FC<ICacheSourceBadgeProps> = ({
 };
 
 export default CacheSourceBadge;
-

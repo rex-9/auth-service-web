@@ -37,12 +37,14 @@ import {
   AdminAccessesPage,
   AdminAccessCreatePage,
   AdminAccessEditPage,
+  AdminAccessDetailPage,
   AdminFeedbacksPage,
   AdminFeedbackDetailPage,
   AdminLogsPage,
   AdminDiscardedLogsPage,
   AdminLogDetailPage,
   AdminChatMessageEditPage,
+  AdminChatMessageDetailPage,
   AdminChatMessagesPage,
   AdminDiscardedChatMessagesPage,
   AdminChatRoomEditPage,
@@ -53,20 +55,24 @@ import {
   AdminNotificationEditPage,
   AdminProductCreatePage,
   AdminProductEditPage,
+  AdminProductDetailPage,
   AdminDiscardedProductsPage,
   AdminProductsPage,
   AdminRoleCreatePage,
   AdminRoleEditPage,
+  AdminRoleDetailPage,
   AdminRolesPage,
   AdminDiscardedRolesPage,
   AdminUserCreatePage,
   AdminDiscardedUsersPage,
   AdminUserEditPage,
+  AdminUserDetailPage,
   AdminUsersPage,
   AdminAssetsPage,
   AdminDiscardedAssetsPage,
   AdminAssetCreatePage,
   AdminAssetEditPage,
+  AdminAssetDetailPage,
   AdminVersionsPage,
   AdminDiscardedVersionsPage,
   AdminVersionCreatePage,
@@ -175,6 +181,10 @@ const router = createBrowserRouter(
               path={AppRoutes.client.protected.admin.USERS}
               element={<AdminUsersPage />}
             />
+            <Route
+              path={AppRoutes.client.protected.admin.USER_DETAIL}
+              element={<AdminUserDetailPage />}
+            />
           </Route>
           <Route
             element={
@@ -230,6 +240,10 @@ const router = createBrowserRouter(
             <Route
               path={AppRoutes.client.protected.admin.ROLES}
               element={<AdminRolesPage />}
+            />
+            <Route
+              path={AppRoutes.client.protected.admin.ROLE_DETAIL}
+              element={<AdminRoleDetailPage />}
             />
           </Route>
           <Route
@@ -325,6 +339,10 @@ const router = createBrowserRouter(
               path={AppRoutes.client.protected.admin.CHAT_MESSAGES}
               element={<AdminChatMessagesPage />}
             />
+            <Route
+              path={AppRoutes.client.protected.admin.CHAT_MESSAGE_DETAIL}
+              element={<AdminChatMessageDetailPage />}
+            />
           </Route>
           <Route
             element={
@@ -403,6 +421,10 @@ const router = createBrowserRouter(
               path={AppRoutes.client.protected.admin.PRODUCTS}
               element={<AdminProductsPage />}
             />
+            <Route
+              path={AppRoutes.client.protected.admin.PRODUCT_DETAIL}
+              element={<AdminProductDetailPage />}
+            />
           </Route>
           <Route
             element={
@@ -454,6 +476,10 @@ const router = createBrowserRouter(
             <Route
               path={AppRoutes.client.protected.admin.ACCESSES}
               element={<AdminAccessesPage />}
+            />
+            <Route
+              path={AppRoutes.client.protected.admin.ACCESS_DETAIL}
+              element={<AdminAccessDetailPage />}
             />
           </Route>
           <Route
@@ -558,6 +584,10 @@ const router = createBrowserRouter(
             <Route
               path={AppRoutes.client.protected.admin.ASSETS}
               element={<AdminAssetsPage />}
+            />
+            <Route
+              path={AppRoutes.client.protected.admin.ASSET_DETAIL}
+              element={<AdminAssetDetailPage />}
             />
           </Route>
           <Route

@@ -386,6 +386,7 @@ export const AdminAccessesPage: React.FC = () => {
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(record) => navigate(AppRoutes.withId(AppRoutes.client.protected.admin.ACCESS_DETAIL, record.id))}
           />
           <AdminPagination
             pagination={pagination}

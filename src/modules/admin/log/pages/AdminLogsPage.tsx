@@ -296,31 +296,11 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
               view === ADMIN_VIEW_MODES.ACTIVE
                 ? [
                     {
-                      type: ADMIN_ACTIONS.INSPECT,
-                      onClick: () =>
-                        navigate(
-                          AppRoutes.withId(
-                            AppRoutes.client.protected.admin.LOG_DETAIL,
-                            log.id,
-                          ),
-                        ),
-                    },
-                    {
                       type: ADMIN_ACTIONS.DISCARD,
                       onClick: () => setDiscardTarget(log),
                     },
                   ]
                 : [
-                    {
-                      type: ADMIN_ACTIONS.INSPECT,
-                      onClick: () =>
-                        navigate(
-                          AppRoutes.withId(
-                            AppRoutes.client.protected.admin.LOG_DETAIL,
-                            log.id,
-                          ),
-                        ),
-                    },
                     {
                       type: ADMIN_ACTIONS.UNDISCARD,
                       onClick: () => void handleUndiscard(log),
@@ -390,7 +370,7 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
       {/* Dropdown Filters */}
       <div className="flex flex-wrap items-center gap-3">
         <Dropdown
-          size={DropdownSizes.SM}
+          size={DropdownSizes.MD}
           containerClassName="w-auto min-w-40"
           value={resolutionFilter}
           onValueChange={(val) => updateFilters({ resolution: val, page: 1 })}
@@ -408,7 +388,7 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
         />
 
         <Dropdown
-          size={DropdownSizes.SM}
+          size={DropdownSizes.MD}
           containerClassName="w-auto min-w-40"
           value={severityFilter}
           onValueChange={(val) => updateFilters({ severity: val, page: 1 })}
@@ -431,7 +411,7 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
         />
 
         <Dropdown
-          size={DropdownSizes.SM}
+          size={DropdownSizes.MD}
           containerClassName="w-auto min-w-40"
           value={platformFilter}
           onValueChange={(val) => updateFilters({ platform: val, page: 1 })}
@@ -473,6 +453,14 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(log) =>
+              navigate(
+                AppRoutes.withId(
+                  AppRoutes.client.protected.admin.LOG_DETAIL,
+                  log.id,
+                ),
+              )
+            }
           />
           <AdminPagination
             pagination={pagination}

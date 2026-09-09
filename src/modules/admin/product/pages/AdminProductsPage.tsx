@@ -370,6 +370,7 @@ export const AdminProductsPage: React.FC<IAdminProductsPageProps> = ({
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(record) => navigate(AppRoutes.withId(AppRoutes.client.protected.admin.PRODUCT_DETAIL, record.id))}
           />
           <AdminPagination
             pagination={pagination}
@@ -404,4 +405,3 @@ export const AdminProductsPage: React.FC<IAdminProductsPageProps> = ({
     </div>
   );
 };
-

@@ -1,11 +1,12 @@
 // src/modules/admin/analytics/components/AnalyticsPeriodSelector.tsx
 import React, { useMemo } from "react";
 import { iconsLib } from "../../../../assets";
-import { Dropdown, DropdownSizes, type IDropdownOption } from "../../../../design";
 import {
-  ANALYTICS_PERIODS,
-  TAnalyticsPeriod,
-} from "../../constants";
+  Dropdown,
+  DropdownSizes,
+  type IDropdownOption,
+} from "../../../../design";
+import { ANALYTICS_PERIODS, TAnalyticsPeriod } from "../../constants";
 import {
   calculateUtcRangeForMonth,
   calculateUtcRangeForPreset,
@@ -249,7 +250,7 @@ export const AnalyticsPeriodSelector: React.FC<
       options={options}
       disabled={disabled}
       fullWidth={false}
-      size={DropdownSizes.SM}
+      size={DropdownSizes.MD}
       icon={<iconsLib.clock className="h-4 w-4" />}
       className="w-auto font-semibold pr-8"
     />
@@ -257,4 +258,3 @@ export const AnalyticsPeriodSelector: React.FC<
 };
 
 export default AnalyticsPeriodSelector;
-

@@ -30,7 +30,6 @@ import {
   AdminPagination,
   AdminState,
   AdminTable,
-  AdminTableActions,
   PageHeader,
   type IAdminTableColumn,
 } from "../../components";
@@ -248,28 +247,6 @@ export const AdminFeedbacksPage: React.FC = () => {
         className: "text-center",
         render: (item) => formatAdminDate(item.created_at),
       },
-      {
-        key: ADMIN_FEEDBACK_TABLE_KEYS.ACTIONS,
-        header: "",
-        className: "text-right",
-        render: (item) => (
-          <AdminTableActions
-            resource={ADMIN_RESOURCES.FEEDBACKS}
-            actions={[
-              {
-                type: ADMIN_ACTIONS.REVIEW,
-                onClick: () =>
-                  navigate(
-                    AppRoutes.withId(
-                      AppRoutes.client.protected.admin.FEEDBACK_DETAIL,
-                      item.id,
-                    ),
-                  ),
-              },
-            ]}
-          />
-        ),
-      },
     ],
     [navigate, t],
   );
@@ -393,6 +370,14 @@ export const AdminFeedbacksPage: React.FC = () => {
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(item) =>
+              navigate(
+                AppRoutes.withId(
+                  AppRoutes.client.protected.admin.FEEDBACK_DETAIL,
+                  item.id,
+                ),
+              )
+            }
           />
           <AdminPagination
             pagination={pagination}

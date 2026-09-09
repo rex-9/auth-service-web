@@ -4,3 +4,4 @@ export * from "./AdminAccessesPage";
 export * from "./AdminAccessForm";
 export * from "./AdminAccessCreatePage";
 export * from "./AdminAccessEditPage";
+export * from "./AdminAccessDetailPage";

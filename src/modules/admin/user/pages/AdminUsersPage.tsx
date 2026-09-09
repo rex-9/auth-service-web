@@ -425,6 +425,7 @@ export const AdminUsersPage: React.FC<IAdminUsersPageProps> = ({
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(user) => navigate(AppRoutes.withId(AppRoutes.client.protected.admin.USER_DETAIL, user.id))}
           />
           <AdminPagination
             pagination={pagination}

@@ -11,6 +11,8 @@ export { PageHeader } from "./PageHeader";
 export type { IPageHeaderProps } from "./PageHeader";
 export { Tabs, TabVariants } from "./Tabs";
 export type { ITabItem, ITabsProps, TabVariant } from "./Tabs";
+export { Breadcrumbs } from "./Breadcrumbs";
+export type { IBreadcrumbItem, IBreadcrumbsProps } from "./Breadcrumbs";
 export { ProgressBar } from "./ProgressBar";
 export { MetricIndicators } from "./MetricIndicators";
 export type {

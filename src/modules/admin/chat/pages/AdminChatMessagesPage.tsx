@@ -327,6 +327,7 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(message) => navigate(AppRoutes.withId(AppRoutes.client.protected.admin.CHAT_MESSAGE_DETAIL, message.id))}
           />
           <AdminPagination
             pagination={pagination}
@@ -361,4 +362,3 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
     </div>
   );
 };
-
