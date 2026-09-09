@@ -30,8 +30,8 @@ class AssetService {
     params?: Record<string, string | number>,
   ): Promise<IApiResponse<IApiEnvelope<{ assets: IAdminAsset[] }>>> {
     return api.get<{ assets: IAdminAsset[] }>(
-      AppRoutes.server.protected.admin.DISCARDED_ASSETS,
-      params,
+      AppRoutes.server.protected.admin.ASSETS,
+      { ...params, discarded: "true" },
     );
   }
 

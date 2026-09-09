@@ -177,7 +177,6 @@ class AppRoutes {
         USERS: AppRoutes.adminApi("/users"), // GET, POST
         USER_ROLES: AppRoutes.adminApi("/iam/roles"), // GET
         USER_DETAIL: AppRoutes.adminApi("/users/:id"), // GET, PUT
-        DISCARDED_USERS: AppRoutes.adminApi("/users/discarded"), // GET
         USER_DISCARD: AppRoutes.adminApi("/users/:id/discard"), // POST
         USER_UNDISCARD: AppRoutes.adminApi("/users/:id/undiscard"), // POST
         IAM_ROLES: AppRoutes.adminApi("/iam/roles"), // GET, POST
@@ -196,9 +195,6 @@ class AppRoutes {
         NOTIFICATION_TEMPLATE_DISCARD: AppRoutes.adminApi("/notifications/:id"), // DELETE
         NOTIFICATION_TEMPLATE_UNDISCARD: AppRoutes.adminApi("/notifications/:id/undiscard"), // POST
         PAYMENT_PRODUCTS: AppRoutes.adminApi("/payment/products"), // GET, POST
-        DISCARDED_PAYMENT_PRODUCTS: AppRoutes.adminApi(
-          "/payment/products/discarded",
-        ), // GET
         PAYMENT_PRODUCT_DETAIL: AppRoutes.adminApi("/payment/products/:id"), // GET, PUT, DELETE
         PAYMENT_PRODUCT_DISCARD: AppRoutes.adminApi(
           "/payment/products/:id/discard",
@@ -208,7 +204,6 @@ class AppRoutes {
         ), // POST
         ASSETS: AppRoutes.adminApi("/assets"), // GET
         ASSET_DETAIL: AppRoutes.adminApi("/assets/:id"), // GET, PUT, DELETE
-        DISCARDED_ASSETS: AppRoutes.adminApi("/assets/discarded"), // GET
         ASSET_UPLOAD: AppRoutes.adminApi("/assets/upload"), // POST
         ASSET_DISCARD: AppRoutes.adminApi("/assets/:id/discard"), // POST
         ASSET_UNDISCARD: AppRoutes.adminApi("/assets/:id/undiscard"), // POST
@@ -247,7 +242,6 @@ class AppRoutes {
         LOG_UNRESOLVE: AppRoutes.api("/client/logs/:id/unresolve"), // PUT
         ANALYTICS_OVERVIEW: AppRoutes.adminApi("/analytics/overview"), // GET
         APP_VERSIONS: AppRoutes.adminApi("/client/versions"), // GET, POST
-        DISCARDED_APP_VERSIONS: AppRoutes.adminApi("/client/versions/discarded"), // GET
         APP_VERSION_DETAIL: AppRoutes.adminApi("/client/versions/:id"), // GET, PUT
         APP_VERSION_DISCARD: AppRoutes.adminApi("/client/versions/:id/discard"), // POST
         APP_VERSION_UNDISCARD: AppRoutes.adminApi("/client/versions/:id/undiscard"), // POST

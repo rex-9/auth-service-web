@@ -47,16 +47,15 @@ class UserService {
     params?: IAdminUserListParams,
   ): Promise<IApiResponse<IApiEnvelope<IJsonApiResource<IAdminUser>[]>>> {
     return api.get<IJsonApiResource<IAdminUser>[]>(
-      AppRoutes.server.protected.admin.DISCARDED_USERS,
-      params
-        ? {
-            page: params.page,
-            limit: params.limit,
-            search: params.search,
-            sort_by: params.sort_by,
-            sort_order: params.sort_order,
-          }
-        : undefined,
+      AppRoutes.server.protected.admin.USERS,
+      {
+        page: params?.page,
+        limit: params?.limit,
+        search: params?.search,
+        sort_by: params?.sort_by,
+        sort_order: params?.sort_order,
+        discarded: "true",
+      },
     );
   }
 
