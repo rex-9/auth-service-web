@@ -371,8 +371,24 @@ export const AdminUsersPage: React.FC<IAdminUsersPageProps> = ({
                 updateFilters({ page: 1 });
               }}
               items={[
-                { value: ADMIN_VIEW_MODES.ACTIVE, label: t(AppLocales.Admin.Users.Tabs.ActiveUsers) },
-                { value: ADMIN_VIEW_MODES.DISCARDED, label: t(AppLocales.Admin.Users.Tabs.RecycleBin) },
+                {
+                  value: ADMIN_VIEW_MODES.ACTIVE,
+                  label: t(AppLocales.Admin.Users.Tabs.ActiveUsers),
+                  icon: iconsLib.user,
+                  count:
+                    view === ADMIN_VIEW_MODES.ACTIVE
+                      ? pagination?.total_count
+                      : undefined,
+                },
+                {
+                  value: ADMIN_VIEW_MODES.DISCARDED,
+                  label: t(AppLocales.Admin.Users.Tabs.RecycleBin),
+                  icon: iconsLib.trash,
+                  count:
+                    view === ADMIN_VIEW_MODES.DISCARDED
+                      ? pagination?.total_count
+                      : undefined,
+                },
               ]}
             />
           )}

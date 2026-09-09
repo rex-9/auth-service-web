@@ -328,7 +328,7 @@ export const AdminAccessesPage: React.FC = () => {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-3">
           <Dropdown
-            size={DropdownSizes.SM}
+            size={DropdownSizes.MD}
             containerClassName="w-auto min-w-44"
             value={statusFilter}
             onValueChange={(val) => updateFilters({ status: val, page: 1 })}

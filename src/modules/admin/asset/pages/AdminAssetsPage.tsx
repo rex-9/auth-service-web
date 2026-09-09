@@ -756,11 +756,19 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
                 value: ADMIN_VIEW_MODES.ACTIVE,
                 label: t(AppLocales.Admin.Assets.Tabs.ActiveAssets),
                 icon: iconsLib.photo,
+                count:
+                  view === ADMIN_VIEW_MODES.ACTIVE
+                    ? pagination?.total_count
+                    : undefined,
               },
               {
                 value: ADMIN_VIEW_MODES.DISCARDED,
                 label: t(AppLocales.Admin.Assets.Tabs.RecycleBin),
                 icon: iconsLib.trash,
+                count:
+                  view === ADMIN_VIEW_MODES.DISCARDED
+                    ? pagination?.total_count
+                    : undefined,
               },
             ]}
           />
