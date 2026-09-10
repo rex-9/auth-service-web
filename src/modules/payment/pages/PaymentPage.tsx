@@ -10,6 +10,7 @@ import {
 } from "../../../design/constants";
 import { IAccess, IProduct, ISubscription, ITransaction } from "..";
 import { PaymentController } from "..";
+import { formatLocalDate } from "../../../helpers";
 
 export const PaymentPage: React.FC = () => {
   const { setLoading } = useLoading();
@@ -181,7 +182,7 @@ export const PaymentPage: React.FC = () => {
     // Active subscription
     if (activeSub) {
       const activeUntil = activeSub.current_period_end
-        ? new Date(activeSub.current_period_end).toLocaleDateString()
+        ? formatLocalDate(activeSub.current_period_end)
         : "end of period";
 
       return (
@@ -209,7 +210,7 @@ export const PaymentPage: React.FC = () => {
     // Canceled but still active (scheduled for cancellation)
     if (canceledSub) {
       const activeUntil = canceledSub.current_period_end
-        ? new Date(canceledSub.current_period_end).toLocaleDateString()
+        ? formatLocalDate(canceledSub.current_period_end)
         : "end of period";
 
       return (

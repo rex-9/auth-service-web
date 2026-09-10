@@ -10,6 +10,7 @@ import { AI_SOCKET_EVENTS, getMessageAudioUrl, IMessage } from "..";
 import { SPEECH_LISTEN_RESULTS, useLiveSpeech } from "../../speech";
 import { ADMIN_CHAT_ROLES } from "../../admin";
 import { ButtonSizes, ButtonVariants } from "../../../design";
+import { formatLocalTime, getUtcNowIso } from "../../../helpers";
 
 export const AiPage: React.FC = () => {
   const t = useTranslate();
@@ -52,7 +53,7 @@ export const AiPage: React.FC = () => {
             id: "welcome",
             role: ADMIN_CHAT_ROLES.ASSISTANT,
             content: greeting,
-            created_at: new Date().toISOString(),
+            created_at: getUtcNowIso(),
           },
         ]);
       } else {
@@ -66,7 +67,7 @@ export const AiPage: React.FC = () => {
           id: "welcome",
           role: ADMIN_CHAT_ROLES.ASSISTANT,
           content: greeting,
-          created_at: new Date().toISOString(),
+          created_at: getUtcNowIso(),
         },
       ]);
       setIsProcessing(false);
@@ -301,7 +302,7 @@ export const AiPage: React.FC = () => {
           id: "welcome",
           role: ADMIN_CHAT_ROLES.ASSISTANT,
           content: greeting,
-          created_at: new Date().toISOString(),
+          created_at: getUtcNowIso(),
         },
       ]);
     } else {
@@ -353,7 +354,7 @@ export const AiPage: React.FC = () => {
                   {message.content}
                 </p>
                 <span className="text-caption opacity-50 mt-1 block">
-                  {new Date(message.created_at).toLocaleTimeString()}
+                  {formatLocalTime(message.created_at)}
                 </span>
                 {message.metadata?.status === "failed" && (
                   <span className="text-caption text-error mt-1 block">

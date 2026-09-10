@@ -1219,6 +1219,7 @@ export const AppLocales = {
     NotFound: "common.not_found",
     NotFoundDesc: "common.not_found_desc",
     Retry: "common.retry",
+    LocalTimeZone: "common.local_timezone",
   },
   User: {
     Profile: "user.profile",

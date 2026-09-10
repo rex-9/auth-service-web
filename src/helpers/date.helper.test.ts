@@ -3,7 +3,11 @@ import React from "react";
 import {
   formatDateTime,
   formatAdminDate,
+  localDateTimeInputToUtcIso,
+  parseUtcDate,
   parseDateTimeParts,
+  toUtcIsoString,
+  utcToLocalDateTimeInput,
 } from "./date.helper";
 
 describe("date.helper", () => {
@@ -31,6 +35,25 @@ describe("date.helper", () => {
     d.setHours(14, 30, 0, 0);
     const formatted = formatDateTime(d.toISOString());
     expect(formatted).toContain("Sept 26 - ");
+  });
+
+  it("treats zone-less API timestamps as UTC", () => {
+    expect(parseUtcDate("2026-09-02T14:30:00")?.toISOString()).toBe(
+      "2026-09-02T14:30:00.000Z",
+    );
+  });
+
+  it("serializes local date values to the UTC API contract", () => {
+    const local = new Date(2026, 8, 2, 14, 30);
+    expect(toUtcIsoString(local)).toBe(local.toISOString());
+  });
+
+  it("round trips browser-local date-time input values through UTC", () => {
+    const input = "2026-09-02T14:30";
+    const utc = localDateTimeInputToUtcIso(input);
+
+    expect(utc).not.toBeNull();
+    expect(utcToLocalDateTimeInput(utc)).toBe(input);
   });
 
   it("returns Not available for falsy or invalid values", () => {

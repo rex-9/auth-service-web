@@ -4,6 +4,12 @@ import {
   TAnalyticsGrain,
   TAnalyticsPeriod,
 } from "../../constants";
+import {
+  formatLocalDate,
+  formatLocalTime,
+  parseUtcDate,
+  toUtcIsoString,
+} from "../../../../helpers";
 
 export interface IUtcDateRange {
   startDate: string; // ISO 8601 UTC
@@ -69,8 +75,8 @@ export const calculateUtcRangeForPreset = (
   }
 
   return {
-    startDate: localStart.toISOString(),
-    endDate: localEnd.toISOString(),
+    startDate: toUtcIsoString(localStart)!,
+    endDate: toUtcIsoString(localEnd)!,
   };
 };
 
@@ -86,8 +92,8 @@ export const calculateUtcRangeForMonth = (
   const localEnd = new Date(year, monthIndex + 1, 0, 23, 59, 59, 999);
 
   return {
-    startDate: localStart.toISOString(),
-    endDate: localEnd.toISOString(),
+    startDate: toUtcIsoString(localStart)!,
+    endDate: toUtcIsoString(localEnd)!,
   };
 };
 
@@ -100,8 +106,8 @@ export const calculateUtcRangeForYear = (year: number): IUtcDateRange => {
   const localEnd = new Date(year, 11, 31, 23, 59, 59, 999);
 
   return {
-    startDate: localStart.toISOString(),
-    endDate: localEnd.toISOString(),
+    startDate: toUtcIsoString(localStart)!,
+    endDate: toUtcIsoString(localEnd)!,
   };
 };
 
@@ -113,17 +119,17 @@ export const formatUtcToLocalLabel = (
   grain: TAnalyticsGrain,
 ): string => {
   try {
-    const d = new Date(utcIsoString);
-    if (isNaN(d.getTime())) return utcIsoString;
+    const d = parseUtcDate(utcIsoString);
+    if (!d) return utcIsoString;
 
     if (grain === ANALYTICS_GRAINS.HOURLY) {
-      return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      return formatLocalTime(d, { hour: "2-digit", minute: "2-digit" });
     }
     if (grain === ANALYTICS_GRAINS.MONTHLY) {
-      return d.toLocaleDateString([], { month: "short", year: "numeric" });
+      return formatLocalDate(d, { month: "short", year: "numeric" });
     }
     // daily
-    return d.toLocaleDateString([], { month: "short", day: "numeric" });
+    return formatLocalDate(d, { month: "short", day: "numeric" });
   } catch {
     return utcIsoString;
   }

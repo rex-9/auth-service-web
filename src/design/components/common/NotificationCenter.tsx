@@ -18,7 +18,7 @@ import { Button } from "../button";
 import { Dropdown, DropdownSizes } from "../form/Dropdown";
 import { ButtonTypes, ButtonVariants, ComponentSizes } from "../../constants";
 import { cn } from "../../helpers";
-import { formatDateTime } from "../../../helpers/date.helper";
+import { formatDateTime, getUtcNowIso } from "../../../helpers/date.helper";
 import type { IApiPagination } from "../../../models";
 import { useAuth } from "../../../contexts";
 import AppRoutes from "../../../AppRoutes";
@@ -147,7 +147,7 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
           read: false,
           read_at: null,
           notification_id: envelope.notification_id || null,
-          created_at: envelope.created_at || new Date().toISOString(),
+          created_at: envelope.created_at || getUtcNowIso(),
         };
 
         setUnreadCount((prev) => prev + 1);
@@ -174,7 +174,7 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
       setNotifications((prev) =>
         prev.map((n) =>
           n.id === item.id
-            ? { ...n, read: true, read_at: new Date().toISOString() }
+            ? { ...n, read: true, read_at: getUtcNowIso() }
             : n,
         ),
       );
@@ -215,7 +215,7 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
       prev.map((n) => ({
         ...n,
         read: true,
-        read_at: new Date().toISOString(),
+        read_at: getUtcNowIso(),
       })),
     );
     setUnreadCount(0);

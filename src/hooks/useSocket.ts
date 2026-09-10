@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 import { getSocketToast, SOCKET_MESSAGE_TYPES } from "../helpers/socket.helpers";
+import { getUtcNowIso } from "../helpers";
 import SocketService, { ISocketMessage } from "../services/socket.service";
 import { ToastTypes } from "../constants";
 
@@ -36,7 +37,7 @@ export const useSocket = () => {
           id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
           message: data.message,
           data: data.data || {},
-          created_at: data.created_at || new Date().toISOString(),
+          created_at: data.created_at || getUtcNowIso(),
         };
         setNotifications((prev) => {
           if (prev.some((n) => n.id === notif.id)) return prev;

@@ -11,6 +11,7 @@ import { ButtonTypes, ButtonVariants, ComponentSizes } from "../../constants";
 import { cn } from "../../helpers";
 import ProfileAvatar from "./ProfileAvatar";
 import { NotificationCenter } from "./NotificationCenter";
+import { TimeZoneIndicator } from "./TimeZoneIndicator";
 
 export interface HeadNavbarProps {
   children?: React.ReactNode;
@@ -97,6 +98,7 @@ export const HeadNavbar: React.FC<HeadNavbarProps> = ({
               {leading ?? <HeadNavbarBrand />}
             </div>
             <div className="flex items-center gap-2">
+              <TimeZoneIndicator />
               {showFeedback && (
                 <Button
                   type={ButtonTypes.BUTTON}

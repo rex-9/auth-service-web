@@ -103,9 +103,6 @@ export const AdminAnalyticsPage: React.FC = () => {
         description={
           <span className="flex flex-wrap items-center gap-2">
             <span>{t(AppLocales.Admin.Analytics.Description)}</span>
-            <span className="rounded bg-base-200 px-2 py-0.5 text-caption font-medium text-base-content opacity-80">
-              🕒 ({Intl.DateTimeFormat().resolvedOptions().timeZone})
-            </span>
           </span>
         }
         action={
