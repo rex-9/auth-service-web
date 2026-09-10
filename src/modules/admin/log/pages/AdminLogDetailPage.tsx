@@ -12,7 +12,7 @@ import {
   ButtonTypes,
   ButtonVariants,
 } from "../../../../design/constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import { ADMIN_LOG_SEVERITY } from "../constants";
 import type { IAdminLog } from "../types";
 import AdminLogController from "../log.controller";
@@ -183,7 +183,7 @@ export const AdminLogDetailPage: React.FC = () => {
                   {t(AppLocales.Admin.Common.Table.CreatedAt)}
                 </span>
                 <span className="text-base-content/70">
-                  {formatAdminDate(log.created_at)}
+                  <DateTime value={log.created_at} format={DateTimeFormats.ADMIN} />
                 </span>
               </div>
 
@@ -193,7 +193,7 @@ export const AdminLogDetailPage: React.FC = () => {
                     {t(AppLocales.Admin.Logs.Table.Timestamp)}
                   </span>
                   <span className="text-base-content/70">
-                    {formatAdminDate(log.last_occurred_at)}
+                    <DateTime value={log.last_occurred_at} format={DateTimeFormats.ADMIN} />
                   </span>
                 </div>
               )}
@@ -202,7 +202,7 @@ export const AdminLogDetailPage: React.FC = () => {
                 <div className="flex justify-between items-center py-1.5 border-b border-base-200">
                   <span className="text-base-content/60">{t(AppLocales.Admin.Logs.Detail.ResolvedAt)}</span>
                   <span className="text-success font-medium">
-                    {formatAdminDate(log.resolved_at)}
+                    <DateTime value={log.resolved_at} format={DateTimeFormats.ADMIN} />
                   </span>
                 </div>
               )}

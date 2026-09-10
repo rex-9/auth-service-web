@@ -37,7 +37,7 @@ import {
   ADMIN_PRODUCT_SORT_KEYS,
   ADMIN_PRODUCT_TABLE_KEYS,
 } from "../constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import { useTranslate, AppLocales } from "../../../../locales";
 
 const formatPrice = (amount: number, currency: string, freeLabel = "Free"): string => {
@@ -203,12 +203,16 @@ export const AdminProductsPage: React.FC<IAdminProductsPageProps> = ({
             ? ADMIN_PRODUCT_SORT_KEYS.CREATED_AT
             : ADMIN_PRODUCT_SORT_KEYS.DISCARDED_AT,
         className: "text-center",
-        render: (product) =>
-          formatAdminDate(
-            view === ADMIN_VIEW_MODES.ACTIVE
-              ? product.created_at
-              : product.discarded_at,
-          ),
+        render: (product) => (
+          <DateTime
+            value={
+              view === ADMIN_VIEW_MODES.ACTIVE
+                ? product.created_at
+                : product.discarded_at
+            }
+            format={DateTimeFormats.ADMIN}
+          />
+        ),
       },
       {
         key: ADMIN_PRODUCT_TABLE_KEYS.ACTIONS,

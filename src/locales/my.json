@@ -13,7 +13,8 @@
     "not_found": "ရှာမတွေ့ပါ",
     "not_found_desc": "ရှာဖွေနေသော စာမျက်နှာ မရှိပါ။",
     "retry": "ထပ်စမ်းမည်",
-    "local_timezone": "ဒေသစံတော်ချိန်"
+    "local_timezone": "ဒေသစံတော်ချိန်",
+    "not_available": "မရှိပါ"
   },
 
   "user": {

@@ -1220,6 +1220,7 @@ export const AppLocales = {
     NotFoundDesc: "common.not_found_desc",
     Retry: "common.retry",
     LocalTimeZone: "common.local_timezone",
+    NotAvailable: "common.not_available",
   },
   User: {
     Profile: "user.profile",
@@ -1247,6 +1248,10 @@ export const AppLocales = {
     Submit: "feedback.submit",
     Submitting: "feedback.submitting",
     SuccessMessage: "feedback.success_message",
+    RatingLabel: "feedback.rating_label",
+    ContentLabel: "feedback.content_label",
+    ErrorEmpty: "feedback.error_empty",
+    ErrorSubmit: "feedback.error_submit",
   },
   Ai: {
     Title: "ai.title",
@@ -1312,9 +1317,6 @@ export const AppLocales = {
       CreateCheckout: "payment.errors.create_checkout",
     },
   },
-  Home: "home",
-  GoBack: "go_back",
-  Submit: "submit",
   Anapana: {
     TimerTitle: "anapana.timer_title",
     StartTime: "anapana.timer_start_time",

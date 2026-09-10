@@ -32,7 +32,7 @@ import {
   ADMIN_USER_VERSION_TABLE_KEYS,
   VERSION_PLATFORMS,
 } from "../constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import { useTranslate, AppLocales } from "../../../../locales";
 
 interface IAdminUserVersionsPageProps {
@@ -192,7 +192,7 @@ export const AdminUserVersionsPage: React.FC<IAdminUserVersionsPageProps> = ({
         header: t(AppLocales.Admin.UserVersions.Table.LastSeen),
         sortKey: ADMIN_USER_VERSION_SORT_KEYS.LAST_SEEN_AT,
         className: "text-center",
-        render: (userVersion) => formatAdminDate(userVersion.last_seen_at),
+        render: (userVersion) => <DateTime value={userVersion.last_seen_at} format={DateTimeFormats.ADMIN} />,
       },
     ],
     [t],

@@ -15,7 +15,7 @@ import {
   BadgeVariants,
   DropdownSizes,
 } from "../../../../design/constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import type { IAdminFeedback } from "../types";
 import {
   AlertDialog,
@@ -207,7 +207,7 @@ export const AdminFeedbackDetailPage: React.FC = () => {
               <div className="flex justify-between items-center py-1.5 border-b border-base-200">
                 <span className="text-base-content/60">{t(AppLocales.Admin.Common.Detail.Created)}</span>
                 <span className="text-base-content/70">
-                  {formatAdminDate(feedback.created_at)}
+                  <DateTime value={feedback.created_at} format={DateTimeFormats.ADMIN} />
                 </span>
               </div>
 

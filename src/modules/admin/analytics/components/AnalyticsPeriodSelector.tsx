@@ -13,6 +13,7 @@ import {
   calculateUtcRangeForYear,
 } from "../helpers/analyticsDate.helper";
 import { useTranslate, AppLocales } from "../../../../locales";
+import { formatLocalDate } from "../../../../helpers";
 
 export const APP_INCEPTION_YEAR = 2026;
 export const APP_INCEPTION_MONTH = 8; // 0-indexed: 8 = September 2026
@@ -61,7 +62,7 @@ export const AnalyticsPeriodSelector: React.FC<
 
       const year = d.getFullYear();
       const month = d.getMonth();
-      const monthLabel = d.toLocaleString("default", {
+      const monthLabel = formatLocalDate(d, {
         month: "long",
         year: "numeric",
       });

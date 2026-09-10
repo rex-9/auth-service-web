@@ -44,7 +44,7 @@ import {
 } from "../constants";
 import { useTranslate, AppLocales } from "../../../../locales";
 import { BadgeSizes } from "../../../../design/constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 
 const renderUserRoles = (user: IAdminUser, unassignedLabel: string) => {
   const roles = user.iam?.roles.map((role) => role.attributes.name) ?? [];
@@ -244,12 +244,16 @@ export const AdminUsersPage: React.FC<IAdminUsersPageProps> = ({
             ? ADMIN_USER_SORT_KEYS.CREATED_AT
             : ADMIN_USER_SORT_KEYS.DISCARDED_AT,
         className: "text-center",
-        render: (user) =>
-          formatAdminDate(
-            view === ADMIN_VIEW_MODES.ACTIVE
-              ? user.created_at
-              : user.discarded_at,
-          ),
+        render: (user) => (
+          <DateTime
+            value={
+              view === ADMIN_VIEW_MODES.ACTIVE
+                ? user.created_at
+                : user.discarded_at
+            }
+            format={DateTimeFormats.ADMIN}
+          />
+        ),
       },
       {
         key: ADMIN_USER_TABLE_KEYS.ACTIONS,

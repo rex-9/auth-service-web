@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import AppRoutes from "../../../../AppRoutes";
 import { iconsLib } from "../../../../assets";
 import { StatusBadge } from "../../../../design";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import {
   AdminDetailField,
   AdminDetailGrid,
@@ -71,14 +71,14 @@ export const AdminAccessDetailPage: React.FC = () => {
               <AdminDetailField
                 label={t(AppLocales.Admin.Accesses.Detail.Granted)}
                 value={
-                  access.granted_at ? formatAdminDate(access.granted_at) : "—"
+                  access.granted_at ? <DateTime value={access.granted_at} format={DateTimeFormats.ADMIN} /> : "—"
                 }
               />
               <AdminDetailField
                 label={t(AppLocales.Admin.Accesses.Detail.Expires)}
                 value={
                   access.expires_at
-                    ? formatAdminDate(access.expires_at)
+                    ? <DateTime value={access.expires_at} format={DateTimeFormats.ADMIN} />
                     : t(AppLocales.Admin.Accesses.Detail.Never)
                 }
               />
@@ -88,7 +88,12 @@ export const AdminAccessDetailPage: React.FC = () => {
               />
               <AdminDetailField
                 label={t(AppLocales.Admin.Common.Detail.Updated)}
-                value={formatAdminDate(access.updated_at)}
+                value={
+                  <DateTime
+                    value={access.updated_at}
+                    format={DateTimeFormats.ADMIN}
+                  />
+                }
               />
             </AdminDetailGrid>
           </AdminDetailSection>

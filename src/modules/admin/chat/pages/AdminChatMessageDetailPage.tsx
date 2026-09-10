@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import AppRoutes from "../../../../AppRoutes";
 import { iconsLib } from "../../../../assets";
 import { StatusBadge } from "../../../../design";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import {
   AdminDetailField,
   AdminDetailGrid,
@@ -56,11 +56,21 @@ export const AdminChatMessageDetailPage: React.FC = () => {
               <AdminDetailField label={t(AppLocales.Admin.Chat.MessageDetail.RoomId)} value={message.room_id} />
               <AdminDetailField
                 label={t(AppLocales.Admin.Common.Detail.Created)}
-                value={formatAdminDate(message.created_at)}
+                value={
+                  <DateTime
+                    value={message.created_at}
+                    format={DateTimeFormats.ADMIN}
+                  />
+                }
               />
               <AdminDetailField
                 label={t(AppLocales.Admin.Common.Detail.Updated)}
-                value={formatAdminDate(message.updated_at)}
+                value={
+                  <DateTime
+                    value={message.updated_at}
+                    format={DateTimeFormats.ADMIN}
+                  />
+                }
               />
             </AdminDetailGrid>
           </AdminDetailSection>

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import AppRoutes from "../../../../AppRoutes";
 import { iconsLib } from "../../../../assets";
 import { Image, StatusBadge } from "../../../../design";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import {
   AdminDetailField,
   AdminDetailGrid,
@@ -96,11 +96,21 @@ export const AdminUserDetailPage: React.FC = () => {
               />
               <AdminDetailField
                 label={t(AppLocales.Admin.Common.Detail.Created)}
-                value={formatAdminDate(user.created_at)}
+                value={
+                  <DateTime
+                    value={user.created_at}
+                    format={DateTimeFormats.ADMIN}
+                  />
+                }
               />
               <AdminDetailField
                 label={t(AppLocales.Admin.Common.Detail.Updated)}
-                value={formatAdminDate(user.updated_at)}
+                value={
+                  <DateTime
+                    value={user.updated_at}
+                    format={DateTimeFormats.ADMIN}
+                  />
+                }
               />
             </AdminDetailGrid>
           </AdminDetailSection>

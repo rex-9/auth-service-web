@@ -1,7 +1,13 @@
 // src/design/pages/AiPage.tsx
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Button, TextArea, ConfirmDialog } from "../../../design/components";
+import {
+  Button,
+  ConfirmDialog,
+  DateTime,
+  DateTimeFormats,
+  TextArea,
+} from "../../../design/components";
 import { useToast, useLoading } from "../../../contexts";
 import { AppLocales, useTranslate } from "../../../locales";
 import { iconsLib } from "../../../assets";
@@ -10,7 +16,7 @@ import { AI_SOCKET_EVENTS, getMessageAudioUrl, IMessage } from "..";
 import { SPEECH_LISTEN_RESULTS, useLiveSpeech } from "../../speech";
 import { ADMIN_CHAT_ROLES } from "../../admin";
 import { ButtonSizes, ButtonVariants } from "../../../design";
-import { formatLocalTime, getUtcNowIso } from "../../../helpers";
+import { getUtcNowIso } from "../../../helpers";
 
 export const AiPage: React.FC = () => {
   const t = useTranslate();
@@ -354,7 +360,7 @@ export const AiPage: React.FC = () => {
                   {message.content}
                 </p>
                 <span className="text-caption opacity-50 mt-1 block">
-                  {formatLocalTime(message.created_at)}
+                  <DateTime value={message.created_at} format={DateTimeFormats.TIME} />
                 </span>
                 {message.metadata?.status === "failed" && (
                   <span className="text-caption text-error mt-1 block">

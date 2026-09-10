@@ -24,7 +24,7 @@ import {
   ButtonTypes,
   ButtonVariants,
 } from "../../../../design/constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import type { IAdminFeedback } from "../types";
 import {
   AdminPagination,
@@ -245,7 +245,7 @@ export const AdminFeedbacksPage: React.FC = () => {
         header: t(AppLocales.Admin.Common.Table.CreatedAt),
         sortKey: ADMIN_FEEDBACK_SORT_KEYS.CREATED_AT,
         className: "text-center",
-        render: (item) => formatAdminDate(item.created_at),
+        render: (item) => <DateTime value={item.created_at} format={DateTimeFormats.ADMIN} />,
       },
     ],
     [navigate, t],

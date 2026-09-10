@@ -22,7 +22,7 @@ import {
   getSeverityBadgeVariant,
   StatusBadge,
 } from "../../../../design";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import type { IAdminLog } from "../types";
 import {
   AdminPagination,
@@ -282,8 +282,12 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
         header: t(AppLocales.Admin.Logs.Table.Timestamp),
         sortKey: ADMIN_LOG_SORT_KEYS.CREATED_AT,
         className: "text-center",
-        render: (log) =>
-          formatAdminDate(log.last_occurred_at || log.created_at),
+        render: (log) => (
+          <DateTime
+            value={log.last_occurred_at || log.created_at}
+            format={DateTimeFormats.ADMIN}
+          />
+        ),
       },
       {
         key: ADMIN_LOG_TABLE_KEYS.ACTIONS,

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import AppRoutes from "../../../../AppRoutes";
 import { iconsLib } from "../../../../assets";
 import { Image, StatusBadge } from "../../../../design";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import {
   AdminDetailField,
   AdminDetailGrid,
@@ -100,7 +100,12 @@ export const AdminProductDetailPage: React.FC = () => {
               />
               <AdminDetailField
                 label={t(AppLocales.Admin.Common.Detail.Created)}
-                value={formatAdminDate(product.created_at)}
+                value={
+                  <DateTime
+                    value={product.created_at}
+                    format={DateTimeFormats.ADMIN}
+                  />
+                }
               />
             </AdminDetailGrid>
           </AdminDetailSection>

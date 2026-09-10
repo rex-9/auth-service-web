@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLoading } from "../../../contexts/LoadingContext";
 import { useToast } from "../../../contexts/ToastContext";
-import { Button, Badge } from "../../../design/components";
+import { Badge, Button, DateTime, DateTimeFormats } from "../../../design/components";
 import { ConfirmDialog } from "../../../design/components/overlay";
 import {
   ButtonVariants,
@@ -10,7 +10,6 @@ import {
 } from "../../../design/constants";
 import { IAccess, IProduct, ISubscription, ITransaction } from "..";
 import { PaymentController } from "..";
-import { formatLocalDate } from "../../../helpers";
 
 export const PaymentPage: React.FC = () => {
   const { setLoading } = useLoading();
@@ -181,9 +180,13 @@ export const PaymentPage: React.FC = () => {
 
     // Active subscription
     if (activeSub) {
-      const activeUntil = activeSub.current_period_end
-        ? formatLocalDate(activeSub.current_period_end)
-        : "end of period";
+      const activeUntil = (
+        <DateTime
+          value={activeSub.current_period_end}
+          format={DateTimeFormats.DATE}
+          fallback="end of period"
+        />
+      );
 
       return (
         <div className="space-y-3">
@@ -209,9 +212,13 @@ export const PaymentPage: React.FC = () => {
 
     // Canceled but still active (scheduled for cancellation)
     if (canceledSub) {
-      const activeUntil = canceledSub.current_period_end
-        ? formatLocalDate(canceledSub.current_period_end)
-        : "end of period";
+      const activeUntil = (
+        <DateTime
+          value={canceledSub.current_period_end}
+          format={DateTimeFormats.DATE}
+          fallback="end of period"
+        />
+      );
 
       return (
         <div className="space-y-3">

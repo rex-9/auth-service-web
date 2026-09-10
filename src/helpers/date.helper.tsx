@@ -1,8 +1,5 @@
 // src/helpers/date.helper.tsx
 
-import React from "react";
-import { cn } from "../design/helpers";
-
 const MONTH_ABBREVIATIONS = [
   "Jan",
   "Feb",
@@ -89,6 +86,30 @@ export const formatLocalTime = (
   return date ? date.toLocaleTimeString(undefined, options) : "Not available";
 };
 
+export const formatRelativeTime = (
+  value: TDateTimeValue,
+  now: Date = new Date(),
+): string | null => {
+  const date = parseUtcDate(value);
+  if (!date) return null;
+
+  const seconds = Math.round((date.getTime() - now.getTime()) / 1_000);
+  const ranges = [
+    { limit: 60, divisor: 1, unit: "second" },
+    { limit: 3_600, divisor: 60, unit: "minute" },
+    { limit: 86_400, divisor: 3_600, unit: "hour" },
+    { limit: 2_592_000, divisor: 86_400, unit: "day" },
+    { limit: 31_536_000, divisor: 2_592_000, unit: "month" },
+    { limit: Number.POSITIVE_INFINITY, divisor: 31_536_000, unit: "year" },
+  ] as const;
+  const range = ranges.find(({ limit }) => Math.abs(seconds) < limit)!;
+
+  return new Intl.RelativeTimeFormat(undefined, { numeric: "auto" }).format(
+    Math.round(seconds / range.divisor),
+    range.unit,
+  );
+};
+
 /**
  * Parse date and time into discrete formatted segments
  */
@@ -122,43 +143,6 @@ export const formatDateTime = (
   if (!parts) return "Not available";
 
   return `${parts.date} - ${parts.time}`;
-};
-
-export interface IFormatAdminDateOptions {
-  className?: string;
-  inline?: boolean;
-}
-
-/**
- * Format an admin date/time for table cells:
- * Displays two rows centered:
- *   05 Sept 26
- *    00:40:32
- */
-export const formatAdminDate = (
-  value?: Date | string | number | null,
-  options?: IFormatAdminDateOptions,
-): React.ReactNode => {
-  const parts = parseDateTimeParts(value);
-  if (!parts) return "Not available";
-
-  if (options?.inline) {
-    return `${parts.date} - ${parts.time}`;
-  }
-
-  return (
-    <span
-      className={cn(
-        "inline-flex flex-col items-center justify-center text-center leading-tight whitespace-nowrap",
-        options?.className,
-      )}
-    >
-      <span className="whitespace-nowrap">{parts.date}</span>
-      <span className="whitespace-nowrap text-caption text-base-content/70">
-        {parts.time}
-      </span>
-    </span>
-  );
 };
 
 export default formatDateTime;

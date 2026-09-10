@@ -42,7 +42,7 @@ import {
   ADMIN_VERSION_TABLE_KEYS,
   VERSION_STATUSES,
 } from "../constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import { useTranslate, AppLocales } from "../../../../locales";
 
 type VersionLifecycleAction =
@@ -225,12 +225,16 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
             ? ADMIN_VERSION_SORT_KEYS.RELEASED_AT
             : ADMIN_VERSION_SORT_KEYS.DISCARDED_AT,
         className: "text-center",
-        render: (version) =>
-          formatAdminDate(
-            view === ADMIN_VIEW_MODES.ACTIVE
-              ? version.released_at
-              : version.discarded_at,
-          ),
+        render: (version) => (
+          <DateTime
+            value={
+              view === ADMIN_VIEW_MODES.ACTIVE
+                ? version.released_at
+                : version.discarded_at
+            }
+            format={DateTimeFormats.ADMIN}
+          />
+        ),
       },
       {
         key: ADMIN_VERSION_TABLE_KEYS.ACTIONS,
