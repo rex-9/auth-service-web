@@ -1106,6 +1106,18 @@ export const AppLocales = {
       RecycleDescription: "admin.versions.recycle_description",
       CreateTitle: "admin.versions.create_title",
       EditTitle: "admin.versions.edit_title",
+      Detail: {
+        Title: "admin.versions.detail.title",
+        Description: "admin.versions.detail.description",
+        Release: "admin.versions.detail.release",
+        Builds: "admin.versions.detail.builds",
+        Installs: "admin.versions.detail.installs",
+        VersionNumber: "admin.versions.detail.version_number",
+        ForceUpdate: "admin.versions.detail.force_update",
+        IosBuild: "admin.versions.detail.ios_build",
+        AndroidBuild: "admin.versions.detail.android_build",
+        Released: "admin.versions.detail.released",
+      },
       Tabs: {
         ActiveVersions: "admin.versions.tabs.active_versions",
         RecycleBin: "admin.versions.tabs.recycle_bin",

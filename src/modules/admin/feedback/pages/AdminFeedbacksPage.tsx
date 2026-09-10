@@ -209,7 +209,7 @@ export const AdminFeedbacksPage: React.FC = () => {
                       if (!item.version_id) return;
                       navigate(
                         AppRoutes.withId(
-                          AppRoutes.client.protected.admin.VERSION_INSTALLS,
+                          AppRoutes.client.protected.admin.VERSION_DETAIL,
                           item.version_id,
                         ),
                       );

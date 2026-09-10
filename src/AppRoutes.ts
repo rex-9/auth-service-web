@@ -86,7 +86,7 @@ class AppRoutes {
         VERSIONS_RECYCLE_BIN: AppRoutes.admin("/versions/bin"),
         VERSION_CREATE: AppRoutes.admin("/versions/create"),
         VERSION_EDIT: AppRoutes.admin("/versions/:id/edit"),
-        VERSION_INSTALLS: AppRoutes.admin("/versions/:id/user-versions"),
+        VERSION_DETAIL: AppRoutes.admin("/versions/:id"),
         USER_VERSIONS: AppRoutes.admin("/user-versions"),
       },
     },

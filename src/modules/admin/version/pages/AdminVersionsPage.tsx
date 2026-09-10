@@ -110,11 +110,11 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
     [setSearchParams],
   );
 
-  const openUserVersions = useCallback(
+  const openVersionDetail = useCallback(
     (versionId: string) => {
       navigate(
         AppRoutes.withId(
-          AppRoutes.client.protected.admin.VERSION_INSTALLS,
+          AppRoutes.client.protected.admin.VERSION_DETAIL,
           versionId,
         ),
       );
@@ -205,7 +205,7 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
         render: (version) => (
           <Button
             variant={ButtonVariants.TERTIARY}
-            onClick={() => openUserVersions(version.id)}
+            onClick={() => openVersionDetail(version.id)}
           >
             {version.install_count ?? 0}
           </Button>
@@ -254,7 +254,7 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
                     },
                     {
                       type: ADMIN_ACTIONS.INSPECT,
-                      onClick: () => openUserVersions(version.id),
+                      onClick: () => openVersionDetail(version.id),
                     },
                     {
                       type: ADMIN_ACTIONS.DISCARD,
@@ -280,7 +280,7 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
         ),
       },
     ],
-    [navigate, openUserVersions, t, view],
+    [navigate, openVersionDetail, t, view],
   );
 
   const handleLifecycleAction = async () => {
@@ -423,6 +423,7 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(version) => openVersionDetail(version.id)}
           />
           <AdminPagination
             pagination={pagination}

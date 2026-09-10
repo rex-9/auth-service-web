@@ -231,7 +231,7 @@ export const AdminLogDetailPage: React.FC = () => {
                         if (!log.version_id) return;
                         navigate(
                           AppRoutes.withId(
-                            AppRoutes.client.protected.admin.VERSION_INSTALLS,
+                            AppRoutes.client.protected.admin.VERSION_DETAIL,
                             log.version_id,
                           ),
                         );

@@ -1253,6 +1253,18 @@
       "recycle_description": "Restore discarded app versions. Versions are never permanently destroyed.",
       "create_title": "Create Version",
       "edit_title": "Edit Version",
+      "detail": {
+        "title": "Version Details",
+        "description": "Release information, platform builds, and current installations.",
+        "release": "Release information",
+        "builds": "Platform builds",
+        "installs": "Current installations",
+        "version_number": "Version number",
+        "force_update": "Force update",
+        "ios_build": "iOS build",
+        "android_build": "Android build",
+        "released": "Released"
+      },
       "tabs": {
         "active_versions": "Active Versions",
         "recycle_bin": "Recycle Bin"

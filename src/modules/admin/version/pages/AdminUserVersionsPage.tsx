@@ -35,7 +35,13 @@ import {
 import { formatAdminDate } from "../../../../helpers";
 import { useTranslate, AppLocales } from "../../../../locales";
 
-export const AdminUserVersionsPage: React.FC = () => {
+interface IAdminUserVersionsPageProps {
+  embedded?: boolean;
+}
+
+export const AdminUserVersionsPage: React.FC<IAdminUserVersionsPageProps> = ({
+  embedded = false,
+}) => {
   const t = useTranslate();
   const { id: versionId } = useParams<{ id: string }>();
   const isVersionScoped = Boolean(versionId);
@@ -99,7 +105,7 @@ export const AdminUserVersionsPage: React.FC = () => {
     };
 
     const [versionResult, userVersionsResult] = await Promise.all([
-      isVersionScoped && versionId
+      isVersionScoped && versionId && !embedded
         ? VersionController.getVersion(versionId)
         : Promise.resolve({ success: true as const, version: undefined }),
       isVersionScoped && versionId
@@ -124,6 +130,7 @@ export const AdminUserVersionsPage: React.FC = () => {
     setLoading(false);
   }, [
     can,
+    embedded,
     isVersionScoped,
     page,
     platformFilter,
@@ -191,7 +198,7 @@ export const AdminUserVersionsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader
+      {!embedded && <PageHeader
         title={
           isVersionScoped && version
             ? t(AppLocales.Admin.UserVersions.TitleWithVersion, {
@@ -218,7 +225,7 @@ export const AdminUserVersionsPage: React.FC = () => {
             </Button>
           ) : null
         }
-      />
+      />}
 
       {!isVersionScoped && (
         <Dropdown

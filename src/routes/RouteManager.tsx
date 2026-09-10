@@ -77,6 +77,7 @@ import {
   AdminDiscardedVersionsPage,
   AdminVersionCreatePage,
   AdminVersionEditPage,
+  AdminVersionDetailPage,
   AdminUserVersionsPage,
 } from "../modules/admin";
 
@@ -642,6 +643,10 @@ const router = createBrowserRouter(
               path={AppRoutes.client.protected.admin.VERSIONS}
               element={<AdminVersionsPage />}
             />
+            <Route
+              path={AppRoutes.client.protected.admin.VERSION_DETAIL}
+              element={<AdminVersionDetailPage />}
+            />
           </Route>
           <Route
             element={
@@ -696,10 +701,6 @@ const router = createBrowserRouter(
           >
             <Route
               path={AppRoutes.client.protected.admin.USER_VERSIONS}
-              element={<AdminUserVersionsPage />}
-            />
-            <Route
-              path={AppRoutes.client.protected.admin.VERSION_INSTALLS}
               element={<AdminUserVersionsPage />}
             />
           </Route>
