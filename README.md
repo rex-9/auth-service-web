@@ -488,6 +488,10 @@ All frontend environment variables are centralized through [`src/AppConfig.tsx`]
 
 [`src/AppRoutes.ts`](src/AppRoutes.ts) is the client-side source of truth. Rexone Core's OpenAPI page at `/api-docs` and its `config/routes.rb` remain authoritative for server contracts.
 
+Locale maintenance is enforced with `npm run check:locales`. It compares English and Burmese structure, rejects missing keys and raw translation-key calls, and reports unused constants and hardcoded user-visible JSX copy. Developer-facing diagnostics remain in English and are outside the UI-copy scan.
+
+Run `./scripts/ci.sh` (or `npm run ci`) for the centralized Web CI suite: architecture checks, the separate locale check, production build, and unit tests.
+
 ## Project structure
 
 ```text
