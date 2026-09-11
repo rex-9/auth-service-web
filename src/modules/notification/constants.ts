@@ -9,6 +9,26 @@ export const NOTIFICATION_FILTERS = {
 export type TNotificationFilter =
   (typeof NOTIFICATION_FILTERS)[keyof typeof NOTIFICATION_FILTERS];
 
+export const ASYNC_OPERATION_STATUSES = {
+  QUEUED: "queued",
+  PROCESSING: "processing",
+  COMPLETED: "completed",
+  FAILED: "failed",
+} as const;
+
+export const ASYNC_OPERATION_TYPES = {
+  AI_RESPONSE: "ai_response",
+  ASSET_COMPRESSION: "asset_compression",
+  VIDEO_THUMBNAIL: "video_thumbnail",
+  NOTIFICATION_DELIVERY: "notification_delivery",
+  PAYMENT_WEBHOOK: "payment_webhook",
+} as const;
+
+export type TAsyncOperationStatus =
+  (typeof ASYNC_OPERATION_STATUSES)[keyof typeof ASYNC_OPERATION_STATUSES];
+export type TAsyncOperationType =
+  (typeof ASYNC_OPERATION_TYPES)[keyof typeof ASYNC_OPERATION_TYPES];
+
 export const NOTIFICATION_SOCKET_TYPES = {
   PAYMENT_SUCCESS: "payment_success",
   PAYMENT_FAILED: "payment_failed",

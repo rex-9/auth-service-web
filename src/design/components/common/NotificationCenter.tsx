@@ -18,7 +18,8 @@ import { Button } from "../button";
 import { Dropdown, DropdownSizes } from "../form/Dropdown";
 import { ButtonTypes, ButtonVariants, ComponentSizes } from "../../constants";
 import { cn } from "../../helpers";
-import { formatDateTime, getUtcNowIso } from "../../../helpers/date.helper";
+import { getUtcNowIso } from "../../../helpers/date.helper";
+import { DateTime } from "./DateTime";
 import type { IApiPagination } from "../../../models";
 import { useAuth } from "../../../contexts";
 import AppRoutes from "../../../AppRoutes";
@@ -35,6 +36,7 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifications, setNotifications] = useState<IUserNotification[]>([]);
+  const notificationsRef = useRef<IUserNotification[]>([]);
   const [pagination, setPagination] = useState<IApiPagination | null>(null);
   const [filter, setFilter] = useState<NotificationFilter>(
     NOTIFICATION_FILTERS.ALL,
@@ -42,6 +44,10 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    notificationsRef.current = notifications;
+  }, [notifications]);
 
   // Fetch unread count for badge
   const fetchUnreadCount = useCallback(async () => {
@@ -144,17 +150,39 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
           message: envelope.message || "",
           link: envelope.link || null,
           data: envelope.data || {},
+          operation_id:
+            envelope.operation_id || envelope.data?.operation_id || null,
+          operation_type:
+            envelope.operation_type || envelope.data?.operation_type || null,
+          operation_status:
+            envelope.operation_status || envelope.data?.operation_status || null,
           read: false,
           read_at: null,
           notification_id: envelope.notification_id || null,
           created_at: envelope.created_at || getUtcNowIso(),
         };
 
-        setUnreadCount((prev) => prev + 1);
+        const operationId = newNotification.operation_id;
+        const existing = notificationsRef.current.find(
+          (notification) =>
+            notification.id === newNotification.id ||
+            (operationId && notification.operation_id === operationId),
+        );
+        if (!existing) setUnreadCount((prev) => prev + 1);
 
         setNotifications((prev) => {
-          // Prevent duplicates
-          if (prev.some((n) => n.id === newNotification.id)) return prev;
+          const existingIndex = prev.findIndex(
+            (notification) =>
+              notification.id === newNotification.id ||
+              (operationId && notification.operation_id === operationId),
+          );
+          if (existingIndex >= 0) {
+            return prev.map((notification, index) =>
+              index === existingIndex
+                ? { ...notification, ...newNotification }
+                : notification,
+            );
+          }
           if (filter === NOTIFICATION_FILTERS.READ) return prev;
           return [newNotification, ...prev];
         });
@@ -411,7 +439,7 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
                       {item.message}
                     </p>
                     <span className="text-[11px] text-base-content/40 mt-1.5 block">
-                      {formatDateTime(item.created_at)}
+                      <DateTime value={item.created_at} />
                     </span>
                   </div>
 
