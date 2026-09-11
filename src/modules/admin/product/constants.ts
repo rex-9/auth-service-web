@@ -1,5 +1,6 @@
 import AppRoutes from "../../../AppRoutes";
 import { ADMIN_RESOURCES, IAdminPageMeta } from "../constants";
+import { BILLING_INTERVALS } from "../../payment/constants";
 
 export const ADMIN_PRODUCT_PAGE_TITLES = {
   CREATE: "Create Product",
@@ -9,7 +10,7 @@ export const ADMIN_PRODUCT_PAGE_TITLES = {
 } as const;
 
 export const ADMIN_PRODUCT_TABLE_HEADERS = {
-  CYCLE: "Cycle",
+  INTERVAL: "Interval",
   DISCARDED: "Discarded",
   PRICE: "Price",
   PRODUCT: "Product",
@@ -19,7 +20,7 @@ export const ADMIN_PRODUCT_TABLE_HEADERS = {
 
 export const ADMIN_PRODUCT_TABLE_KEYS = {
   ACTIONS: "actions",
-  CYCLE: "cycle",
+  INTERVAL: "interval",
   IDENTITY: "identity",
   LIFECYCLE_DATE: "lifecycle_date",
   PRICE: "price",
@@ -29,8 +30,8 @@ export const ADMIN_PRODUCT_TABLE_KEYS = {
 
 export const ADMIN_PRODUCT_SORT_KEYS = {
   NAME: "name",
-  PRICE_UNIT_AMOUNT: "price_unit_amount",
-  CYCLE: "cycle",
+  UNIT_AMOUNT: "unit_amount",
+  INTERVAL: "interval",
   CREATED_AT: "created_at",
   DISCARDED_AT: "discarded_at",
 } as const;
@@ -65,10 +66,9 @@ export const PRODUCT_TYPE = {
   PREMIUM: "premium",
 } as const;
 
-export const PRODUCT_CYCLE = {
+export const PRODUCT_INTERVAL = {
   ONE_TIME: "",
-  MONTH: "month",
-  YEAR: "year",
+  ...BILLING_INTERVALS,
 } as const;
 
 export const PRODUCT_CURRENCY = {

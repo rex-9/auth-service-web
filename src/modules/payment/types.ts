@@ -1,6 +1,6 @@
 import type {
   TAccessStatus,
-  TProductCycle,
+  TBillingInterval,
   TSubscriptionStatus,
   TTransactionStatus,
 } from "./constants";
@@ -10,9 +10,9 @@ export interface IProduct {
   name: string;
   description: string;
   price: string;
-  price_unit_amount: number;
+  unit_amount: number;
   currency: string;
-  cycle: TProductCycle | string | null;
+  interval: TBillingInterval | null;
   period_label: string;
   recurring: boolean;
   active: boolean;
@@ -22,20 +22,28 @@ export interface IProduct {
 export interface ISubscription {
   id: string;
   stripe_subscription_id: string;
-  stripe_customer_id: string;
+  stripe_customer_id: string | null;
 
   status: TSubscriptionStatus;
-  cycle: TProductCycle | string;
+  stripe_subscription_item_id: string;
+  stripe_price_id: string;
+  currency: string;
+  unit_amount: number;
+  quantity: number;
+  interval: TBillingInterval;
+  interval_count: number;
 
   payment_method_id: string | null;
   payment_method_type: string | null;
 
-  current_period_start: string | null;
-  current_period_end: string | null;
+  current_period_start: string;
+  current_period_end: string;
 
   started_at: string;
   ended_at: string | null;
   canceled_at: string | null;
+  cancel_at: string | null;
+  cancel_at_period_end: boolean;
 
   created_at: string;
   updated_at: string;
@@ -50,9 +58,12 @@ export interface ISubscription {
   ended: boolean;
   expired: boolean;
   scheduled_for_cancellation: boolean;
+  cancelable: boolean;
 
   // Renewal
+  renewing: boolean;
   days_until_renewal: number | null;
+  days_until_period_end: number | null;
 
   // Payment method display
   payment_method_display: string | null;
@@ -71,14 +82,15 @@ export interface ITransaction {
 
   stripe_payment_intent_id: string;
   stripe_charge_id: string | null;
-  stripe_customer_id: string;
+  stripe_customer_id: string | null;
 
   status: TTransactionStatus;
 
   payment_method_id: string | null;
   payment_method_type: string | null;
 
-  price_unit_amount: number;
+  unit_amount: number;
+  price: string;
   currency: string;
   client_secret: string | null;
 
@@ -98,7 +110,6 @@ export interface ITransaction {
 
   // Status helpers
   paid: boolean;
-  refunded: boolean;
   pending: boolean;
   failed: boolean;
   requires_action: boolean;

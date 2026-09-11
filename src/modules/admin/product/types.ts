@@ -1,10 +1,10 @@
 // src/modules/admin/products/types.ts
 
-import { PRODUCT_CYCLE } from "./constants";
+import { PRODUCT_INTERVAL } from "./constants";
 import type { TSortOrder } from "../../../hooks/useSort";
 
-export type AdminProductCycle =
-  (typeof PRODUCT_CYCLE)[keyof typeof PRODUCT_CYCLE];
+export type AdminProductInterval =
+  (typeof PRODUCT_INTERVAL)[keyof typeof PRODUCT_INTERVAL];
 
 export interface IAdminProduct {
   id: string;
@@ -12,9 +12,9 @@ export interface IAdminProduct {
   name: string;
   description?: string | null;
   price: string;
-  price_unit_amount: number;
+  unit_amount: number;
   currency: string;
-  cycle: AdminProductCycle | null;
+  interval: AdminProductInterval | null;
   period_label: string;
   recurring: boolean;
   free: boolean;
@@ -33,9 +33,9 @@ export interface IAdminProductFormValues {
   code?: string;
   name: string;
   description: string;
-  price_unit_amount: number;
+  unit_amount: number;
   currency: string;
-  cycle?: AdminProductCycle;
+  interval?: AdminProductInterval;
   active: boolean;
   thumbnail_asset_id?: string | null;
 }

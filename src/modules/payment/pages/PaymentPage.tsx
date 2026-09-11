@@ -144,7 +144,7 @@ export const PaymentPage: React.FC = () => {
   };
 
   const renderProductActions = (product: IProduct) => {
-    const isFree = product.free || product.price_unit_amount === 0;
+    const isFree = product.free || product.unit_amount === 0;
     const hasAccess = hasActiveAccess(product.id);
     const activeSub = getActiveSubscription(product.id);
     const canceledSub = getCanceledSubscription(product.id);

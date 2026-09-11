@@ -61,6 +61,10 @@ class AppRoutes {
         PRODUCTS_RECYCLE_BIN: AppRoutes.admin("/products/bin"),
         PRODUCT_CREATE: AppRoutes.admin("/products/create"),
         PRODUCT_EDIT: AppRoutes.admin("/products/:id/edit"),
+        TRANSACTIONS: AppRoutes.admin("/transactions"),
+        TRANSACTION_DETAIL: AppRoutes.admin("/transactions/:id"),
+        SUBSCRIPTIONS: AppRoutes.admin("/subscriptions"),
+        SUBSCRIPTION_DETAIL: AppRoutes.admin("/subscriptions/:id"),
         ASSETS: AppRoutes.admin("/assets"),
         ASSET_DETAIL: AppRoutes.admin("/assets/:id"),
         ASSETS_RECYCLE_BIN: AppRoutes.admin("/assets/bin"),
@@ -208,6 +212,14 @@ class AppRoutes {
         PAYMENT_PRODUCT_UNDISCARD: AppRoutes.adminApi(
           "/payment/products/:id/undiscard",
         ), // POST
+        PAYMENT_TRANSACTIONS: AppRoutes.adminApi("/payment/transactions"), // GET
+        PAYMENT_TRANSACTION_DETAIL: AppRoutes.adminApi(
+          "/payment/transactions/:id",
+        ), // GET
+        PAYMENT_SUBSCRIPTIONS: AppRoutes.adminApi("/payment/subscriptions"), // GET
+        PAYMENT_SUBSCRIPTION_DETAIL: AppRoutes.adminApi(
+          "/payment/subscriptions/:id",
+        ), // GET
         ASSETS: AppRoutes.adminApi("/assets"), // GET
         ASSET_DETAIL: AppRoutes.adminApi("/assets/:id"), // GET, PUT, DELETE
         ASSET_UPLOAD: AppRoutes.adminApi("/assets/upload"), // POST

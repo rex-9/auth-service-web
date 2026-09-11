@@ -20,7 +20,7 @@ export const NotificationChannelsChart: React.FC<
   INotificationChannelsChartProps
 > = ({ breakdowns }) => {
   const subscriptionsData = Object.entries(
-    breakdowns.subscriptions_by_cycle || {},
+    breakdowns.subscriptions_by_interval || {},
   ).map(([name, value]) => ({
     name: name.charAt(0).toUpperCase() + name.slice(1),
     value,
@@ -45,7 +45,7 @@ export const NotificationChannelsChart: React.FC<
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h3 className="text-body-m font-semibold text-base-content">
-            Active Subscriptions by Cycle
+            Active Subscriptions by Interval
           </h3>
           <p className="text-caption text-base-content opacity-60">
             Distribution across monthly, yearly, and lifetime plans

@@ -79,8 +79,8 @@ export const AdminProductDetailPage: React.FC = () => {
                 value={product.price}
               />
               <AdminDetailField
-                label={t(AppLocales.Admin.Products.Detail.BillingCycle)}
-                value={product.period_label || product.cycle}
+                label={t(AppLocales.Admin.Products.Detail.BillingInterval)}
+                value={product.period_label || product.interval}
               />
               <AdminDetailField
                 label={t(AppLocales.Admin.Products.Detail.Recurring)}

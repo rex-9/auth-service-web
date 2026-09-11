@@ -23,7 +23,7 @@ const mockProduct: IProduct = {
   price: 29,
   currency: "USD",
   active: true,
-  cycle: "monthly",
+  interval: "month",
 } as any;
 
 const mockAccess: IAccess = {
@@ -44,7 +44,8 @@ const mockSubscription: ISubscription = {
 
 const mockTransaction: ITransaction = {
   id: "txn-1",
-  amount: 29,
+  unit_amount: 2900,
+  price: "USD 29.00",
   currency: "USD",
   status: "completed",
   created_at: "2026-09-01T00:00:00Z",

@@ -1,22 +1,26 @@
 // src/modules/payment/constants.ts
 
 export const SUBSCRIPTION_STATUS = {
+  INCOMPLETE: "incomplete",
   ACTIVE: "active",
   PAST_DUE: "past_due",
   CANCELED: "canceled",
-  ENDED: "ended",
-  EXPIRED: "expired",
+  INCOMPLETE_EXPIRED: "incomplete_expired",
+  UNPAID: "unpaid",
+  TRIALING: "trialing",
+  PAUSED: "paused",
 } as const;
 
 export type TSubscriptionStatus =
   (typeof SUBSCRIPTION_STATUS)[keyof typeof SUBSCRIPTION_STATUS];
 
 export const TRANSACTION_STATUS = {
-  PAID: "paid",
-  REFUNDED: "refunded",
-  FAILED: "failed",
-  PENDING: "pending",
+  SUCCEEDED: "succeeded",
+  PROCESSING: "processing",
   REQUIRES_ACTION: "requires_action",
+  REQUIRES_CAPTURE: "requires_capture",
+  REQUIRES_CONFIRMATION: "requires_confirmation",
+  REQUIRES_PAYMENT_METHOD: "requires_payment_method",
   CANCELED: "canceled",
 } as const;
 
@@ -30,6 +34,16 @@ export const PAYMENT_MODES = {
 
 export type TPaymentMode = (typeof PAYMENT_MODES)[keyof typeof PAYMENT_MODES];
 
+export const BILLING_INTERVALS = {
+  DAY: "day",
+  WEEK: "week",
+  MONTH: "month",
+  YEAR: "year",
+} as const;
+
+export type TBillingInterval =
+  (typeof BILLING_INTERVALS)[keyof typeof BILLING_INTERVALS];
+
 export const ACCESS_STATUS = {
   ACTIVE: "active",
   EXPIRED: "expired",
@@ -37,13 +51,3 @@ export const ACCESS_STATUS = {
 } as const;
 
 export type TAccessStatus = (typeof ACCESS_STATUS)[keyof typeof ACCESS_STATUS];
-
-export const PRODUCT_CYCLES = {
-  ONE_TIME: "one_time",
-  MONTHLY: "monthly",
-  YEARLY: "yearly",
-} as const;
-
-export type TProductCycle =
-  (typeof PRODUCT_CYCLES)[keyof typeof PRODUCT_CYCLES];
-

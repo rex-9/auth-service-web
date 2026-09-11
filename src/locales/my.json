@@ -313,6 +313,8 @@
       "items": {
         "analytics": "စာရင်းအင်း",
         "products": "ထုတ်ကုန်များ",
+        "transactions": "ငွေပေးချေမှုများ",
+        "subscriptions": "စာရင်းသွင်းမှုများ",
         "accesses": "အသုံးပြုခွင့်များ",
         "notifications": "အသိပေးချက်များ",
         "chat_rooms": "စကားပြောခန်းများ",
@@ -574,13 +576,32 @@
         "delete": "ရာထူး ဖျက်၍ မရပါ"
       }
     },
+    "transactions": {
+      "title": "ငွေပေးချေမှုများ",
+      "description": "တစ်ကြိမ်ဝယ်ယူမှုများ၊ ငွေပေးချေမှုရလဒ်များနှင့် Stripe မှတ်တမ်းများကို စစ်ဆေးပါ။",
+      "search": "အသုံးပြုသူ၊ ထုတ်ကုန် သို့မဟုတ် ငွေပေးချေမှု ID ဖြင့်ရှာရန်...",
+      "filters": { "all": "အခြေအနေအားလုံး" },
+      "table": { "purchase": "ဝယ်ယူမှု", "user": "အသုံးပြုသူ", "amount": "ပမာဏ", "method": "ငွေပေးချေနည်း" },
+      "detail": { "title": "ငွေပေးချေမှု အသေးစိတ်", "description": "ဝယ်ယူမှု၊ အသုံးပြုသူ၊ ငွေပေးချေနည်းနှင့် Stripe ID များ။", "purchase": "ဝယ်ယူမှုအကျဉ်း", "payment": "ငွေပေးချေမှုအသေးစိတ်", "product": "ထုတ်ကုန်", "product_code": "ထုတ်ကုန်ကုဒ်", "paid_at": "ပေးချေချိန်", "user": "ဝယ်ယူသူ", "payment_method": "ငွေပေးချေနည်း", "payment_intent": "Payment intent", "charge": "Charge" },
+      "errors": { "load": "ငွေပေးချေမှုများကို မတင်နိုင်ပါ" }
+    },
+    "subscriptions": {
+      "title": "စာရင်းသွင်းမှုများ",
+      "description": "ထပ်တလဲလဲ ငွေတောင်းခံမှု၊ သက်တမ်းတိုးကာလနှင့် ပယ်ဖျက်မှုများကို စစ်ဆေးပါ။",
+      "search": "အသုံးပြုသူ၊ ထုတ်ကုန် သို့မဟုတ် subscription ID ဖြင့်ရှာရန်...",
+      "scheduled": "ပယ်ဖျက်ရန် စီစဉ်ထားသည်",
+      "filters": { "all_statuses": "အခြေအနေအားလုံး", "all_intervals": "ကာလအားလုံး" },
+      "table": { "subscription": "စာရင်းသွင်းမှု", "user": "အသုံးပြုသူ", "amount": "ဈေးနှုန်း", "period_end": "ကာလပြီးဆုံးချိန်", "cancellation": "ပယ်ဖျက်မှု" },
+      "detail": { "title": "စာရင်းသွင်းမှု အသေးစိတ်", "description": "အစီအစဉ်၊ အသုံးပြုသူ၊ ငွေတောင်းခံကာလနှင့် Stripe ID များ။", "plan": "အစီအစဉ်နှင့် အသုံးပြုသူ", "billing": "ငွေတောင်းခံမှုမှတ်တမ်း", "product": "ထုတ်ကုန်", "quantity": "အရေအတွက်", "subscription_id": "Subscription ID", "period_start": "ကာလစတင်ချိန်", "started_at": "စတင်ချိန်", "payment_method": "ငွေပေးချေနည်း" },
+      "errors": { "load": "စာရင်းသွင်းမှုများကို မတင်နိုင်ပါ" }
+    },
     "products": {
       "detail": {
         "title": "ထုတ်ကုန် အသေးစိတ်",
         "description": "ထုတ်ကုန်အချက်အလက်၊ ဈေးနှုန်းနှင့် ရရှိနိုင်မှု။",
         "product": "ထုတ်ကုန်",
         "pricing": "ဈေးနှုန်းနှင့် ရရှိနိုင်မှု",
-        "billing_cycle": "ငွေတောင်းခံကာလ",
+        "billing_interval": "ငွေတောင်းခံကာလ",
         "recurring": "ထပ်တလဲလဲ",
         "availability": "ရရှိနိုင်မှု"
       },
@@ -601,7 +622,7 @@
         "product": "ထုတ်ကုန်",
         "code": "ကုဒ်",
         "price": "ဈေးနှုန်း",
-        "cycle": "ကာလ",
+        "interval": "ကာလ",
         "stripe_sync": "Stripe ချိတ်ဆက်မှု",
         "status": "အခြေအနေ",
         "created": "စတင်ချိန်",
@@ -617,10 +638,12 @@
         "price_label": "ဈေးနှုန်း",
         "price_placeholder": "29.00",
         "currency_label": "ငွေကြေး",
-        "cycle_label": "ကာလ",
-        "cycle_monthly": "လစဉ်",
-        "cycle_yearly": "နှစ်စဉ်",
-        "cycle_one_time": "တစ်ကြိမ်",
+        "interval_label": "ကာလ",
+        "interval_daily": "နေ့စဉ်",
+        "interval_weekly": "အပတ်စဉ်",
+        "interval_monthly": "လစဉ်",
+        "interval_yearly": "နှစ်စဉ်",
+        "interval_one_time": "တစ်ကြိမ်",
         "active_for_purchase": "ဝယ်ယူခွင့် ဖွင့်မည်",
         "thumbnail_label": "ထုတ်ကုန် ပုံသေး (Thumbnail)",
         "thumbnail_helper": "ဤထုတ်ကုန်အတွက် တင်ထားသော ပုံသေးကို ရွေးချယ်ပါ",

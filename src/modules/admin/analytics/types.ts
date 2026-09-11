@@ -36,7 +36,7 @@ export interface IAnalyticsTimeSeriesPoint {
 }
 
 export interface IAnalyticsBreakdowns {
-  subscriptions_by_cycle: Record<string, number>;
+  subscriptions_by_interval: Record<string, number>;
   feedback_ratings: Record<string, number>;
   errors_by_platform: Record<string, number>;
 }
