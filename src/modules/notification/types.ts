@@ -1,6 +1,10 @@
 // src/modules/notification/types.ts
 
-import { TNotificationFilter } from "./constants";
+import {
+  TAsyncOperationStatus,
+  TAsyncOperationType,
+  TNotificationFilter,
+} from "./constants";
 
 export type NotificationFilter = TNotificationFilter;
 
@@ -9,12 +13,22 @@ export interface IUserNotification {
   title: string;
   message: string;
   link: string | null;
-  data: Record<string, unknown>;
+  data: INotificationData;
+  operation_id?: string | null;
+  operation_type?: TAsyncOperationType | null;
+  operation_status?: TAsyncOperationStatus | null;
   read: boolean;
   read_at: string | null;
   notification_id?: string | null;
   created_at: string;
   updated_at?: string;
+}
+
+export interface INotificationData extends Record<string, unknown> {
+  type?: string;
+  operation_id?: string;
+  operation_type?: TAsyncOperationType;
+  operation_status?: TAsyncOperationStatus;
 }
 
 export interface INotificationListParams {

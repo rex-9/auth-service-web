@@ -25,8 +25,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build & Syntax Check
-        run: npm run build
-
-      - name: Run unit & integration tests
-        run: npm test
+      - name: Run Web CI
+        run: ./scripts/ci.sh
