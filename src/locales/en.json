@@ -12,7 +12,9 @@
     "success": "Success",
     "not_found": "Page Not Found",
     "not_found_desc": "The page you are looking for does not exist.",
-    "retry": "Retry"
+    "retry": "Retry",
+    "local_timezone": "Local timezone",
+    "not_available": "Not available"
   },
 
   "user": {
@@ -221,7 +223,9 @@
         "label": "Confirm Passcode",
         "helper": "Enter the same 6 numbers again"
       },
-      "validation": { "passcodes_mismatch": "Passcodes do not match. Please try again." },
+      "validation": {
+        "passcodes_mismatch": "Passcodes do not match. Please try again."
+      },
       "errors": {
         "reset_failed": "Failed to reset passcode. Please try again.",
         "google_signin_failed": "Failed to complete Google sign-in."
@@ -252,13 +256,21 @@
         "username_length": "Username must be at least 3 characters.",
         "username_format": "Username can only contain lowercase letters, numbers, and underscores."
       },
-      "feedback": { "verification_sent": "Account created! Verification code sent to your email." },
-      "actions": { "creating_account": "Creating account...", "create_account": "Create Account" }
+      "feedback": {
+        "verification_sent": "Account created! Verification code sent to your email."
+      },
+      "actions": {
+        "creating_account": "Creating account...",
+        "create_account": "Create Account"
+      }
     },
     "confirm_email": {
       "title": "Verify Your Email",
       "description": "Enter the 6-digit code sent to your email.",
-      "field": { "label": "Verification Code", "helper": "Enter the 6-digit code sent to your email" },
+      "field": {
+        "label": "Verification Code",
+        "helper": "Enter the 6-digit code sent to your email"
+      },
       "prompt": "Verify your email",
       "sent_to": "We have sent a confirmation code to:",
       "inbox_instruction": "Check your inbox and enter the code to complete signup.",
@@ -316,6 +328,20 @@
       }
     },
     "common": {
+      "detail": {
+        "admin": "Admin",
+        "details": "Details",
+        "name": "Name",
+        "email": "Email",
+        "description": "Description",
+        "type": "Type",
+        "status": "Status",
+        "created": "Created",
+        "updated": "Updated",
+        "source": "Source",
+        "format": "Format",
+        "size": "Size"
+      },
       "actions": {
         "create": "Create",
         "edit": "Edit",
@@ -332,6 +358,7 @@
         "close": "Close",
         "search": "Search",
         "view_details": "View Details",
+        "back": "Back",
         "select_all": "Select All",
         "deselect_all": "Deselect All",
         "clear_all": "Clear All",
@@ -412,6 +439,17 @@
       }
     },
     "users": {
+      "detail": {
+        "title": "User Details",
+        "description": "Account identity, status, and assigned access roles.",
+        "identity": "Identity",
+        "account": "Account details",
+        "roles": "Assigned roles",
+        "no_roles": "No roles assigned.",
+        "provider": "Provider",
+        "confirmed": "Confirmed",
+        "locked": "Locked"
+      },
       "title": "Users",
       "description": "Manage user accounts, roles, and administrative access permissions.",
       "recycle_title": "Discarded Users",
@@ -478,6 +516,15 @@
       }
     },
     "roles": {
+      "detail": {
+        "title": "Role Details",
+        "description": "Role identity and effective permission coverage.",
+        "information": "Role information",
+        "type": "Type",
+        "assigned_users": "Assigned users",
+        "permissions": "Permissions matrix",
+        "no_permissions": "No permissions assigned."
+      },
       "title": "Roles & Permissions",
       "description": "Define system roles, access policies, and permission grants across the platform.",
       "recycle_title": "Discarded Roles",
@@ -529,6 +576,15 @@
       }
     },
     "products": {
+      "detail": {
+        "title": "Product Details",
+        "description": "Catalogue identity, pricing, and availability.",
+        "product": "Product",
+        "pricing": "Pricing and availability",
+        "billing_cycle": "Billing cycle",
+        "recurring": "Recurring",
+        "availability": "Availability"
+      },
       "title": "Products & Pricing",
       "description": "Manage product catalogue, recurring subscriptions, Stripe synchronization, and pricing models.",
       "recycle_title": "Discarded Products",
@@ -591,6 +647,17 @@
       }
     },
     "accesses": {
+      "detail": {
+        "title": "Access Details",
+        "description": "Access holder, product entitlement, and lifecycle.",
+        "holder": "Access holder",
+        "entitlement": "Entitlement",
+        "user_id": "User ID",
+        "granted": "Granted",
+        "expires": "Expires",
+        "never": "Never",
+        "remaining_days": "Remaining days"
+      },
       "title": "Access & Entitlements",
       "description": "Manage granted product access, expiration schedules, and access revocation for users.",
       "grant_button": "Grant Access",
@@ -646,6 +713,15 @@
       }
     },
     "chat": {
+      "message_detail": {
+        "title": "Chat Message Details",
+        "description": "Message content and conversation context.",
+        "context": "Message context",
+        "content": "Content",
+        "role": "Role",
+        "room_id": "Room ID",
+        "message_breadcrumb": "Message"
+      },
       "rooms_title": "Chat Rooms",
       "rooms_description": "Moderate chat rooms, inspect discussion threads, and manage community channels.",
       "rooms_recycle_title": "Discarded Chat Rooms",
@@ -728,6 +804,16 @@
       "title": "Feedback Inbox",
       "description": "Review user ratings, feedback submissions, automated categorizations, and device telemetry.",
       "search_placeholder": "Search feedback by content, user or email...",
+      "detail": {
+        "description": "Inspect user feedback submission and manage triage status.",
+        "submission_info": "Submission information",
+        "anonymous": "Anonymous",
+        "none": "None",
+        "platform": "Platform",
+        "device_telemetry": "Device telemetry",
+        "admin_notes": "Admin moderation notes",
+        "admin_notes_placeholder": "Enter internal moderation and resolution notes..."
+      },
       "filters": {
         "all_categories": "All Categories",
         "bug": "Bug Report",
@@ -784,6 +870,17 @@
       "description": "Monitor client runtime exceptions, inspect stack traces, and manage crash reports across Web and Mobile.",
       "recycle_title": "Discarded Logs",
       "recycle_description": "Purge or restore discarded telemetry reports.",
+      "detail": {
+        "description": "Detailed telemetry diagnostic report and stack trace analysis.",
+        "summary": "Telemetry summary",
+        "severity": "Severity",
+        "status": "Status",
+        "resolved_at": "Resolved at",
+        "device_spec": "Device specification",
+        "not_available": "N/A",
+        "load_failed": "Failed to load log details",
+        "update_failed": "Failed to update log status"
+      },
       "tabs": {
         "active_logs": "Active Logs",
         "recycle_bin": "Recycle Bin"
@@ -1007,10 +1104,19 @@
       },
       "cache": {
         "live_db": "Live DB",
-        "redis_cache": "Redis Cache"
+        "solid_cache": "Solid Cache"
       }
     },
     "assets": {
+      "detail": {
+        "title": "Asset Details",
+        "description": "Media preview, ownership, and storage metadata.",
+        "preview": "Preview",
+        "metadata": "Asset metadata",
+        "status": "Status",
+        "duration": "Duration",
+        "storage_key": "Storage key"
+      },
       "title": "Assets",
       "description": "Manage media assets",
       "recycle_title": "Discarded Assets",
@@ -1149,6 +1255,18 @@
       "recycle_description": "Restore discarded app versions. Versions are never permanently destroyed.",
       "create_title": "Create Version",
       "edit_title": "Edit Version",
+      "detail": {
+        "title": "Version Details",
+        "description": "Release information, platform builds, and current installations.",
+        "release": "Release information",
+        "builds": "Platform builds",
+        "installs": "Current installations",
+        "version_number": "Version number",
+        "force_update": "Force update",
+        "ios_build": "iOS build",
+        "android_build": "Android build",
+        "released": "Released"
+      },
       "tabs": {
         "active_versions": "Active Versions",
         "recycle_bin": "Recycle Bin"

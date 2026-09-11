@@ -1,9 +1,5 @@
 import AppRoutes from "../../../AppRoutes";
-import {
-  IApiEnvelope,
-  IApiResponse,
-  IJsonApiResource,
-} from "../../../models";
+import { IApiEnvelope, IApiResponse, IJsonApiResource } from "../../../models";
 import { api } from "../../../services";
 import {
   IAdminProduct,
@@ -36,7 +32,10 @@ class ProductService {
     id: string,
   ): Promise<IApiResponse<IApiEnvelope<AdminProductResponse>>> {
     return api.get<AdminProductResponse>(
-      AppRoutes.withId(AppRoutes.server.protected.admin.PAYMENT_PRODUCT_DETAIL, id),
+      AppRoutes.withId(
+        AppRoutes.server.protected.admin.PAYMENT_PRODUCT_DETAIL,
+        id,
+      ),
     );
   }
 
@@ -44,15 +43,14 @@ class ProductService {
     params?: IAdminProductListParams,
   ): Promise<IApiResponse<IApiEnvelope<IJsonApiResource<IAdminProduct>[]>>> {
     return api.get<IJsonApiResource<IAdminProduct>[]>(
-      AppRoutes.server.protected.admin.DISCARDED_PAYMENT_PRODUCTS,
-      params
-        ? {
-            page: params.page,
-            limit: params.limit,
-            sort_by: params.sort_by,
-            sort_order: params.sort_order,
-          }
-        : undefined,
+      AppRoutes.server.protected.admin.PAYMENT_PRODUCTS,
+      {
+        page: params?.page,
+        limit: params?.limit,
+        sort_by: params?.sort_by,
+        sort_order: params?.sort_order,
+        discarded: "true",
+      },
     );
   }
 
@@ -70,7 +68,10 @@ class ProductService {
     values: IAdminProductFormValues,
   ): Promise<IApiResponse<IApiEnvelope<AdminProductResponse>>> {
     return api.put<AdminProductResponse>(
-      AppRoutes.withId(AppRoutes.server.protected.admin.PAYMENT_PRODUCT_DETAIL, id),
+      AppRoutes.withId(
+        AppRoutes.server.protected.admin.PAYMENT_PRODUCT_DETAIL,
+        id,
+      ),
       {
         product: values,
       },
@@ -79,7 +80,10 @@ class ProductService {
 
   async discardProduct(id: string): Promise<IApiResponse<IApiEnvelope<null>>> {
     return api.post<null>(
-      AppRoutes.withId(AppRoutes.server.protected.admin.PAYMENT_PRODUCT_DISCARD, id),
+      AppRoutes.withId(
+        AppRoutes.server.protected.admin.PAYMENT_PRODUCT_DISCARD,
+        id,
+      ),
     );
   }
 
@@ -87,7 +91,10 @@ class ProductService {
     id: string,
   ): Promise<IApiResponse<IApiEnvelope<AdminProductResponse>>> {
     return api.post<AdminProductResponse>(
-      AppRoutes.withId(AppRoutes.server.protected.admin.PAYMENT_PRODUCT_UNDISCARD, id),
+      AppRoutes.withId(
+        AppRoutes.server.protected.admin.PAYMENT_PRODUCT_UNDISCARD,
+        id,
+      ),
     );
   }
 }

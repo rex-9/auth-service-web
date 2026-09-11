@@ -44,7 +44,7 @@ import {
 import { useTranslate, AppLocales } from "../../../../locales";
 
 import { DropdownSizes } from "../../../../design/constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 
 export const AdminAccessesPage: React.FC = () => {
   const t = useTranslate();
@@ -222,7 +222,7 @@ export const AdminAccessesPage: React.FC = () => {
       header: t(AppLocales.Admin.Accesses.Table.GrantedAt),
       sortKey: ADMIN_ACCESS_SORT_KEYS.CREATED_AT,
       className: "text-center",
-      render: (access) => formatAdminDate(access.granted_at),
+      render: (access) => <DateTime value={access.granted_at} format={DateTimeFormats.ADMIN} />,
     },
     {
       key: ADMIN_ACCESS_TABLE_KEYS.EXPIRES_AT,
@@ -238,7 +238,7 @@ export const AdminAccessesPage: React.FC = () => {
           );
         return (
           <div className="flex flex-col items-center justify-center text-center">
-            {formatAdminDate(access.expires_at)}
+            <DateTime value={access.expires_at} format={DateTimeFormats.ADMIN} />
             {access.remaining_days !== undefined &&
               access.remaining_days !== null &&
               access.remaining_days > 0 && (
@@ -328,7 +328,7 @@ export const AdminAccessesPage: React.FC = () => {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-3">
           <Dropdown
-            size={DropdownSizes.SM}
+            size={DropdownSizes.MD}
             containerClassName="w-auto min-w-44"
             value={statusFilter}
             onValueChange={(val) => updateFilters({ status: val, page: 1 })}
@@ -386,6 +386,7 @@ export const AdminAccessesPage: React.FC = () => {
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(record) => navigate(AppRoutes.withId(AppRoutes.client.protected.admin.ACCESS_DETAIL, record.id))}
           />
           <AdminPagination
             pagination={pagination}

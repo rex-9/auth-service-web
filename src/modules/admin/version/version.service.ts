@@ -35,8 +35,8 @@ class VersionService {
     params?: IAdminVersionListParams,
   ): Promise<IApiResponse<IApiEnvelope<IJsonApiResource<IAdminVersion>[]>>> {
     return api.get<IJsonApiResource<IAdminVersion>[]>(
-      AppRoutes.server.protected.admin.DISCARDED_APP_VERSIONS,
-      params as Record<string, unknown> | undefined,
+      AppRoutes.server.protected.admin.APP_VERSIONS,
+      { ...params, discarded: "true" } as Record<string, unknown>,
     );
   }
 

@@ -1,15 +1,8 @@
-import type { ADMIN_ROLE_NAMES } from "./constants";
 import type { TSortOrder } from "../../../hooks/useSort";
 
 export type AdminAction = string;
 
 export type AdminResource = string;
-
-export type AdminRoleName =
-  | (typeof ADMIN_ROLE_NAMES)[keyof typeof ADMIN_ROLE_NAMES]
-  | string;
-
-export type IUserPermissionMap = Partial<Record<AdminResource, AdminAction[]>>;
 
 export interface IPermission {
   action: AdminAction;

@@ -18,7 +18,7 @@ import {
 } from "../../components";
 import { StatusBadge } from "../../../../design/components";
 import { ADMIN_ACTIONS } from "../../constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 
 export interface IAdminAccessFormValues {
   emails?: string[];
@@ -113,7 +113,7 @@ export const AdminAccessForm: React.FC<IAdminAccessFormProps> = ({
         }
       });
 
-      const trimmedCode = productCode.trim().toUpperCase();
+      const trimmedCode = productCode.trim();
       if (!trimmedCode) {
         setAlertMessage(t(AppLocales.Admin.Accesses.GrantDialog.ProductLabel));
         return;
@@ -251,7 +251,7 @@ export const AdminAccessForm: React.FC<IAdminAccessFormProps> = ({
                       AppLocales.Admin.Accesses.GrantDialog.ProductPlaceholder,
                     )}
                     value={productCode}
-                    onChange={(e) => setProductCode(e.target.value.toUpperCase())}
+                    onChange={(e) => setProductCode(e.target.value)}
                     maxLength={10}
                     required
                     helperText="10-character alphanumeric product identifier (e.g., PROD123456)."
@@ -333,7 +333,7 @@ export const AdminAccessForm: React.FC<IAdminAccessFormProps> = ({
                   {t(AppLocales.Admin.Accesses.Table.GrantedAt)}
                 </span>
                 <span className="text-base-content/70">
-                  {formatAdminDate(access.granted_at)}
+                  <DateTime value={access.granted_at} format={DateTimeFormats.ADMIN} />
                 </span>
               </div>
 
@@ -343,7 +343,7 @@ export const AdminAccessForm: React.FC<IAdminAccessFormProps> = ({
                 </span>
                 <span className="font-medium text-base-content">
                   {access.expires_at
-                    ? formatAdminDate(access.expires_at)
+                    ? <DateTime value={access.expires_at} format={DateTimeFormats.ADMIN} />
                     : t(AppLocales.Admin.Common.Status.Lifetime)}
                 </span>
               </div>

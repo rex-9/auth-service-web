@@ -3,6 +3,22 @@ import { iconsLib } from "../../../assets";
 import { cn } from "../../../design/helpers";
 import { SORT_ORDERS, type TSortOrder } from "../../../hooks/useSort";
 
+const ROW_CLICK_INTERACTIVE_SELECTOR = [
+  "a",
+  "button",
+  "input",
+  "select",
+  "textarea",
+  "label",
+  "[role='button']",
+  "[role='menuitem']",
+  "[data-row-click-ignore]",
+].join(",");
+
+const isInteractiveRowTarget = (target: EventTarget | null): boolean =>
+  target instanceof Element &&
+  Boolean(target.closest(ROW_CLICK_INTERACTIVE_SELECTOR));
+
 export interface IAdminTableColumn<T> {
   key: string;
   header: string;
@@ -22,6 +38,7 @@ export interface IAdminTableProps<T> {
   selectedRowKeys?: string[];
   onSelectRow?: (key: string, selected: boolean) => void;
   onSelectAll?: (selected: boolean) => void;
+  onRowClick?: (record: T) => void;
 }
 
 const AdminTableHead: React.FC<{ children: React.ReactNode }> = ({
@@ -31,8 +48,18 @@ const AdminTableHead: React.FC<{ children: React.ReactNode }> = ({
 const AdminTableRow: React.FC<{
   children: React.ReactNode;
   className?: string;
-}> = ({ children, className }) => (
-  <tr className={cn("border-base-300", className)}>{children}</tr>
+  onClick?: (event: React.MouseEvent<HTMLTableRowElement>) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLTableRowElement>) => void;
+  tabIndex?: number;
+}> = ({ children, className, onClick, onKeyDown, tabIndex }) => (
+  <tr
+    className={cn("border-base-300", className)}
+    onClick={onClick}
+    onKeyDown={onKeyDown}
+    tabIndex={tabIndex}
+  >
+    {children}
+  </tr>
 );
 
 const AdminTableHeaderCell: React.FC<{
@@ -127,6 +154,7 @@ export function AdminTable<T>({
   selectedRowKeys = [],
   onSelectRow,
   onSelectAll,
+  onRowClick,
 }: IAdminTableProps<T>) {
   const allSelected =
     selectable &&
@@ -175,7 +203,23 @@ export function AdminTable<T>({
                   className={cn(
                     "transition-colors",
                     isSelected && "bg-primary/5",
+                    onRowClick && "cursor-pointer hover:bg-base-200/60",
                   )}
+                  onClick={(event) => {
+                    if (isInteractiveRowTarget(event.target)) return;
+                    onRowClick?.(record);
+                  }}
+                  onKeyDown={(event) => {
+                    if (
+                      onRowClick &&
+                      !isInteractiveRowTarget(event.target) &&
+                      (event.key === "Enter" || event.key === " ")
+                    ) {
+                      event.preventDefault();
+                      onRowClick(record);
+                    }
+                  }}
+                  tabIndex={onRowClick ? 0 : undefined}
                 >
                   {selectable && (
                     <td className="w-12 text-center px-3">

@@ -2,6 +2,10 @@ export { AdminActionButton } from "./AdminActionButton";
 export { AdminTableActions } from "./AdminTableActions";
 export type { IAdminTableAction } from "./AdminTableActions";
 export { AdminLayout } from "./AdminLayout";
+export { AdminDetailHeader } from "./AdminDetailHeader";
+export type { IAdminDetailHeaderProps } from "./AdminDetailHeader";
+export { AdminDetailField, AdminDetailGrid, AdminDetailSection } from "./AdminDetailSection";
+export type { IAdminDetailFieldProps, IAdminDetailSectionProps } from "./AdminDetailSection";
 export {  AdminState } from "./AdminState";
 export { AdminPagination } from "./AdminPagination";
 export { AdminPermissionMatrix } from "./AdminPermissionMatrix";
@@ -40,5 +44,11 @@ export {
   ConfirmDialog,
   Dialog,
 } from "../../../design/components/overlay";
-export { PageHeader, Tabs } from "../../../design/components/common";
-export type { IPageHeaderProps, ITabItem, ITabsProps } from "../../../design/components/common";
+export { Breadcrumbs, PageHeader, Tabs } from "../../../design/components/common";
+export type {
+  IBreadcrumbItem,
+  IBreadcrumbsProps,
+  IPageHeaderProps,
+  ITabItem,
+  ITabsProps,
+} from "../../../design/components/common";

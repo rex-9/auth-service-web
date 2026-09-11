@@ -433,58 +433,58 @@ The checked-in [`.env.example`](.env.example) documents the client settings.
 | `VITE_REACT_APP_PORT_MAP`             | Docker host/container port mapping                                                           | `4000:4000`             |
 | `VITE_REACT_APP_DOCKERFILE`           | Dockerfile selected by Compose                                                               | `Dockerfile.dev`        |
 | `VITE_MEDIA_MAX_NON_VIDEO_SIZE_MB`    | Maximum upload size for non-video files (MB)                                                 | `10`                    |
-| `VITE_MEDIA_MAX_VIDEO_SIZE_MB`        | Maximum upload size for video files (MB)                                                     | `100`                   |
-| `VITE_MEDIA_MAX_FILE_COUNT`           | Maximum batch upload count                                                                   | `20`                    |
+| `VITE_MEDIA_MAX_VIDEO_SIZE_MB`        | Maximum upload size for video files (MB)                                                     | `300`                   |
+| `VITE_MEDIA_MAX_FILE_COUNT`           | Maximum batch upload count                                                                   | `30`                    |
 
 All frontend environment variables are centralized through [`src/AppConfig.tsx`](src/AppConfig.tsx) (`AppConfig.*`). Only variables prefixed with `VITE_` are exposed to browser code. Never place private credentials or provider secrets in them. In particular, Google client secrets belong on a trusted backend or provider configuration, not in a Vite application.
 
 ## Client route surface
 
-| Access    | Route                           | Purpose                                     |
-| --------- | ------------------------------- | ------------------------------------------- |
-| Public    | `/`                             | Root experience                             |
-| Public    | `/signin`                       | Open the authentication dialog              |
-| Public    | `/signup`                       | Enter the account creation flow             |
-| Public    | `/email/confirm`                | Handle confirmation links or code entry     |
-| Public    | `/password/forgot`              | Request account recovery                    |
-| Public    | `/password/reset`               | Complete password reset links               |
-| Public    | `/anapana`                      | Anapana interval reminder                   |
-| Protected | `/home`                         | Authenticated home                          |
-| Protected | `/profile`                      | Current-user profile                        |
-| Protected | `/payment`                      | Products and checkout                       |
-| Protected | `/payment/success`              | Checkout success return                     |
-| Protected | `/payment/cancel`               | Checkout cancellation return                |
-| Protected | `/ai`                           | AI workspace                                |
-| Protected | `/signout`                      | Sign out and provider cleanup               |
-| Protected | `/admin`                        | Admin panel entry with smart redirect       |
-| Protected | `/admin/users`                  | User management (super admin only)          |
-| Protected | `/admin/users/create`           | User creation console                       |
-| Protected | `/admin/users/:id/edit`         | User edit console                           |
-| Protected | `/admin/roles`                  | Role and permission management              |
-| Protected | `/admin/roles/create`           | Role creation console                       |
-| Protected | `/admin/roles/:id/edit`         | Role edit console                           |
-| Protected | `/admin/products`               | Product and pricing management              |
-| Protected | `/admin/products/create`        | Product creation console                    |
-| Protected | `/admin/products/:id/edit`      | Product edit console                        |
-| Protected | `/admin/accesses`               | Entitlements and user access management     |
-| Protected | `/admin/accesses/create`        | Access grant console                        |
-| Protected | `/admin/accesses/:id/edit`      | Access validity extension console           |
-| Protected | `/admin/assets`                 | Asset control center & storage overview     |
-| Protected | `/admin/assets/create`          | Asset upload console                        |
-| Protected | `/admin/assets/:id/edit`        | Asset edit and compression console          |
-| Protected | `/admin/notifications`          | Broadcast notification dispatch & templates |
-| Protected | `/admin/notifications/create`   | Notification template creation console      |
-| Protected | `/admin/notifications/:id/edit` | Notification template edit console          |
-| Protected | `/admin/chat/rooms`             | Chat room moderation                        |
-| Protected | `/admin/chat/messages`          | Chat message moderation                     |
-| Protected | `/admin/feedback`               | User feedback management                    |
-| Protected | `/admin/logs`                   | Client error and telemetry logs             |
-| Protected | `/admin/versions`               | App versions (super admin only)             |
-| Protected | `/admin/versions/create`        | App version create console                  |
-| Protected | `/admin/versions/:id/edit`      | App version edit console                    |
-| Protected | `/admin/versions/bin`           | Discarded app versions                      |
-| Protected | `/admin/user-versions`          | All current user versions (super admin)     |
-| Protected | `/admin/versions/:id/user-versions` | User versions for one version           |
+| Access    | Route                               | Purpose                                     |
+| --------- | ----------------------------------- | ------------------------------------------- |
+| Public    | `/`                                 | Root experience                             |
+| Public    | `/signin`                           | Open the authentication dialog              |
+| Public    | `/signup`                           | Enter the account creation flow             |
+| Public    | `/email/confirm`                    | Handle confirmation links or code entry     |
+| Public    | `/password/forgot`                  | Request account recovery                    |
+| Public    | `/password/reset`                   | Complete password reset links               |
+| Public    | `/anapana`                          | Anapana interval reminder                   |
+| Protected | `/home`                             | Authenticated home                          |
+| Protected | `/profile`                          | Current-user profile                        |
+| Protected | `/payment`                          | Products and checkout                       |
+| Protected | `/payment/success`                  | Checkout success return                     |
+| Protected | `/payment/cancel`                   | Checkout cancellation return                |
+| Protected | `/ai`                               | AI workspace                                |
+| Protected | `/signout`                          | Sign out and provider cleanup               |
+| Protected | `/admin`                            | Admin panel entry with smart redirect       |
+| Protected | `/admin/users`                      | User management (super admin only)          |
+| Protected | `/admin/users/create`               | User creation console                       |
+| Protected | `/admin/users/:id/edit`             | User edit console                           |
+| Protected | `/admin/roles`                      | Role and permission management              |
+| Protected | `/admin/roles/create`               | Role creation console                       |
+| Protected | `/admin/roles/:id/edit`             | Role edit console                           |
+| Protected | `/admin/products`                   | Product and pricing management              |
+| Protected | `/admin/products/create`            | Product creation console                    |
+| Protected | `/admin/products/:id/edit`          | Product edit console                        |
+| Protected | `/admin/accesses`                   | Entitlements and user access management     |
+| Protected | `/admin/accesses/create`            | Access grant console                        |
+| Protected | `/admin/accesses/:id/edit`          | Access validity extension console           |
+| Protected | `/admin/assets`                     | Asset control center & storage overview     |
+| Protected | `/admin/assets/create`              | Asset upload console                        |
+| Protected | `/admin/assets/:id/edit`            | Asset edit and compression console          |
+| Protected | `/admin/notifications`              | Broadcast notification dispatch & templates |
+| Protected | `/admin/notifications/create`       | Notification template creation console      |
+| Protected | `/admin/notifications/:id/edit`     | Notification template edit console          |
+| Protected | `/admin/chat/rooms`                 | Chat room moderation                        |
+| Protected | `/admin/chat/messages`              | Chat message moderation                     |
+| Protected | `/admin/feedback`                   | User feedback management                    |
+| Protected | `/admin/logs`                       | Client error and telemetry logs             |
+| Protected | `/admin/versions`                   | App versions (super admin only)             |
+| Protected | `/admin/versions/create`            | App version create console                  |
+| Protected | `/admin/versions/:id/edit`          | App version edit console                    |
+| Protected | `/admin/versions/bin`               | Discarded app versions                      |
+| Protected | `/admin/user-versions`              | All current user versions (super admin)     |
+| Protected | `/admin/versions/:id/user-versions` | User versions for one version               |
 
 [`src/AppRoutes.ts`](src/AppRoutes.ts) is the client-side source of truth. Rexone Core's OpenAPI page at `/api-docs` and its `config/routes.rb` remain authoritative for server contracts.
 

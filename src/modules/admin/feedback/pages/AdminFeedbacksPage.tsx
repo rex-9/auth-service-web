@@ -24,13 +24,12 @@ import {
   ButtonTypes,
   ButtonVariants,
 } from "../../../../design/constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import type { IAdminFeedback } from "../types";
 import {
   AdminPagination,
   AdminState,
   AdminTable,
-  AdminTableActions,
   PageHeader,
   type IAdminTableColumn,
 } from "../../components";
@@ -145,9 +144,13 @@ export const AdminFeedbacksPage: React.FC = () => {
   ]);
 
   useEffect(() => {
-    if (!permissionsLoading) {
+    if (permissionsLoading) return;
+
+    const timeoutId = window.setTimeout(() => {
       void loadFeedbacks();
-    }
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [loadFeedbacks, permissionsLoading]);
 
   const columns: IAdminTableColumn<IAdminFeedback>[] = useMemo(
@@ -206,7 +209,7 @@ export const AdminFeedbacksPage: React.FC = () => {
                       if (!item.version_id) return;
                       navigate(
                         AppRoutes.withId(
-                          AppRoutes.client.protected.admin.VERSION_INSTALLS,
+                          AppRoutes.client.protected.admin.VERSION_DETAIL,
                           item.version_id,
                         ),
                       );
@@ -242,29 +245,7 @@ export const AdminFeedbacksPage: React.FC = () => {
         header: t(AppLocales.Admin.Common.Table.CreatedAt),
         sortKey: ADMIN_FEEDBACK_SORT_KEYS.CREATED_AT,
         className: "text-center",
-        render: (item) => formatAdminDate(item.created_at),
-      },
-      {
-        key: ADMIN_FEEDBACK_TABLE_KEYS.ACTIONS,
-        header: "",
-        className: "text-right",
-        render: (item) => (
-          <AdminTableActions
-            resource={ADMIN_RESOURCES.FEEDBACKS}
-            actions={[
-              {
-                type: ADMIN_ACTIONS.REVIEW,
-                onClick: () =>
-                  navigate(
-                    AppRoutes.withId(
-                      AppRoutes.client.protected.admin.FEEDBACK_DETAIL,
-                      item.id,
-                    ),
-                  ),
-              },
-            ]}
-          />
-        ),
+        render: (item) => <DateTime value={item.created_at} format={DateTimeFormats.ADMIN} />,
       },
     ],
     [navigate, t],
@@ -277,11 +258,9 @@ export const AdminFeedbacksPage: React.FC = () => {
         description={t(AppLocales.Admin.Feedback.Description)}
       />
 
-      {/* Dropdown Filters */}
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 xl:max-w-3xl xl:grid-cols-3">
         <Dropdown
-          size={DropdownSizes.SM}
-          containerClassName="w-auto min-w-44"
+          size={DropdownSizes.MD}
           value={statusFilter}
           onValueChange={(val) => updateFilters({ status: val, page: 1 })}
           options={[
@@ -309,8 +288,7 @@ export const AdminFeedbacksPage: React.FC = () => {
         />
 
         <Dropdown
-          size={DropdownSizes.SM}
-          containerClassName="w-auto min-w-44"
+          size={DropdownSizes.MD}
           value={categoryFilter}
           onValueChange={(val) => updateFilters({ category: val, page: 1 })}
           options={[
@@ -338,8 +316,7 @@ export const AdminFeedbacksPage: React.FC = () => {
         />
 
         <Dropdown
-          size={DropdownSizes.SM}
-          containerClassName="w-auto min-w-44"
+          size={DropdownSizes.MD}
           value={priorityFilter}
           onValueChange={(val) => updateFilters({ priority: val, page: 1 })}
           options={[
@@ -393,6 +370,14 @@ export const AdminFeedbacksPage: React.FC = () => {
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(item) =>
+              navigate(
+                AppRoutes.withId(
+                  AppRoutes.client.protected.admin.FEEDBACK_DETAIL,
+                  item.id,
+                ),
+              )
+            }
           />
           <AdminPagination
             pagination={pagination}

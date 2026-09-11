@@ -16,10 +16,10 @@ class AppConfig {
     import.meta.env.VITE_MEDIA_MAX_NON_VIDEO_SIZE_MB || 10,
   );
   static readonly MEDIA_MAX_VIDEO_SIZE_MB = Number(
-    import.meta.env.VITE_MEDIA_MAX_VIDEO_SIZE_MB || 100,
+    import.meta.env.VITE_MEDIA_MAX_VIDEO_SIZE_MB || 300,
   );
   static readonly MEDIA_MAX_FILE_COUNT = Number(
-    import.meta.env.VITE_MEDIA_MAX_FILE_COUNT || 20,
+    import.meta.env.VITE_MEDIA_MAX_FILE_COUNT || 30,
   );
 }
 

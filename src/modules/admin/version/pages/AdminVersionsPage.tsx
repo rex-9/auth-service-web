@@ -11,7 +11,12 @@ import {
 } from "../../../../hooks";
 import type { IApiPagination } from "../../../../models";
 import { iconsLib } from "../../../../assets";
-import { Button, StatusBadge } from "../../../../design";
+import {
+  Button,
+  Dropdown,
+  DropdownSizes,
+  StatusBadge,
+} from "../../../../design";
 import { ButtonVariants } from "../../../../design/constants";
 import type { IAdminVersion } from "../types";
 import VersionController from "../version.controller";
@@ -21,7 +26,6 @@ import {
   AdminTableActions,
   AdminTable,
   ConfirmDialog,
-  Dropdown,
   PageHeader,
   Tabs,
   type IAdminTableColumn,
@@ -38,7 +42,7 @@ import {
   ADMIN_VERSION_TABLE_KEYS,
   VERSION_STATUSES,
 } from "../constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import { useTranslate, AppLocales } from "../../../../locales";
 
 type VersionLifecycleAction =
@@ -106,11 +110,11 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
     [setSearchParams],
   );
 
-  const openUserVersions = useCallback(
+  const openVersionDetail = useCallback(
     (versionId: string) => {
       navigate(
         AppRoutes.withId(
-          AppRoutes.client.protected.admin.VERSION_INSTALLS,
+          AppRoutes.client.protected.admin.VERSION_DETAIL,
           versionId,
         ),
       );
@@ -201,7 +205,7 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
         render: (version) => (
           <Button
             variant={ButtonVariants.TERTIARY}
-            onClick={() => openUserVersions(version.id)}
+            onClick={() => openVersionDetail(version.id)}
           >
             {version.install_count ?? 0}
           </Button>
@@ -221,12 +225,16 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
             ? ADMIN_VERSION_SORT_KEYS.RELEASED_AT
             : ADMIN_VERSION_SORT_KEYS.DISCARDED_AT,
         className: "text-center",
-        render: (version) =>
-          formatAdminDate(
-            view === ADMIN_VIEW_MODES.ACTIVE
-              ? version.released_at
-              : version.discarded_at,
-          ),
+        render: (version) => (
+          <DateTime
+            value={
+              view === ADMIN_VIEW_MODES.ACTIVE
+                ? version.released_at
+                : version.discarded_at
+            }
+            format={DateTimeFormats.ADMIN}
+          />
+        ),
       },
       {
         key: ADMIN_VERSION_TABLE_KEYS.ACTIONS,
@@ -250,7 +258,7 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
                     },
                     {
                       type: ADMIN_ACTIONS.INSPECT,
-                      onClick: () => openUserVersions(version.id),
+                      onClick: () => openVersionDetail(version.id),
                     },
                     {
                       type: ADMIN_ACTIONS.DISCARD,
@@ -276,7 +284,7 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
         ),
       },
     ],
-    [navigate, openUserVersions, t, view],
+    [navigate, openVersionDetail, t, view],
   );
 
   const handleLifecycleAction = async () => {
@@ -372,6 +380,8 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
 
       {view === ADMIN_VIEW_MODES.ACTIVE && (
         <Dropdown
+          size={DropdownSizes.MD}
+          containerClassName="w-full sm:max-w-sm"
           label={t(AppLocales.Admin.Versions.Filters.Status)}
           value={statusFilter}
           onValueChange={(value) => updateFilters({ status: value })}
@@ -417,6 +427,7 @@ export const AdminVersionsPage: React.FC<IAdminVersionsPageProps> = ({
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(version) => openVersionDetail(version.id)}
           />
           <AdminPagination
             pagination={pagination}

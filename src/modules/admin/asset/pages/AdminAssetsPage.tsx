@@ -55,7 +55,7 @@ import {
   formatAssetFileSize,
   isImageAsset,
 } from "../constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import { usePermissions } from "../../../../hooks/usePermissions";
 import { AdminAssetStorageStats } from "../components";
 import { Admin } from "../..";
@@ -600,7 +600,7 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
           header: t(AppLocales.Admin.Assets.Table.Created),
           sortKey: ADMIN_ASSET_COLUMNS.CREATED_AT,
           className: "text-center",
-          render: (asset) => formatAdminDate(asset.created_at),
+          render: (asset) => <DateTime value={asset.created_at} format={DateTimeFormats.ADMIN} />,
         },
         {
           key: "actions",
@@ -673,7 +673,7 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
           header: t(AppLocales.Admin.Assets.Table.Discarded),
           sortKey: ADMIN_ASSET_COLUMNS.DISCARDED_AT,
           className: "text-center",
-          render: (asset) => formatAdminDate(asset.discarded_at),
+          render: (asset) => <DateTime value={asset.discarded_at} format={DateTimeFormats.ADMIN} />,
         },
         {
           key: "actions",
@@ -756,11 +756,19 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
                 value: ADMIN_VIEW_MODES.ACTIVE,
                 label: t(AppLocales.Admin.Assets.Tabs.ActiveAssets),
                 icon: iconsLib.photo,
+                count:
+                  view === ADMIN_VIEW_MODES.ACTIVE
+                    ? pagination?.total_count
+                    : undefined,
               },
               {
                 value: ADMIN_VIEW_MODES.DISCARDED,
                 label: t(AppLocales.Admin.Assets.Tabs.RecycleBin),
                 icon: iconsLib.trash,
+                count:
+                  view === ADMIN_VIEW_MODES.DISCARDED
+                    ? pagination?.total_count
+                    : undefined,
               },
             ]}
           />
@@ -835,6 +843,7 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
               sortBy={sortBy}
               sortOrder={sortOrder}
               onSort={handleSort}
+              onRowClick={(asset) => navigate(AppRoutes.withId(AppRoutes.client.protected.admin.ASSET_DETAIL, asset.id))}
               selectable={canDelete}
               selectedRowKeys={selectedIds}
               onSelectRow={(id, selected) => {

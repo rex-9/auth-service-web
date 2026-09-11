@@ -18,7 +18,7 @@ import {
   VERSION_STATUSES,
 } from "../constants";
 import { useTranslate, AppLocales } from "../../../../locales";
-import { formatAdminDate } from "../../../../helpers";
+import { formatDateTime } from "../../../../helpers";
 
 interface IAdminVersionFormProps {
   mode: typeof ADMIN_ACTIONS.CREATE | typeof ADMIN_ACTIONS.EDIT;
@@ -268,7 +268,7 @@ export const AdminVersionForm: React.FC<IAdminVersionFormProps> = ({
             value={
               version.released_at
                 ? String(
-                    formatAdminDate(version.released_at, { inline: true }),
+                    formatDateTime(version.released_at),
                   )
                 : t(AppLocales.Admin.Versions.Form.NotReleased)
             }

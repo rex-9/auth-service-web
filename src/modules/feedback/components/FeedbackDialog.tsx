@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useTranslate } from "../../../locales";
+import { AppLocales, useTranslate } from "../../../locales";
 import {
   Dialog,
   FormContainer,
@@ -29,7 +29,7 @@ export const FeedbackDialog: React.FC<IFeedbackDialogProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim()) {
-      error(t("feedback.error_empty", "Please enter your feedback."));
+      error(t(AppLocales.Feedback.ErrorEmpty));
       return;
     }
 
@@ -40,7 +40,7 @@ export const FeedbackDialog: React.FC<IFeedbackDialogProps> = ({
         rating,
       });
 
-      success(t("feedback.success", "Thank you for your feedback!"));
+      success(t(AppLocales.Feedback.SuccessMessage));
       setContent("");
       setRating(FEEDBACK_RATINGS.DEFAULT);
       onClose();
@@ -48,10 +48,7 @@ export const FeedbackDialog: React.FC<IFeedbackDialogProps> = ({
       const message =
         err instanceof Error
           ? err.message
-          : t(
-              "feedback.error_submit",
-              "Failed to submit feedback. Please try again.",
-            );
+          : t(AppLocales.Feedback.ErrorSubmit);
       error(message);
     } finally {
       setLoading(false);
@@ -62,7 +59,7 @@ export const FeedbackDialog: React.FC<IFeedbackDialogProps> = ({
     <Dialog
       isOpen={isOpen}
       onClose={onClose}
-      title={t("feedback.title", "Share Your Feedback")}
+      title={t(AppLocales.Feedback.Title)}
     >
       <FormContainer
         onSubmit={handleSubmit}
@@ -73,20 +70,17 @@ export const FeedbackDialog: React.FC<IFeedbackDialogProps> = ({
           onChange={setRating}
           min={FEEDBACK_RATINGS.MIN}
           max={FEEDBACK_RATINGS.MAX}
-          label={t("feedback.rating_label", "How was your experience?")}
+          label={t(AppLocales.Feedback.RatingLabel)}
           disabled={isLoading}
         />
 
         <TextArea
           id="feedback-content"
-          label={t("feedback.content_label", "What's on your mind?")}
+          label={t(AppLocales.Feedback.ContentLabel)}
           rows={4}
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder={t(
-            "feedback.placeholder",
-            "Tell us anything — bugs, suggestions, questions, or ideas. We triage automatically!",
-          )}
+          placeholder={t(AppLocales.Feedback.Placeholder)}
           disabled={isLoading}
           autoExpand={false}
         />
@@ -98,7 +92,7 @@ export const FeedbackDialog: React.FC<IFeedbackDialogProps> = ({
             onClick={onClose}
             disabled={isLoading}
           >
-            {t("common.cancel", "Cancel")}
+            {t(AppLocales.Common.Cancel)}
           </Button>
           <Button
             type="submit"
@@ -107,7 +101,7 @@ export const FeedbackDialog: React.FC<IFeedbackDialogProps> = ({
             isLoading={isLoading}
             disabled={isLoading || !content.trim()}
           >
-            {t("feedback.submit", "Send Feedback")}
+            {t(AppLocales.Feedback.Submit)}
           </Button>
         </div>
       </FormContainer>

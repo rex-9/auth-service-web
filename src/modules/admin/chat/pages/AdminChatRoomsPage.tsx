@@ -20,7 +20,8 @@ import {
   Tabs,
   type IAdminTableColumn,
 } from "../../components";
-import { formatAdminDate, truncateAdminText } from "../../helpers/admin.helper";
+import { truncateAdminText } from "../../helpers/admin.helper";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import {
   ADMIN_PAGE_SIZE,
   ADMIN_RESOURCES,
@@ -160,7 +161,7 @@ export const AdminChatRoomsPage: React.FC<IAdminChatRoomsPageProps> = ({
         header: t(AppLocales.Admin.Common.Table.CreatedAt),
         sortKey: ADMIN_CHAT_ROOM_SORT_KEYS.CREATED_AT,
         className: "text-center",
-        render: (room) => formatAdminDate(room.created_at),
+        render: (room) => <DateTime value={room.created_at} format={DateTimeFormats.ADMIN} />,
       },
       {
         key: ADMIN_CHAT_ROOM_TABLE_KEYS.ACTIONS,

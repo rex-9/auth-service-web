@@ -11,7 +11,7 @@ import {
 import type { IApiPagination } from "../../../../models";
 import { iconsLib } from "../../../../assets";
 import { Button, StatusBadge } from "../../../../design";
-import { ButtonVariants } from "../../../../design/constants";
+import { ButtonVariants, DropdownSizes } from "../../../../design/constants";
 import type { IAdminUserVersion, IAdminVersion } from "../types";
 import VersionController from "../version.controller";
 import {
@@ -32,10 +32,16 @@ import {
   ADMIN_USER_VERSION_TABLE_KEYS,
   VERSION_PLATFORMS,
 } from "../constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import { useTranslate, AppLocales } from "../../../../locales";
 
-export const AdminUserVersionsPage: React.FC = () => {
+interface IAdminUserVersionsPageProps {
+  embedded?: boolean;
+}
+
+export const AdminUserVersionsPage: React.FC<IAdminUserVersionsPageProps> = ({
+  embedded = false,
+}) => {
   const t = useTranslate();
   const { id: versionId } = useParams<{ id: string }>();
   const isVersionScoped = Boolean(versionId);
@@ -99,7 +105,7 @@ export const AdminUserVersionsPage: React.FC = () => {
     };
 
     const [versionResult, userVersionsResult] = await Promise.all([
-      isVersionScoped && versionId
+      isVersionScoped && versionId && !embedded
         ? VersionController.getVersion(versionId)
         : Promise.resolve({ success: true as const, version: undefined }),
       isVersionScoped && versionId
@@ -124,6 +130,7 @@ export const AdminUserVersionsPage: React.FC = () => {
     setLoading(false);
   }, [
     can,
+    embedded,
     isVersionScoped,
     page,
     platformFilter,
@@ -166,7 +173,9 @@ export const AdminUserVersionsPage: React.FC = () => {
         header: t(AppLocales.Admin.UserVersions.Table.Number),
         sortKey: ADMIN_USER_VERSION_SORT_KEYS.NUMBER,
         render: (userVersion) => (
-          <span className="font-mono text-base-content">{userVersion.number}</span>
+          <span className="font-mono text-base-content">
+            {userVersion.number}
+          </span>
         ),
       },
       {
@@ -183,7 +192,7 @@ export const AdminUserVersionsPage: React.FC = () => {
         header: t(AppLocales.Admin.UserVersions.Table.LastSeen),
         sortKey: ADMIN_USER_VERSION_SORT_KEYS.LAST_SEEN_AT,
         className: "text-center",
-        render: (userVersion) => formatAdminDate(userVersion.last_seen_at),
+        render: (userVersion) => <DateTime value={userVersion.last_seen_at} format={DateTimeFormats.ADMIN} />,
       },
     ],
     [t],
@@ -191,37 +200,41 @@ export const AdminUserVersionsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title={
-          isVersionScoped && version
-            ? t(AppLocales.Admin.UserVersions.TitleWithVersion, {
-                number: version.number,
-                title: version.title,
-              })
-            : t(AppLocales.Admin.UserVersions.Title)
-        }
-        description={
-          isVersionScoped
-            ? t(AppLocales.Admin.UserVersions.ScopedDescription)
-            : t(AppLocales.Admin.UserVersions.Description)
-        }
-        action={
-          isVersionScoped ? (
-            <Button
-              variant={ButtonVariants.SECONDARY}
-              onClick={() =>
-                navigate(AppRoutes.client.protected.admin.VERSIONS)
-              }
-            >
-              <iconsLib.arrowLeft className="mr-2 h-4 w-4" />
-              {t(AppLocales.Admin.UserVersions.BackToVersions)}
-            </Button>
-          ) : null
-        }
-      />
+      {!embedded && (
+        <PageHeader
+          title={
+            isVersionScoped && version
+              ? t(AppLocales.Admin.UserVersions.TitleWithVersion, {
+                  number: version.number,
+                  title: version.title,
+                })
+              : t(AppLocales.Admin.UserVersions.Title)
+          }
+          description={
+            isVersionScoped
+              ? t(AppLocales.Admin.UserVersions.ScopedDescription)
+              : t(AppLocales.Admin.UserVersions.Description)
+          }
+          action={
+            isVersionScoped ? (
+              <Button
+                variant={ButtonVariants.SECONDARY}
+                onClick={() =>
+                  navigate(AppRoutes.client.protected.admin.VERSIONS)
+                }
+              >
+                <iconsLib.arrowLeft className="mr-2 h-4 w-4" />
+                {t(AppLocales.Admin.UserVersions.BackToVersions)}
+              </Button>
+            ) : null
+          }
+        />
+      )}
 
       {!isVersionScoped && (
         <Dropdown
+          size={DropdownSizes.MD}
+          containerClassName="w-full sm:max-w-sm"
           label={t(AppLocales.Admin.UserVersions.Filters.Platform)}
           value={platformFilter}
           onValueChange={(value) => updateFilters({ platform: value })}

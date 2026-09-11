@@ -1,6 +1,5 @@
 import AppRoutes from "../../../AppRoutes";
 import { ADMIN_RESOURCES, IAdminPageMeta } from "../constants";
-import type { AdminRoleName } from "./types";
 
 export const ADMIN_ROLE_NAMES = {
   ADMIN: "admin",
@@ -10,10 +9,6 @@ export const ADMIN_ROLE_NAMES = {
 
 export const isAdminRoleName = (roleName: string): boolean =>
   roleName === ADMIN_ROLE_NAMES.ADMIN || roleName.endsWith("_admin");
-
-export const hasAdminRole = (
-  roleNames: AdminRoleName[] | null | undefined,
-): boolean => roleNames?.some((roleName) => isAdminRoleName(roleName)) ?? false;
 
 export const ADMIN_ROLE_PAGE_TITLES = {
   CREATE: "Create Role",
@@ -50,7 +45,8 @@ export const ADMIN_ROLE_LABELS = {
 export const ADMIN_ROLE_FORM_LABELS = {
   CREATE_ROLE: "Create role",
   DESCRIPTION: "Description",
-  NAME_ERROR: "Admin panel roles must end with _admin, for example notification_admin.",
+  NAME_ERROR:
+    "Admin panel roles must end with _admin, for example notification_admin.",
   NAME_HELPER: "Use a name ending with _admin, such as notification_admin.",
   PERMISSIONS: "Permissions",
   ROLE_NAME: "Role name",

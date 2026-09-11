@@ -31,7 +31,7 @@ import {
 import { ButtonVariants, ComponentSizes } from "../../../../design/constants";
 import { UPLOAD_SIZE_LIMITS } from "../../../../constants";
 import { ADMIN_ACTIONS } from "../../constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 
 export interface IAdminAssetEditFormValues {
   name: string;
@@ -638,7 +638,7 @@ export const AdminAssetForm: React.FC<IAdminAssetFormProps> = ({
                   {t(AppLocales.Admin.Assets.Table.Created)}
                 </span>
                 <span className="text-base-content/70">
-                  {formatAdminDate(asset.created_at)}
+                  <DateTime value={asset.created_at} format={DateTimeFormats.ADMIN} />
                 </span>
               </div>
             </div>

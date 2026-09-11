@@ -22,7 +22,7 @@ import {
   getSeverityBadgeVariant,
   StatusBadge,
 } from "../../../../design";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import type { IAdminLog } from "../types";
 import {
   AdminPagination,
@@ -282,8 +282,12 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
         header: t(AppLocales.Admin.Logs.Table.Timestamp),
         sortKey: ADMIN_LOG_SORT_KEYS.CREATED_AT,
         className: "text-center",
-        render: (log) =>
-          formatAdminDate(log.last_occurred_at || log.created_at),
+        render: (log) => (
+          <DateTime
+            value={log.last_occurred_at || log.created_at}
+            format={DateTimeFormats.ADMIN}
+          />
+        ),
       },
       {
         key: ADMIN_LOG_TABLE_KEYS.ACTIONS,
@@ -296,31 +300,11 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
               view === ADMIN_VIEW_MODES.ACTIVE
                 ? [
                     {
-                      type: ADMIN_ACTIONS.INSPECT,
-                      onClick: () =>
-                        navigate(
-                          AppRoutes.withId(
-                            AppRoutes.client.protected.admin.LOG_DETAIL,
-                            log.id,
-                          ),
-                        ),
-                    },
-                    {
                       type: ADMIN_ACTIONS.DISCARD,
                       onClick: () => setDiscardTarget(log),
                     },
                   ]
                 : [
-                    {
-                      type: ADMIN_ACTIONS.INSPECT,
-                      onClick: () =>
-                        navigate(
-                          AppRoutes.withId(
-                            AppRoutes.client.protected.admin.LOG_DETAIL,
-                            log.id,
-                          ),
-                        ),
-                    },
                     {
                       type: ADMIN_ACTIONS.UNDISCARD,
                       onClick: () => void handleUndiscard(log),
@@ -390,7 +374,7 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
       {/* Dropdown Filters */}
       <div className="flex flex-wrap items-center gap-3">
         <Dropdown
-          size={DropdownSizes.SM}
+          size={DropdownSizes.MD}
           containerClassName="w-auto min-w-40"
           value={resolutionFilter}
           onValueChange={(val) => updateFilters({ resolution: val, page: 1 })}
@@ -408,7 +392,7 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
         />
 
         <Dropdown
-          size={DropdownSizes.SM}
+          size={DropdownSizes.MD}
           containerClassName="w-auto min-w-40"
           value={severityFilter}
           onValueChange={(val) => updateFilters({ severity: val, page: 1 })}
@@ -431,7 +415,7 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
         />
 
         <Dropdown
-          size={DropdownSizes.SM}
+          size={DropdownSizes.MD}
           containerClassName="w-auto min-w-40"
           value={platformFilter}
           onValueChange={(val) => updateFilters({ platform: val, page: 1 })}
@@ -473,6 +457,14 @@ export const AdminLogsPage: React.FC<IAdminLogsPageProps> = ({
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(log) =>
+              navigate(
+                AppRoutes.withId(
+                  AppRoutes.client.protected.admin.LOG_DETAIL,
+                  log.id,
+                ),
+              )
+            }
           />
           <AdminPagination
             pagination={pagination}

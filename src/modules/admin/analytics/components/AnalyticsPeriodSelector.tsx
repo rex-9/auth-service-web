@@ -1,17 +1,19 @@
 // src/modules/admin/analytics/components/AnalyticsPeriodSelector.tsx
 import React, { useMemo } from "react";
 import { iconsLib } from "../../../../assets";
-import { Dropdown, DropdownSizes, type IDropdownOption } from "../../../../design";
 import {
-  ANALYTICS_PERIODS,
-  TAnalyticsPeriod,
-} from "../../constants";
+  Dropdown,
+  DropdownSizes,
+  type IDropdownOption,
+} from "../../../../design";
+import { ANALYTICS_PERIODS, TAnalyticsPeriod } from "../../constants";
 import {
   calculateUtcRangeForMonth,
   calculateUtcRangeForPreset,
   calculateUtcRangeForYear,
 } from "../helpers/analyticsDate.helper";
 import { useTranslate, AppLocales } from "../../../../locales";
+import { formatLocalDate } from "../../../../helpers";
 
 export const APP_INCEPTION_YEAR = 2026;
 export const APP_INCEPTION_MONTH = 8; // 0-indexed: 8 = September 2026
@@ -60,7 +62,7 @@ export const AnalyticsPeriodSelector: React.FC<
 
       const year = d.getFullYear();
       const month = d.getMonth();
-      const monthLabel = d.toLocaleString("default", {
+      const monthLabel = formatLocalDate(d, {
         month: "long",
         year: "numeric",
       });
@@ -249,7 +251,7 @@ export const AnalyticsPeriodSelector: React.FC<
       options={options}
       disabled={disabled}
       fullWidth={false}
-      size={DropdownSizes.SM}
+      size={DropdownSizes.MD}
       icon={<iconsLib.clock className="h-4 w-4" />}
       className="w-auto font-semibold pr-8"
     />
@@ -257,4 +259,3 @@ export const AnalyticsPeriodSelector: React.FC<
 };
 
 export default AnalyticsPeriodSelector;
-

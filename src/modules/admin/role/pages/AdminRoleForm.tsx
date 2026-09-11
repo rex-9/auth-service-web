@@ -8,6 +8,7 @@ import {
 } from "../types";
 import {
   AdminPermissionMatrix,
+  AdminDetailSection,
   FormActionRow,
   FormContainer,
   TextInput,
@@ -116,13 +117,9 @@ export const AdminRoleForm: React.FC<IAdminRoleFormProps> = ({
         />
 
         <div className="md:col-span-2">
-          <div className="rounded-md border border-base-300 bg-base-100 p-4 md:p-6">
-            <div className="mb-3 flex items-center justify-between gap-2">
-              <h2 className="text-body-m font-semibold text-base-content">
-                {t(AppLocales.Admin.Roles.Form.PermissionsMatrixTitle)}
-              </h2>
-            </div>
-
+          <AdminDetailSection
+            title={t(AppLocales.Admin.Roles.Form.PermissionsMatrixTitle)}
+          >
             <AdminPermissionMatrix
               permissions={permissionItems}
               selectedPermissionIds={selectedPermissionIds}
@@ -132,7 +129,7 @@ export const AdminRoleForm: React.FC<IAdminRoleFormProps> = ({
               onSelectPermissions={selectPermissions}
               onClearPermissions={clearPermissions}
             />
-          </div>
+          </AdminDetailSection>
         </div>
       </div>
 
@@ -148,4 +145,3 @@ export const AdminRoleForm: React.FC<IAdminRoleFormProps> = ({
     </FormContainer>
   );
 };
-

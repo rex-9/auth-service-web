@@ -4,13 +4,12 @@ import { ButtonVariants } from "../constants";
 import { useNavigate } from "react-router-dom";
 import AppRoutes from "../../AppRoutes";
 import { useAuth } from "../../contexts";
-import { hasAdminRole } from "../../modules/admin/role";
 import { DevTestButtons } from "../../modules/log/components/DevTestButtons";
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-  const canAccessAdmin = hasAdminRole(currentUser?.role_names);
+  const canAccessAdmin = currentUser?.iam?.is_admin ?? false;
 
   return (
     <div className="w-full max-w-sm space-y-4">

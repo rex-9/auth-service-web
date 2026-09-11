@@ -37,12 +37,14 @@ import {
   AdminAccessesPage,
   AdminAccessCreatePage,
   AdminAccessEditPage,
+  AdminAccessDetailPage,
   AdminFeedbacksPage,
   AdminFeedbackDetailPage,
   AdminLogsPage,
   AdminDiscardedLogsPage,
   AdminLogDetailPage,
   AdminChatMessageEditPage,
+  AdminChatMessageDetailPage,
   AdminChatMessagesPage,
   AdminDiscardedChatMessagesPage,
   AdminChatRoomEditPage,
@@ -53,24 +55,29 @@ import {
   AdminNotificationEditPage,
   AdminProductCreatePage,
   AdminProductEditPage,
+  AdminProductDetailPage,
   AdminDiscardedProductsPage,
   AdminProductsPage,
   AdminRoleCreatePage,
   AdminRoleEditPage,
+  AdminRoleDetailPage,
   AdminRolesPage,
   AdminDiscardedRolesPage,
   AdminUserCreatePage,
   AdminDiscardedUsersPage,
   AdminUserEditPage,
+  AdminUserDetailPage,
   AdminUsersPage,
   AdminAssetsPage,
   AdminDiscardedAssetsPage,
   AdminAssetCreatePage,
   AdminAssetEditPage,
+  AdminAssetDetailPage,
   AdminVersionsPage,
   AdminDiscardedVersionsPage,
   AdminVersionCreatePage,
   AdminVersionEditPage,
+  AdminVersionDetailPage,
   AdminUserVersionsPage,
 } from "../modules/admin";
 
@@ -168,7 +175,6 @@ const router = createBrowserRouter(
               <AdminRootRoute
                 action={ADMIN_ACTIONS.READ}
                 resource={ADMIN_RESOURCES.USERS}
-                superAdminOnly
               />
             }
           >
@@ -176,6 +182,20 @@ const router = createBrowserRouter(
               path={AppRoutes.client.protected.admin.USERS}
               element={<AdminUsersPage />}
             />
+            <Route
+              path={AppRoutes.client.protected.admin.USER_DETAIL}
+              element={<AdminUserDetailPage />}
+            />
+          </Route>
+          <Route
+            element={
+              <AdminRootRoute
+                action={ADMIN_ACTIONS.DELETE}
+                resource={ADMIN_RESOURCES.USERS}
+                superAdminOnly
+              />
+            }
+          >
             <Route
               path={AppRoutes.client.protected.admin.USERS_RECYCLE_BIN}
               element={<AdminDiscardedUsersPage />}
@@ -221,6 +241,10 @@ const router = createBrowserRouter(
             <Route
               path={AppRoutes.client.protected.admin.ROLES}
               element={<AdminRolesPage />}
+            />
+            <Route
+              path={AppRoutes.client.protected.admin.ROLE_DETAIL}
+              element={<AdminRoleDetailPage />}
             />
           </Route>
           <Route
@@ -316,6 +340,10 @@ const router = createBrowserRouter(
               path={AppRoutes.client.protected.admin.CHAT_MESSAGES}
               element={<AdminChatMessagesPage />}
             />
+            <Route
+              path={AppRoutes.client.protected.admin.CHAT_MESSAGE_DETAIL}
+              element={<AdminChatMessageDetailPage />}
+            />
           </Route>
           <Route
             element={
@@ -394,6 +422,10 @@ const router = createBrowserRouter(
               path={AppRoutes.client.protected.admin.PRODUCTS}
               element={<AdminProductsPage />}
             />
+            <Route
+              path={AppRoutes.client.protected.admin.PRODUCT_DETAIL}
+              element={<AdminProductDetailPage />}
+            />
           </Route>
           <Route
             element={
@@ -445,6 +477,10 @@ const router = createBrowserRouter(
             <Route
               path={AppRoutes.client.protected.admin.ACCESSES}
               element={<AdminAccessesPage />}
+            />
+            <Route
+              path={AppRoutes.client.protected.admin.ACCESS_DETAIL}
+              element={<AdminAccessDetailPage />}
             />
           </Route>
           <Route
@@ -550,6 +586,10 @@ const router = createBrowserRouter(
               path={AppRoutes.client.protected.admin.ASSETS}
               element={<AdminAssetsPage />}
             />
+            <Route
+              path={AppRoutes.client.protected.admin.ASSET_DETAIL}
+              element={<AdminAssetDetailPage />}
+            />
           </Route>
           <Route
             element={
@@ -602,6 +642,10 @@ const router = createBrowserRouter(
             <Route
               path={AppRoutes.client.protected.admin.VERSIONS}
               element={<AdminVersionsPage />}
+            />
+            <Route
+              path={AppRoutes.client.protected.admin.VERSION_DETAIL}
+              element={<AdminVersionDetailPage />}
             />
           </Route>
           <Route
@@ -657,10 +701,6 @@ const router = createBrowserRouter(
           >
             <Route
               path={AppRoutes.client.protected.admin.USER_VERSIONS}
-              element={<AdminUserVersionsPage />}
-            />
-            <Route
-              path={AppRoutes.client.protected.admin.VERSION_INSTALLS}
               element={<AdminUserVersionsPage />}
             />
           </Route>

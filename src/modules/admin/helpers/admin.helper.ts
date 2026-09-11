@@ -5,7 +5,7 @@ import { ADMIN_PRODUCT_PAGE_META } from "../product/constants";
 import { ADMIN_ROLE_PAGE_META } from "../role/constants";
 import { ADMIN_USER_PAGE_META } from "../user/constants";
 
-export { formatAdminDate, formatDateTime } from "../../../helpers/date.helper";
+export { formatDateTime } from "../../../helpers/date.helper";
 
 const adminPageMeta: Record<string, IAdminPageMeta> = {
   ...ADMIN_USER_PAGE_META,

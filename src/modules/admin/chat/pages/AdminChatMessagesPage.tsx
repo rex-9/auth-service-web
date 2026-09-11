@@ -26,7 +26,8 @@ import {
   Tabs,
   type IAdminTableColumn,
 } from "../../components";
-import { formatAdminDate, truncateAdminText } from "../../helpers/admin.helper";
+import { truncateAdminText } from "../../helpers/admin.helper";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import {
   ADMIN_PAGE_SIZE,
   ADMIN_RESOURCES,
@@ -173,7 +174,7 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
         header: t(AppLocales.Admin.Common.Table.CreatedAt),
         sortKey: ADMIN_CHAT_MESSAGE_SORT_KEYS.CREATED_AT,
         className: "text-center",
-        render: (message) => formatAdminDate(message.created_at),
+        render: (message) => <DateTime value={message.created_at} format={DateTimeFormats.ADMIN} />,
       },
       {
         key: ADMIN_CHAT_MESSAGE_TABLE_KEYS.ACTIONS,
@@ -327,6 +328,7 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            onRowClick={(message) => navigate(AppRoutes.withId(AppRoutes.client.protected.admin.CHAT_MESSAGE_DETAIL, message.id))}
           />
           <AdminPagination
             pagination={pagination}
@@ -361,4 +363,3 @@ export const AdminChatMessagesPage: React.FC<IAdminChatMessagesPageProps> = ({
     </div>
   );
 };
-

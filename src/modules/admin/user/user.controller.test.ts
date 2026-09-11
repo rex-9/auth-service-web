@@ -15,12 +15,20 @@ vi.mock("./user.service", () => ({
     discardUser: vi.fn(),
     undiscardUser: vi.fn(),
     getRoles: vi.fn(),
+    assignRole: vi.fn(),
+    removeRole: vi.fn(),
   },
 }));
 
 describe("UserController", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(UserService.assignRole).mockResolvedValue({
+      data: { status: { code: 200, success: true, message: "Role assigned" }, data: null },
+    });
+    vi.mocked(UserService.removeRole).mockResolvedValue({
+      data: { status: { code: 200, success: true, message: "Role removed" }, data: null },
+    });
   });
 
   describe("getUsers", () => {
@@ -175,7 +183,12 @@ describe("UserController", () => {
 
       const result = await UserController.createUser(formValues);
 
-      expect(UserService.createUser).toHaveBeenCalledWith(formValues);
+      expect(UserService.createUser).toHaveBeenCalledWith({
+        email: "new@example.com",
+        username: "newuser",
+        name: "New User",
+      });
+      expect(UserService.assignRole).toHaveBeenCalledWith("u3", "r1");
       expect(result.success).toBe(true);
       expect(result.user).toEqual(expect.objectContaining({ id: "u3" }));
       expect(result.message).toBe("User created");

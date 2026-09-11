@@ -6,24 +6,25 @@ import AppRoutes from "../../../../AppRoutes";
 import { useLoading } from "../../../../contexts/LoadingContext";
 import { useToast } from "../../../../contexts/ToastContext";
 import { useDocumentTitle, usePermissions } from "../../../../hooks";
-import { iconsLib } from "../../../../assets";
 import { Button, StatusBadge } from "../../../../design";
 import {
   BadgeVariants,
   ButtonTypes,
   ButtonVariants,
 } from "../../../../design/constants";
-import { formatAdminDate } from "../../../../helpers";
+import { DateTime, DateTimeFormats } from "../../../../design";
 import { ADMIN_LOG_SEVERITY } from "../constants";
 import type { IAdminLog } from "../types";
 import AdminLogController from "../log.controller";
-import { AlertDialog, AdminState, PageHeader } from "../../components";
+import { AlertDialog, AdminDetailHeader, AdminState } from "../../components";
 import { ADMIN_ACTIONS, ADMIN_RESOURCES } from "../../constants";
 import { useTranslate, AppLocales } from "../../../../locales";
 
 export const AdminLogDetailPage: React.FC = () => {
   const t = useTranslate();
-  useDocumentTitle(`${t(AppLocales.Admin.Logs.Drawer.Title)} | Admin`);
+  useDocumentTitle(
+    `${t(AppLocales.Admin.Logs.Drawer.Title)} | ${t(AppLocales.Admin.Common.Detail.Admin)}`,
+  );
 
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -49,12 +50,12 @@ export const AdminLogDetailPage: React.FC = () => {
       if (result.success && result.log) {
         setLog(result.log);
       } else {
-        setError(result.error || "Failed to load log details");
+        setError(result.error || t(AppLocales.Admin.Logs.Detail.LoadFailed));
       }
     };
 
     void loadLog();
-  }, [id, setLoading]);
+  }, [id, setLoading, t]);
 
   const handleToggleResolve = async () => {
     if (!id || !log) return;
@@ -76,7 +77,7 @@ export const AdminLogDetailPage: React.FC = () => {
           : t(AppLocales.Admin.Logs.Toasts.ResolveSuccess),
       );
     } else {
-      setAlertMessage(result.error || "Failed to update log status");
+      setAlertMessage(result.error || t(AppLocales.Admin.Logs.Detail.UpdateFailed));
     }
   };
 
@@ -90,32 +91,32 @@ export const AdminLogDetailPage: React.FC = () => {
         onClose={() => setAlertMessage("")}
       />
 
-      <PageHeader
+      <AdminDetailHeader
+        breadcrumbs={[
+          { label: t(AppLocales.Admin.Common.Detail.Admin), to: AppRoutes.client.protected.admin.HOME },
+          {
+            label: t(AppLocales.Admin.Logs.Title),
+            to: AppRoutes.client.protected.admin.LOGS,
+          },
+          { label: t(AppLocales.Admin.Logs.Drawer.Title) },
+        ]}
         title={t(AppLocales.Admin.Logs.Drawer.Title)}
-        description="Detailed telemetry diagnostic report and stack trace analysis"
+        description={t(AppLocales.Admin.Logs.Detail.Description)}
+        backTo={AppRoutes.client.protected.admin.LOGS}
         action={
-          <div className="flex items-center gap-2">
-            {canUpdate && log && (
-              <Button
-                variant={
-                  isResolved ? ButtonVariants.SECONDARY : ButtonVariants.PRIMARY
-                }
-                onClick={handleToggleResolve}
-                isLoading={isUpdating}
-              >
-                {isResolved
-                  ? t(AppLocales.Admin.Logs.Drawer.MarkUnresolved)
-                  : t(AppLocales.Admin.Logs.Drawer.MarkResolved)}
-              </Button>
-            )}
+          canUpdate && log ? (
             <Button
-              variant={ButtonVariants.SECONDARY}
-              onClick={() => navigate(AppRoutes.client.protected.admin.LOGS)}
+              variant={
+                isResolved ? ButtonVariants.SECONDARY : ButtonVariants.PRIMARY
+              }
+              onClick={handleToggleResolve}
+              isLoading={isUpdating}
             >
-              <iconsLib.arrowLeft className="w-5 h-5 mr-2" />
-              Back
+              {isResolved
+                ? t(AppLocales.Admin.Logs.Drawer.MarkUnresolved)
+                : t(AppLocales.Admin.Logs.Drawer.MarkResolved)}
             </Button>
-          </div>
+          ) : null
         }
       />
 
@@ -129,12 +130,12 @@ export const AdminLogDetailPage: React.FC = () => {
           {/* Metadata Card */}
           <div className="lg:col-span-1 bg-base-100 rounded-xl border border-base-200 p-6 space-y-4">
             <h3 className="font-semibold text-base-content text-lg">
-              Telemetry Summary
+              {t(AppLocales.Admin.Logs.Detail.Summary)}
             </h3>
 
             <div className="space-y-3 pt-2 text-sm">
               <div className="flex justify-between items-center py-1.5 border-b border-base-200">
-                <span className="text-base-content/60">Severity</span>
+                <span className="text-base-content/60">{t(AppLocales.Admin.Logs.Detail.Severity)}</span>
                 <StatusBadge
                   status={log.severity}
                   variant={
@@ -147,7 +148,7 @@ export const AdminLogDetailPage: React.FC = () => {
               </div>
 
               <div className="flex justify-between items-center py-1.5 border-b border-base-200">
-                <span className="text-base-content/60">Status</span>
+                <span className="text-base-content/60">{t(AppLocales.Admin.Logs.Detail.Status)}</span>
                 <StatusBadge
                   status={isResolved ? "resolved" : "unresolved"}
                   variant={
@@ -182,7 +183,7 @@ export const AdminLogDetailPage: React.FC = () => {
                   {t(AppLocales.Admin.Common.Table.CreatedAt)}
                 </span>
                 <span className="text-base-content/70">
-                  {formatAdminDate(log.created_at)}
+                  <DateTime value={log.created_at} format={DateTimeFormats.ADMIN} />
                 </span>
               </div>
 
@@ -192,16 +193,16 @@ export const AdminLogDetailPage: React.FC = () => {
                     {t(AppLocales.Admin.Logs.Table.Timestamp)}
                   </span>
                   <span className="text-base-content/70">
-                    {formatAdminDate(log.last_occurred_at)}
+                    <DateTime value={log.last_occurred_at} format={DateTimeFormats.ADMIN} />
                   </span>
                 </div>
               )}
 
               {log.resolved_at && (
                 <div className="flex justify-between items-center py-1.5 border-b border-base-200">
-                  <span className="text-base-content/60">Resolved At</span>
+                  <span className="text-base-content/60">{t(AppLocales.Admin.Logs.Detail.ResolvedAt)}</span>
                   <span className="text-success font-medium">
-                    {formatAdminDate(log.resolved_at)}
+                    <DateTime value={log.resolved_at} format={DateTimeFormats.ADMIN} />
                   </span>
                 </div>
               )}
@@ -211,10 +212,10 @@ export const AdminLogDetailPage: React.FC = () => {
                   <span className="font-semibold">
                     {t(AppLocales.Admin.Logs.Drawer.Url)}:
                   </span>{" "}
-                  {log.method || "GET"} {log.url || "N/A"}
+                  {log.method || "GET"} {log.url || t(AppLocales.Admin.Logs.Detail.NotAvailable)}
                 </div>
                 <div>
-                  <span className="font-semibold">Device Spec:</span>{" "}
+                  <span className="font-semibold">{t(AppLocales.Admin.Logs.Detail.DeviceSpec)}:</span>{" "}
                   {[log.browser, log.os, log.device]
                     .filter(Boolean)
                     .join(" • ")}
@@ -230,7 +231,7 @@ export const AdminLogDetailPage: React.FC = () => {
                         if (!log.version_id) return;
                         navigate(
                           AppRoutes.withId(
-                            AppRoutes.client.protected.admin.VERSION_INSTALLS,
+                            AppRoutes.client.protected.admin.VERSION_DETAIL,
                             log.version_id,
                           ),
                         );
@@ -240,7 +241,7 @@ export const AdminLogDetailPage: React.FC = () => {
                     </Button>
                   ) : (
                     log.app_version ||
-                    (!(log.browser || log.os || log.device) ? "N/A" : null)
+                    (!(log.browser || log.os || log.device) ? t(AppLocales.Admin.Logs.Detail.NotAvailable) : null)
                   )}
                 </div>
               </div>
