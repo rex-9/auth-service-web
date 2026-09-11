@@ -141,8 +141,9 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
   const [isBatchDestroyOpen, setIsBatchDestroyOpen] = useState(false);
   const [isBatchDestroying, setIsBatchDestroying] = useState(false);
 
-  const fetchAssets = useCallback(async () => {
-    setLoading(true);
+  const fetchAssets = useCallback(async (options?: { silent?: boolean }) => {
+    const silent = Boolean(options?.silent);
+    if (!silent) setLoading(true);
     try {
       const params: Record<string, string | number> = {
         page,
@@ -163,13 +164,13 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
       if (result.success) {
         setAssets(result.assets);
         setPagination(result.pagination);
-      } else {
+      } else if (!silent) {
         toast.error(
           result.error || t(AppLocales.Admin.Assets.Errors.LoadFailed),
         );
       }
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
       setHasLoadedOnce(true);
     }
   }, [
@@ -195,11 +196,15 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
       if (event.type !== "notification") return;
       const eventType =
         typeof event.data?.type === "string" ? event.data.type : "";
+      if (eventType === NOTIFICATION_SOCKET_TYPES.ASSET_THUMBNAIL_GENERATED) {
+        void fetchAssets({ silent: true });
+        return;
+      }
+
       if (
         eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSED &&
         eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSION_FAILED &&
-        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSING &&
-        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_THUMBNAIL_GENERATED
+        eventType !== NOTIFICATION_SOCKET_TYPES.ASSET_COMPRESSING
       ) {
         return;
       }
@@ -255,7 +260,7 @@ export const AdminAssetsPage: React.FC<IAdminAssetsPageProps> = ({
     return () => {
       SocketService.removeListener(handleSocketMessage);
     };
-  }, []);
+  }, [fetchAssets]);
 
   const updateSearchParams = useCallback(
     (updates: Record<string, string | null>) => {

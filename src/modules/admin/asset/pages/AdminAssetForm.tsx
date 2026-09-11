@@ -671,7 +671,7 @@ export const AdminAssetForm: React.FC<IAdminAssetFormProps> = ({
                   </Button>
                 )}
 
-              {asset.format === ASSET_FORMATS.VIDEO && onUploadThumbnail && (
+              {(asset.format === ASSET_FORMATS.VIDEO || asset.format === ASSET_FORMATS.AUDIO )&& onUploadThumbnail && (
                 <FileInput
                   accept="image/*"
                   disabled={isUpdatingThumbnail}
