@@ -7,6 +7,8 @@ import AppRoutes from "../../../AppRoutes";
 import { AuthController } from "../../../modules/auth";
 import { AppLocales, useTranslate } from "../../../locales";
 import { DialogAuthSteps } from "..";
+import { AnalyticsService } from "../../../services";
+import { ANALYTICS_AUTH_METHODS } from "../../../constants";
 
 export const ConfirmEmailPage: React.FC = () => {
   const navigate = useNavigate();
@@ -27,6 +29,9 @@ export const ConfirmEmailPage: React.FC = () => {
         const result = await AuthController.signInWithToken(authToken);
         if (result.success && result.token && result.user) {
           signin(result.token, result.user);
+          void AnalyticsService.logCompleteOnboarding(
+            ANALYTICS_AUTH_METHODS.EMAIL,
+          );
           success(t(AppLocales.Auth.ConfirmEmail.LinkConfirmed));
           navigate(AppRoutes.client.protected.HOME, { replace: true });
         } else {
@@ -46,7 +51,7 @@ export const ConfirmEmailPage: React.FC = () => {
       return;
     }
 
-    // If email is provided, open verify email dialog
+    // If email is provided, open confirm email dialog
     if (email) {
       navigate(
         AppRoutes.buildDialogUrl(DialogAuthSteps.CONFIRM_EMAIL, {

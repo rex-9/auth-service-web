@@ -131,6 +131,13 @@ The UI does not need to know how Axios is configured, and transport code does no
 
 Authentication delegates identity rules and token authority to Rexone Core while keeping browser behavior, navigation, and feedback cohesive.
 
+### Product analytics
+
+- Firebase Analytics uses the Web stream from the shared Rexone GA4 property.
+- Route changes emit `view_page` centrally without query strings, while successful authentication, onboarding, product, purchase, and notification interactions use the shared `action_noun` event contract.
+- Every event includes `platform: web`; authenticated sessions use only the opaque Rexone user ID and never send email or other personal data to Analytics.
+- Firebase client identifiers are configured through the `VITE_FIREBASE_*` variables in [`.env.example`](.env.example).
+
 ### Routing & access
 
 Client and server paths are defined in [`src/AppRoutes.ts`](src/AppRoutes.ts), giving components and services one source of truth.

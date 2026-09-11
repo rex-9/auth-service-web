@@ -23,6 +23,7 @@ import { DateTime } from "./DateTime";
 import type { IApiPagination } from "../../../models";
 import { useAuth } from "../../../contexts";
 import AppRoutes from "../../../AppRoutes";
+import { AnalyticsService } from "../../../services";
 
 export interface INotificationCenterProps {
   className?: string;
@@ -197,6 +198,7 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
 
   // Mark single as read & navigate if link exists
   const handleItemClick = async (item: IUserNotification) => {
+    void AnalyticsService.logOpenNotification(item.id);
     if (!item.read) {
       // Optimistic update
       setNotifications((prev) =>

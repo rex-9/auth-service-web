@@ -16,6 +16,8 @@ import { DialogAuthSteps, TAuthStep } from "..";
 import { AuthController } from "..";
 import { AppLocales } from "../../../locales/app_locales";
 import { ButtonVariants } from "../../../design";
+import { AnalyticsService } from "../../../services";
+import { ANALYTICS_AUTH_METHODS } from "../../../constants";
 
 interface ISigninPasswordDialogProps {
   email: string;
@@ -72,6 +74,7 @@ export const SigninPasswordDialog: React.FC<ISigninPasswordDialogProps> = ({
 
     if (result.success && result.token && result.user) {
       signin(result.token, result.user);
+      void AnalyticsService.logSignIn(ANALYTICS_AUTH_METHODS.EMAIL);
       success(t(AppLocales.Auth.SignInPasscode.SignInSuccess));
       cooldown.clear();
       setRemainingAttempts(3);

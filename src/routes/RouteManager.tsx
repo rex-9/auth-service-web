@@ -80,12 +80,14 @@ import {
   AdminVersionDetailPage,
   AdminUserVersionsPage,
 } from "../modules/admin";
+import { AnalyticsPageView } from "./AnalyticsPageView";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route
       element={
         <>
+          <AnalyticsPageView />
           <AuthDialog />
           <Outlet />
         </>

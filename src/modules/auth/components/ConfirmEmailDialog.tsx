@@ -15,6 +15,8 @@ import { AuthController } from "..";
 import { useAuth, useToast, useLoading } from "../../../contexts";
 import { useCountdown, useTranslate } from "../../../hooks";
 import { AppLocales } from "../../../locales";
+import { AnalyticsService } from "../../../services";
+import { ANALYTICS_AUTH_METHODS } from "../../../constants";
 
 interface IConfirmEmailDialogProps {
   email: string;
@@ -58,6 +60,9 @@ export const ConfirmEmailDialog: React.FC<IConfirmEmailDialogProps> = ({
       setMessage(result.message || "");
       success(t(AppLocales.Auth.ConfirmEmail.Verified));
       signin(result.token, result.user);
+      void AnalyticsService.logCompleteOnboarding(
+        ANALYTICS_AUTH_METHODS.EMAIL,
+      );
       navigate(AppRoutes.client.protected.HOME);
     } else {
       setError(result.error || "Failed to confirm email code.");
