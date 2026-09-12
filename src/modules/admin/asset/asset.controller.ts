@@ -265,6 +265,14 @@ class AssetController {
       : { success: false, error: getApiError(response, "Failed to upload thumbnail") };
   }
 
+  async uploadSubtitle(id: string, file: File) {
+    const response = await Admin.AssetService.uploadSubtitle(id, file);
+    const { status, data } = response.data || {};
+    return status?.success
+      ? { success: true, asset: data && "asset" in data ? parseRecord(data.asset) : undefined, message: status.message }
+      : { success: false, error: getApiError(response, "Failed to upload subtitle") };
+  }
+
   async getStorageStats(): Promise<{
     success: boolean;
     stats?: IStorageStats;

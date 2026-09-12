@@ -1224,6 +1224,16 @@
         "replaced": "Thumbnail replaced successfully",
         "failed": "Failed to update thumbnail"
       },
+      "subtitle": {
+        "label": "Subtitle",
+        "view": "View subtitle",
+        "upload": "Add subtitle",
+        "uploading": "Uploading subtitle...",
+        "replaced": "Subtitle uploaded successfully",
+        "failed": "Failed to upload subtitle",
+        "invalid_type": "Subtitle must be an SRT file",
+        "too_large": "Subtitle must be under {{size}}MB"
+      },
       "picker": {
         "title": "Select Asset",
         "search_placeholder": "Search assets by name...",

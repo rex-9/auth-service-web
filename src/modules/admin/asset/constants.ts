@@ -20,6 +20,7 @@ export const ADMIN_ASSET_FILTERS = {
 export const ASSET_TYPES = {
   AVATAR: "avatar",
   THUMBNAIL: "thumbnail",
+  SUBTITLE: "subtitle",
   AUDIO: "audio",
   VIDEO: "video",
   ATTACHMENT: "attachment",
@@ -33,6 +34,7 @@ export const ASSET_FORMATS = {
   AUDIO: "audio",
   VIDEO: "video",
   DOC: "doc",
+  SUBTITLE: "subtitle",
 } as const;
 
 export type TAssetFormat = (typeof ASSET_FORMATS)[keyof typeof ASSET_FORMATS];
@@ -69,6 +71,9 @@ export const IMAGE_ASSET_TYPES: readonly string[] = [
   ASSET_TYPES.AVATAR,
   ASSET_TYPES.THUMBNAIL,
 ];
+
+export const isSrtSubtitleFile = (file: File): boolean =>
+  /\.srt$/i.test(file.name);
 
 export const FILE_SIZE_UNITS = ["B", "KB", "MB", "GB", "TB"] as const;
 
@@ -108,6 +113,7 @@ export const ASSET_TYPE_OPTIONS = [
   { value: "", label: "All Types" },
   { value: ASSET_TYPES.AVATAR, label: "Avatar" },
   { value: ASSET_TYPES.THUMBNAIL, label: "Thumbnail" },
+  { value: ASSET_TYPES.SUBTITLE, label: "Subtitle" },
   { value: ASSET_TYPES.AUDIO, label: "Audio" },
   { value: ASSET_TYPES.VIDEO, label: "Video" },
   { value: ASSET_TYPES.ATTACHMENT, label: "Attachment" },
@@ -120,6 +126,7 @@ export const ASSET_FORMAT_OPTIONS = [
   { value: ASSET_FORMATS.AUDIO, label: "Audio" },
   { value: ASSET_FORMATS.VIDEO, label: "Video" },
   { value: ASSET_FORMATS.DOC, label: "Document" },
+  { value: ASSET_FORMATS.SUBTITLE, label: "Subtitle" },
 ] as const;
 
 export const ASSET_SOURCE_OPTIONS = [

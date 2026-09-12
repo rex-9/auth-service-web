@@ -1114,6 +1114,16 @@ export const AppLocales = {
         Replaced: "admin.assets.thumbnail.replaced",
         Failed: "admin.assets.thumbnail.failed",
       },
+      Subtitle: {
+        Label: "admin.assets.subtitle.label",
+        View: "admin.assets.subtitle.view",
+        Upload: "admin.assets.subtitle.upload",
+        Uploading: "admin.assets.subtitle.uploading",
+        Replaced: "admin.assets.subtitle.replaced",
+        Failed: "admin.assets.subtitle.failed",
+        InvalidType: "admin.assets.subtitle.invalid_type",
+        TooLarge: "admin.assets.subtitle.too_large",
+      },
       Picker: {
         Title: "admin.assets.picker.title",
         SearchPlaceholder: "admin.assets.picker.search_placeholder",

@@ -233,6 +233,9 @@ class AppRoutes {
         ASSET_THUMBNAIL_UPLOAD: AppRoutes.adminApi(
           "/assets/:id/thumbnail/upload",
         ), // POST
+        ASSET_SUBTITLE_UPLOAD: AppRoutes.adminApi(
+          "/assets/:id/subtitle/upload",
+        ), // POST
         ASSET_STORAGE_STATS: AppRoutes.adminApi("/assets/storage_stats"), // GET
         ASSET_EMPTY_RECYCLE_BIN: AppRoutes.adminApi("/assets/bin"), // DELETE
         ASSETS_BATCH_DISCARD: AppRoutes.adminApi("/assets/discard_batch"), // POST
