@@ -14,6 +14,7 @@ import { useAdminDetail } from "../../hooks/useAdminDetail";
 import { AppLocales, useTranslate } from "../../../../locales";
 import AssetController from "../asset.controller";
 import { formatAssetFileSize } from "../constants";
+import { AdminAssetSubtitleValue } from "../components";
 import type { IAdminAsset } from "../types";
 
 const loadAsset = async (id: string) => {
@@ -85,6 +86,11 @@ export const AdminAssetDetailPage: React.FC = () => {
                 value={
                   asset.duration_secs ? `${asset.duration_secs}s` : undefined
                 }
+              />
+              <AdminDetailField
+                label={t(AppLocales.Admin.Assets.Subtitle.Label)}
+                value={<AdminAssetSubtitleValue subtitle={asset.subtitle} />}
+                className="sm:col-span-2 xl:col-span-3"
               />
               <AdminDetailField
                 label={t(AppLocales.Admin.Assets.Detail.StorageKey)}

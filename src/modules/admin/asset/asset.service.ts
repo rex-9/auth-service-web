@@ -137,6 +137,22 @@ class AssetService {
     );
   }
 
+  async uploadSubtitle(
+    id: string,
+    file: File,
+  ): Promise<IApiResponse<IApiEnvelope<{ asset: IAdminAsset }>>> {
+    const formData = new FormData();
+    formData.append("file", file);
+    return api.post<{ asset: IAdminAsset }>(
+      AppRoutes.withId(
+        AppRoutes.server.protected.admin.ASSET_SUBTITLE_UPLOAD,
+        id,
+      ),
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } },
+    );
+  }
+
   async getStorageStats(): Promise<
     IApiResponse<IApiEnvelope<{ stats: IStorageStats }>>
   > {

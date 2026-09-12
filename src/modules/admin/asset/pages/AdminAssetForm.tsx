@@ -11,6 +11,7 @@ import {
   ASSET_STATUSES,
   formatAssetFileSize,
   isImageAsset,
+  isSrtSubtitleFile,
 } from "../constants";
 import {
   AlertDialog,
@@ -32,6 +33,7 @@ import { ButtonVariants, ComponentSizes } from "../../../../design/constants";
 import { UPLOAD_SIZE_LIMITS } from "../../../../constants";
 import { ADMIN_ACTIONS } from "../../constants";
 import { DateTime, DateTimeFormats } from "../../../../design";
+import { AdminAssetSubtitleValue } from "../components";
 
 export interface IAdminAssetEditFormValues {
   name: string;
@@ -56,8 +58,10 @@ export interface IAdminAssetFormProps {
   onDownload?: () => Promise<void>;
   onRegenerateThumbnail?: () => Promise<void>;
   onUploadThumbnail?: (file: File) => Promise<void>;
+  onUploadSubtitle?: (file: File) => Promise<void>;
   isCompressing?: boolean;
   isUpdatingThumbnail?: boolean;
+  isUpdatingSubtitle?: boolean;
   onCancel: () => void;
 }
 
@@ -70,8 +74,10 @@ export const AdminAssetForm: React.FC<IAdminAssetFormProps> = ({
   onDownload,
   onRegenerateThumbnail,
   onUploadThumbnail,
+  onUploadSubtitle,
   isCompressing = false,
   isUpdatingThumbnail = false,
+  isUpdatingSubtitle = false,
   onCancel,
 }) => {
   const t = useTranslate();
@@ -641,6 +647,13 @@ export const AdminAssetForm: React.FC<IAdminAssetFormProps> = ({
                   <DateTime value={asset.created_at} format={DateTimeFormats.ADMIN} />
                 </span>
               </div>
+
+              <div className="flex justify-between items-center py-1.5 border-b border-base-200 gap-3">
+                <span className="text-base-content/60 shrink-0">
+                  {t(AppLocales.Admin.Assets.Subtitle.Label)}
+                </span>
+                <AdminAssetSubtitleValue subtitle={asset.subtitle} />
+              </div>
             </div>
 
             <div className="grid gap-2 pt-2">
@@ -671,7 +684,9 @@ export const AdminAssetForm: React.FC<IAdminAssetFormProps> = ({
                   </Button>
                 )}
 
-              {(asset.format === ASSET_FORMATS.VIDEO || asset.format === ASSET_FORMATS.AUDIO )&& onUploadThumbnail && (
+              {(asset.format === ASSET_FORMATS.VIDEO ||
+                asset.format === ASSET_FORMATS.AUDIO) &&
+                onUploadThumbnail && (
                 <FileInput
                   accept="image/*"
                   disabled={isUpdatingThumbnail}
@@ -685,6 +700,43 @@ export const AdminAssetForm: React.FC<IAdminAssetFormProps> = ({
                       isUpdatingThumbnail
                         ? AppLocales.Admin.Assets.Thumbnail.Uploading
                         : AppLocales.Admin.Assets.Thumbnail.Upload,
+                    )}
+                    </span>
+                  }
+                />
+              )}
+
+              {(asset.format === ASSET_FORMATS.VIDEO ||
+                asset.format === ASSET_FORMATS.AUDIO) &&
+                onUploadSubtitle && (
+                <FileInput
+                  accept=".srt"
+                  disabled={isUpdatingSubtitle}
+                  onChange={(file) => {
+                    if (!file) return;
+                    if (!isSrtSubtitleFile(file)) {
+                      setAlertMessage(
+                        t(AppLocales.Admin.Assets.Subtitle.InvalidType),
+                      );
+                      return;
+                    }
+                    if (file.size > UPLOAD_SIZE_LIMITS.MAX_NON_VIDEO_BYTES) {
+                      setAlertMessage(
+                        t(AppLocales.Admin.Assets.Subtitle.TooLarge, {
+                          size: UPLOAD_SIZE_LIMITS.MAX_NON_VIDEO_SIZE_MB,
+                        }),
+                      );
+                      return;
+                    }
+                    void onUploadSubtitle(file);
+                  }}
+                  buttonText={
+                    <span className="inline-flex items-center gap-1.5">
+                    <iconsLib.upload className="w-4 h-4" />
+                    {t(
+                      isUpdatingSubtitle
+                        ? AppLocales.Admin.Assets.Subtitle.Uploading
+                        : AppLocales.Admin.Assets.Subtitle.Upload,
                     )}
                     </span>
                   }
