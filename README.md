@@ -351,28 +351,13 @@ cp .env.example .env
 
 Set the Core HTTP and WebSocket URLs and provide a Google OAuth client ID if exercising Google sign-in.
 
-### 2. Install and run natively
-
-```bash
-npm install
-npm run dev
-```
-
-By default Vite listens on all interfaces. The checked-in development environment maps the client to [http://localhost:4000](http://localhost:4000).
-
-The convenience script runs the Docker development stack:
+### 2. Start the development environment
 
 ```bash
 ./scripts/dev.sh
 ```
 
-### 3. Run with Docker Compose
-
-```bash
-docker compose -f docker-compose.dev.yaml up --build
-```
-
-The development service mounts the repository into the container, keeps container-managed `node_modules`, and publishes the port configured by `VITE_REACT_APP_PORT_MAP`.
+The script starts the Docker development stack, building it when necessary. The service mounts the repository into the container, keeps container-managed `node_modules`, and publishes the port configured by `VITE_REACT_APP_PORT_MAP`. By default, the client is available at [http://localhost:4000](http://localhost:4000).
 
 ## End-to-End Testing (Playwright)
 
