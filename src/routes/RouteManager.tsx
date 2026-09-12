@@ -58,6 +58,10 @@ import {
   AdminProductDetailPage,
   AdminDiscardedProductsPage,
   AdminProductsPage,
+  AdminTransactionsPage,
+  AdminTransactionDetailPage,
+  AdminSubscriptionsPage,
+  AdminSubscriptionDetailPage,
   AdminRoleCreatePage,
   AdminRoleEditPage,
   AdminRoleDetailPage,
@@ -80,12 +84,14 @@ import {
   AdminVersionDetailPage,
   AdminUserVersionsPage,
 } from "../modules/admin";
+import { AnalyticsPageView } from "./AnalyticsPageView";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route
       element={
         <>
+          <AnalyticsPageView />
           <AuthDialog />
           <Outlet />
         </>
@@ -481,6 +487,40 @@ const router = createBrowserRouter(
             <Route
               path={AppRoutes.client.protected.admin.ACCESS_DETAIL}
               element={<AdminAccessDetailPage />}
+            />
+          </Route>
+          <Route
+            element={
+              <AdminRootRoute
+                action={ADMIN_ACTIONS.READ}
+                resource={ADMIN_RESOURCES.TRANSACTIONS}
+              />
+            }
+          >
+            <Route
+              path={AppRoutes.client.protected.admin.TRANSACTIONS}
+              element={<AdminTransactionsPage />}
+            />
+            <Route
+              path={AppRoutes.client.protected.admin.TRANSACTION_DETAIL}
+              element={<AdminTransactionDetailPage />}
+            />
+          </Route>
+          <Route
+            element={
+              <AdminRootRoute
+                action={ADMIN_ACTIONS.READ}
+                resource={ADMIN_RESOURCES.SUBSCRIPTIONS}
+              />
+            }
+          >
+            <Route
+              path={AppRoutes.client.protected.admin.SUBSCRIPTIONS}
+              element={<AdminSubscriptionsPage />}
+            />
+            <Route
+              path={AppRoutes.client.protected.admin.SUBSCRIPTION_DETAIL}
+              element={<AdminSubscriptionDetailPage />}
             />
           </Route>
           <Route

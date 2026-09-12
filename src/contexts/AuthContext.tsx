@@ -16,6 +16,7 @@ import atoms from "../atoms";
 import { isTokenExpired } from "../helpers";
 import { useLoading } from "./LoadingContext";
 import UserController from "../modules/user/user.controller";
+import { AnalyticsService } from "../services";
 
 interface IAuthContextType {
   isAuthenticated: boolean;
@@ -52,6 +53,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     setToken(null);
     setCurrentUser(null);
     setGoogleChallengeToken(null);
+    void AnalyticsService.setUserId(null);
   }, [setToken, setCurrentUser, setGoogleChallengeToken]);
 
   // Update loading when token changes
@@ -91,6 +93,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setToken(token);
       setCurrentUser(user);
       setGoogleChallengeToken(null);
+      void AnalyticsService.setUserId(user.id);
     },
     [setToken, setCurrentUser, setGoogleChallengeToken],
   );

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import {
-  AdminProductCycle,
+  AdminProductInterval,
   IAdminProduct,
   IAdminProductFormValues,
 } from "../types";
@@ -19,7 +19,7 @@ import { Button, Image } from "../../../../design";
 import { ButtonVariants, ComponentSizes } from "../../../../design/constants";
 import { iconsLib } from "../../../../assets";
 import { ADMIN_ACTIONS } from "../../constants";
-import { PRODUCT_CURRENCY, PRODUCT_CYCLE, PRODUCT_TYPE } from "../constants";
+import { PRODUCT_CURRENCY, PRODUCT_INTERVAL, PRODUCT_TYPE } from "../constants";
 import { useTranslate, AppLocales } from "../../../../locales";
 import { AdminAssetSelectDialog } from "../../asset/components/AdminAssetSelectDialog";
 import { ASSET_TYPES } from "../../asset/constants";
@@ -35,9 +35,9 @@ const initialValues: IAdminProductFormValues = {
   code: "",
   name: "",
   description: "",
-  price_unit_amount: 1000,
+  unit_amount: 1000,
   currency: PRODUCT_CURRENCY.USD,
-  cycle: PRODUCT_CYCLE.MONTH,
+  interval: PRODUCT_INTERVAL.MONTH,
   active: true,
 };
 
@@ -50,9 +50,9 @@ const buildInitialValues = (
     code: product.code || "",
     name: product.name || "",
     description: product.description || "",
-    price_unit_amount: product.price_unit_amount,
+    unit_amount: product.unit_amount,
     currency: product.currency || PRODUCT_CURRENCY.USD,
-    cycle: product.cycle || PRODUCT_CYCLE.ONE_TIME,
+    interval: product.interval || PRODUCT_INTERVAL.ONE_TIME,
     active: product.active,
   };
 };
@@ -68,7 +68,7 @@ export const AdminProductForm: React.FC<IAdminProductFormProps> = ({
     buildInitialValues(product),
   );
   const [priceMode, setPriceMode] = useState<ProductPriceMode>(() =>
-    product?.free || product?.price_unit_amount === 0
+    product?.free || product?.unit_amount === 0
       ? PRODUCT_TYPE.FREE
       : PRODUCT_TYPE.PREMIUM,
   );
@@ -84,7 +84,7 @@ export const AdminProductForm: React.FC<IAdminProductFormProps> = ({
 
   const isInitiallyFree =
     mode === ADMIN_ACTIONS.EDIT &&
-    (product?.free || product?.price_unit_amount === 0);
+    (product?.free || product?.unit_amount === 0);
   const isFree = priceMode === PRODUCT_TYPE.FREE;
 
   const updateValue = (
@@ -102,16 +102,16 @@ export const AdminProductForm: React.FC<IAdminProductFormProps> = ({
     setPriceMode(nextMode);
     setValues((current) => ({
       ...current,
-      price_unit_amount:
+      unit_amount:
         nextMode === PRODUCT_TYPE.FREE
           ? 0
-          : current.price_unit_amount > 0
-            ? current.price_unit_amount
-            : initialValues.price_unit_amount,
-      cycle:
+          : current.unit_amount > 0
+            ? current.unit_amount
+            : initialValues.unit_amount,
+      interval:
         nextMode === PRODUCT_TYPE.FREE
-          ? PRODUCT_CYCLE.ONE_TIME
-          : current.cycle || initialValues.cycle,
+          ? PRODUCT_INTERVAL.ONE_TIME
+          : current.interval || initialValues.interval,
     }));
   };
 
@@ -139,11 +139,11 @@ export const AdminProductForm: React.FC<IAdminProductFormProps> = ({
       code: code || undefined,
       name: values.name.trim(),
       description,
-      price_unit_amount: isFree ? 0 : Number(values.price_unit_amount),
+      unit_amount: isFree ? 0 : Number(values.unit_amount),
       currency: values.currency,
-      cycle: isFree
-        ? PRODUCT_CYCLE.ONE_TIME
-        : values.cycle || PRODUCT_CYCLE.ONE_TIME,
+      interval: isFree
+        ? PRODUCT_INTERVAL.ONE_TIME
+        : values.interval || PRODUCT_INTERVAL.ONE_TIME,
       active: values.active,
       thumbnail_asset_id: thumbnailAssetId,
     });
@@ -293,11 +293,11 @@ export const AdminProductForm: React.FC<IAdminProductFormProps> = ({
           type="number"
           min={isFree ? 0 : 1}
           step={1}
-          value={isFree ? 0 : values.price_unit_amount}
+          value={isFree ? 0 : values.unit_amount}
           required={!isFree}
           disabled={isFree}
           onChange={(event) =>
-            updateValue("price_unit_amount", Number(event.target.value))
+            updateValue("unit_amount", Number(event.target.value))
           }
         />
 
@@ -322,20 +322,37 @@ export const AdminProductForm: React.FC<IAdminProductFormProps> = ({
 
         <div>
           <Dropdown
-            label={t(AppLocales.Admin.Products.Form.CycleLabel)}
+            label={t(AppLocales.Admin.Products.Form.IntervalLabel)}
             value={
               isFree
-                ? PRODUCT_CYCLE.ONE_TIME
-                : values.cycle || PRODUCT_CYCLE.ONE_TIME
+                ? PRODUCT_INTERVAL.ONE_TIME
+                : values.interval || PRODUCT_INTERVAL.ONE_TIME
             }
             disabled={isFree}
             onValueChange={(val) =>
-              updateValue("cycle", val as AdminProductCycle)
+              updateValue("interval", val as AdminProductInterval)
             }
             options={[
-              { value: PRODUCT_CYCLE.ONE_TIME, label: "One-time" },
-              { value: PRODUCT_CYCLE.MONTH, label: "Monthly" },
-              { value: PRODUCT_CYCLE.YEAR, label: "Yearly" },
+              {
+                value: PRODUCT_INTERVAL.ONE_TIME,
+                label: t(AppLocales.Admin.Products.Form.IntervalOneTime),
+              },
+              {
+                value: PRODUCT_INTERVAL.DAY,
+                label: t(AppLocales.Admin.Products.Form.IntervalDaily),
+              },
+              {
+                value: PRODUCT_INTERVAL.WEEK,
+                label: t(AppLocales.Admin.Products.Form.IntervalWeekly),
+              },
+              {
+                value: PRODUCT_INTERVAL.MONTH,
+                label: t(AppLocales.Admin.Products.Form.IntervalMonthly),
+              },
+              {
+                value: PRODUCT_INTERVAL.YEAR,
+                label: t(AppLocales.Admin.Products.Form.IntervalYearly),
+              },
             ]}
           />
           {isFree && (

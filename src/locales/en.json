@@ -314,6 +314,8 @@
       "items": {
         "analytics": "Analytics",
         "products": "Products",
+        "transactions": "Transactions",
+        "subscriptions": "Subscriptions",
         "accesses": "Access",
         "notifications": "Notifications",
         "chat_rooms": "Chat Rooms",
@@ -548,9 +550,10 @@
       },
       "form": {
         "name_label": "Role Name",
-        "name_placeholder": "e.g. Content Moderator",
+        "name_placeholder": "e.g. content_admin",
+        "name_invalid": "Use lowercase letters, numbers, and underscores only, ending with _admin.",
         "key_label": "Role Key",
-        "key_placeholder": "e.g. content_moderator",
+        "key_placeholder": "e.g. content_admin",
         "description_label": "Description",
         "description_placeholder": "Describe the responsibilities and scope of this role...",
         "permissions_matrix_title": "Permission Matrix",
@@ -575,13 +578,32 @@
         "delete": "Failed to delete role"
       }
     },
+    "transactions": {
+      "title": "Transactions",
+      "description": "Review one-time purchases, payment outcomes, and Stripe payment records.",
+      "search": "Search user, product, payment intent, or charge...",
+      "filters": { "all": "All statuses" },
+      "table": { "purchase": "Purchase", "user": "User", "amount": "Amount", "method": "Payment method" },
+      "detail": { "title": "Transaction Details", "description": "Purchase, customer, payment method, and Stripe identifiers.", "purchase": "Purchase summary", "payment": "Payment details", "product": "Product", "product_code": "Product code", "paid_at": "Paid", "user": "Customer", "payment_method": "Payment method", "payment_intent": "Payment intent", "charge": "Charge" },
+      "errors": { "load": "Failed to load transactions" }
+    },
+    "subscriptions": {
+      "title": "Subscriptions",
+      "description": "Review recurring billing state, renewal periods, and cancellation schedules.",
+      "search": "Search user, product, or subscription ID...",
+      "scheduled": "Scheduled to cancel",
+      "filters": { "all_statuses": "All statuses", "all_intervals": "All intervals" },
+      "table": { "subscription": "Subscription", "user": "User", "amount": "Price", "period_end": "Period ends", "cancellation": "Cancellation" },
+      "detail": { "title": "Subscription Details", "description": "Plan snapshot, customer, billing period, and Stripe identifiers.", "plan": "Plan and customer", "billing": "Billing lifecycle", "product": "Product", "quantity": "Quantity", "subscription_id": "Subscription ID", "period_start": "Period starts", "started_at": "Started", "payment_method": "Payment method" },
+      "errors": { "load": "Failed to load subscriptions" }
+    },
     "products": {
       "detail": {
         "title": "Product Details",
         "description": "Catalogue identity, pricing, and availability.",
         "product": "Product",
         "pricing": "Pricing and availability",
-        "billing_cycle": "Billing cycle",
+        "billing_interval": "Billing interval",
         "recurring": "Recurring",
         "availability": "Availability"
       },
@@ -592,7 +614,7 @@
       "create_title": "Create Product",
       "create_description": "Add a new digital product or recurring subscription plan.",
       "edit_title": "Edit Product",
-      "edit_description": "Update product details, pricing, or billing cycle.",
+      "edit_description": "Update product details, pricing, or billing interval.",
       "tabs": {
         "active_products": "Active Products",
         "recycle_bin": "Recycle Bin"
@@ -602,7 +624,7 @@
         "product": "Product",
         "code": "Code",
         "price": "Price",
-        "cycle": "Billing Cycle",
+        "interval": "Billing Interval",
         "stripe_sync": "Stripe Sync",
         "status": "Status",
         "created": "Created",
@@ -618,10 +640,12 @@
         "price_label": "Price Amount",
         "price_placeholder": "29.00",
         "currency_label": "Currency",
-        "cycle_label": "Billing Cycle",
-        "cycle_monthly": "Monthly",
-        "cycle_yearly": "Yearly",
-        "cycle_one_time": "One-Time",
+        "interval_label": "Billing Interval",
+        "interval_daily": "Daily",
+        "interval_weekly": "Weekly",
+        "interval_monthly": "Monthly",
+        "interval_yearly": "Yearly",
+        "interval_one_time": "One-Time",
         "active_for_purchase": "Active for Purchase",
         "thumbnail_label": "Product Thumbnail",
         "thumbnail_helper": "Assign an uploaded thumbnail asset to this product.",
@@ -1029,8 +1053,21 @@
           "desc_placeholder": "Brief context on who receives this and when",
           "category_label": "Category",
           "link_label": "Redirect Link (Optional)",
-          "link_placeholder": "/payment or https://...",
+          "link_options": {
+            "none": "No destination",
+            "home": "Home",
+            "profile": "Profile",
+            "payment": "Payments",
+            "ai": "AI chat",
+            "external": "External website"
+          },
+          "external_url_label": "External HTTPS URL",
+          "external_url_placeholder": "https://example.com/page",
           "admin_only": "Admin Broadcast Only",
+          "clients_label": "In-app clients",
+          "client_web": "Web",
+          "client_mobile": "Mobile",
+          "client_required": "Select at least one in-app client.",
           "channel_content": "Channel Content & Templates",
           "variables_hint": "Variables: {{user_name}}, {{user_email}}",
           "in_app_tab": "In-App (Socket)",

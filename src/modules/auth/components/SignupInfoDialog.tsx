@@ -6,6 +6,8 @@ import { useToast, useLoading } from "../../../contexts";
 import { DialogAuthSteps, TAuthStep } from "..";
 import { AuthController } from "..";
 import { AppLocales, useTranslate } from "../../../locales";
+import { AnalyticsService } from "../../../services";
+import { ANALYTICS_AUTH_METHODS } from "../../../constants";
 
 interface ISignupInfoDialogProps {
   email: string;
@@ -63,6 +65,8 @@ export const SignupInfoDialog: React.FC<ISignupInfoDialogProps> = ({
     setLoading(false);
 
     if (result.success) {
+      void AnalyticsService.logSignUp(ANALYTICS_AUTH_METHODS.EMAIL);
+      void AnalyticsService.logBeginOnboarding(ANALYTICS_AUTH_METHODS.EMAIL);
       navigateToStep(DialogAuthSteps.CONFIRM_EMAIL, { email });
       success(t(AppLocales.Auth.SignUpInfo.VerificationSent));
     } else {

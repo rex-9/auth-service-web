@@ -52,6 +52,18 @@ const navSections: IAdminNavSection[] = [
         icon: iconsLib.cube,
       },
       {
+        labelKey: AppLocales.Admin.Nav.Items.Transactions,
+        to: AppRoutes.client.protected.admin.TRANSACTIONS,
+        resource: ADMIN_RESOURCES.TRANSACTIONS,
+        icon: iconsLib.banknotes,
+      },
+      {
+        labelKey: AppLocales.Admin.Nav.Items.Subscriptions,
+        to: AppRoutes.client.protected.admin.SUBSCRIPTIONS,
+        resource: ADMIN_RESOURCES.SUBSCRIPTIONS,
+        icon: iconsLib.document,
+      },
+      {
         labelKey: AppLocales.Admin.Nav.Items.Accesses,
         to: AppRoutes.client.protected.admin.ACCESSES,
         resource: ADMIN_RESOURCES.ACCESSES,

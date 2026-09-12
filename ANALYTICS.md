@@ -51,7 +51,7 @@ Every analytics query flows through [`AnalyticsService::Overview`](file:///Users
 |---|---|---|---|
 | **KPIs** | `build_kpis` | `Hash<Symbol, Numeric>` | `User.kept`, `Payment::Transaction.kept`, `Payment::Subscription.kept`, `Chat::Message.kept`, `Feedback.kept`, `Log::Client.kept`, `Asset.all`. |
 | **Time Series** | `build_time_series` | `Array<Hash>` | Chronological data points grouped by UTC buckets (`hourly`, `daily`, `monthly`) based on date range duration. |
-| **Breakdowns** | `build_breakdowns` | `Hash<Symbol, Hash>` | Categorical distributions (e.g. feedback ratings 1..10, subscriptions by cycle, client errors by platform). |
+| **Breakdowns** | `build_breakdowns` | `Hash<Symbol, Hash>` | Categorical distributions (e.g. feedback ratings 1..10, subscriptions by interval, client errors by platform). |
 
 ---
 
@@ -169,7 +169,7 @@ export interface IAnalyticsTimeSeriesPoint {
 }
 
 export interface IAnalyticsBreakdowns {
-  subscriptions_by_cycle: Record<string, number>;
+  subscriptions_by_interval: Record<string, number>;
   feedback_ratings: Record<string, number>;
   errors_by_platform: Record<string, number>;
   assets_by_format?: Record<string, number>; // <-- New breakdown
@@ -280,7 +280,7 @@ The analytics engine automatically maps presets defined in `AnalyticsConstants::
    - Disambiguate column names in joined tables (e.g. `payment_subscriptions: { created_at: time_range }`).
    - Never fetch ActiveRecord models into Ruby memory (`.all.map`) to calculate sums or counts.
 3. **Keep Currency Amounts & Revenue Models Consistent**:
-   - `Payment::Transaction#price_unit_amount` and `Payment::Product#price_unit_amount` are stored in integer cents.
+   - `Payment::Transaction#unit_amount`, `Payment::Subscription#unit_amount`, and `Payment::Product#unit_amount` are stored in integer cents.
    - Always combine both one-time transactions (`PaymentConstants::TransactionStatus::SUCCEEDED`) and active subscriptions (`PaymentConstants::SubscriptionStatus::ACTIVE`, `TRIALING`) when computing gross revenue.
    - Always divide cents by `100.0` when formatting revenue output.
 4. **Always Use Domain Constants for Statuses, Roles, and Periods**:

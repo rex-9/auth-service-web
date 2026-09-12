@@ -7,8 +7,12 @@ export const ADMIN_ROLE_NAMES = {
   USER: "user",
 } as const;
 
+export const ADMIN_ROLE_NAME_PATTERN = /^[a-z0-9_]+$/;
+export const ADMIN_ROLE_NAME_INVALID_CHARACTERS = /[^a-z0-9_]/g;
+
 export const isAdminRoleName = (roleName: string): boolean =>
-  roleName === ADMIN_ROLE_NAMES.ADMIN || roleName.endsWith("_admin");
+  ADMIN_ROLE_NAME_PATTERN.test(roleName) &&
+  (roleName === ADMIN_ROLE_NAMES.ADMIN || roleName.endsWith("_admin"));
 
 export const ADMIN_ROLE_PAGE_TITLES = {
   CREATE: "Create Role",

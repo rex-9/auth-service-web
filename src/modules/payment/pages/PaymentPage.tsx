@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLoading } from "../../../contexts/LoadingContext";
 import { useToast } from "../../../contexts/ToastContext";
 import { Badge, Button, DateTime, DateTimeFormats } from "../../../design/components";
@@ -10,6 +10,7 @@ import {
 } from "../../../design/constants";
 import { IAccess, IProduct, ISubscription, ITransaction } from "..";
 import { PaymentController } from "..";
+import { AnalyticsService } from "../../../services";
 
 export const PaymentPage: React.FC = () => {
   const { setLoading } = useLoading();
@@ -19,6 +20,7 @@ export const PaymentPage: React.FC = () => {
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
   const [accesses, setAccesses] = useState<IAccess[]>([]);
   const [cancelTargetId, setCancelTargetId] = useState<string | null>(null);
+  const viewedProductIds = useRef(new Set<string>());
 
   const fetchData = React.useCallback(async () => {
     setLoading(true);
@@ -32,6 +34,11 @@ export const PaymentPage: React.FC = () => {
 
     if (productsResult.success && productsResult.products) {
       setProducts(productsResult.products);
+      productsResult.products.forEach((product) => {
+        if (viewedProductIds.current.has(product.id)) return;
+        viewedProductIds.current.add(product.id);
+        void AnalyticsService.logViewProduct(product.id, product.name);
+      });
     }
 
     if (subscriptionsResult.success && subscriptionsResult.subscriptions) {
@@ -137,7 +144,7 @@ export const PaymentPage: React.FC = () => {
   };
 
   const renderProductActions = (product: IProduct) => {
-    const isFree = product.free || product.price_unit_amount === 0;
+    const isFree = product.free || product.unit_amount === 0;
     const hasAccess = hasActiveAccess(product.id);
     const activeSub = getActiveSubscription(product.id);
     const canceledSub = getCanceledSubscription(product.id);

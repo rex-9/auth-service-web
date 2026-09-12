@@ -6,6 +6,16 @@ export const NOTIFICATION_FILTERS = {
   READ: "read",
 } as const;
 
+export const NOTIFICATION_CLIENTS = {
+  WEB: "web",
+  MOBILE: "mobile",
+} as const;
+
+export const DEFAULT_NOTIFICATION_CLIENTS = [
+  NOTIFICATION_CLIENTS.WEB,
+  NOTIFICATION_CLIENTS.MOBILE,
+] as const;
+
 export type TNotificationFilter =
   (typeof NOTIFICATION_FILTERS)[keyof typeof NOTIFICATION_FILTERS];
 

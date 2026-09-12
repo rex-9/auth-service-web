@@ -16,6 +16,8 @@ import { DialogAuthSteps, TAuthStep } from "..";
 import { AuthController } from "..";
 import { UserController, USER_PEEK_STATUS } from "../../user";
 import { AppLocales, useTranslate } from "../../../locales";
+import { AnalyticsService } from "../../../services";
+import { ANALYTICS_AUTH_METHODS } from "../../../constants";
 
 interface IInitialDialogProps {
   email: string;
@@ -137,12 +139,16 @@ export const InitialDialog: React.FC<IInitialDialogProps> = ({
         if (result.success && result.token && result.user) {
           // Existing user - sign in directly
           signin(result.token, result.user);
+          void AnalyticsService.logSignIn(ANALYTICS_AUTH_METHODS.GOOGLE);
           success(t(AppLocales.Auth.Initial.GoogleSignInSuccess));
           onClose();
           navigate(AppRoutes.client.protected.HOME);
         } else if (result.passwordRequired && result.challengeToken) {
           // New user - show password setup
           setGoogleChallengeToken(result.challengeToken);
+          void AnalyticsService.logBeginOnboarding(
+            ANALYTICS_AUTH_METHODS.GOOGLE,
+          );
 
           navigateToStep(DialogAuthSteps.SIGNUP_PASSWORD_CREATE, {
             email: result.user?.email || "",

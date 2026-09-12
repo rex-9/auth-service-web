@@ -1,6 +1,10 @@
 // src/modules/admin/role/pages/AdminRoleForm.tsx
 import React, { useMemo, useState } from "react";
-import { isAdminRoleName } from "../constants";
+import {
+  ADMIN_ROLE_NAME_INVALID_CHARACTERS,
+  ADMIN_ROLE_NAME_PATTERN,
+  isAdminRoleName,
+} from "../constants";
 import {
   IAdminPermission,
   IAdminRole,
@@ -76,7 +80,7 @@ export const AdminRoleForm: React.FC<IAdminRoleFormProps> = ({
     const nextName = name.trim();
 
     if (shouldValidateAdminName && !isAdminRoleName(nextName)) {
-      setNameError(t(AppLocales.Admin.Roles.Form.KeyPlaceholder));
+      setNameError(t(AppLocales.Admin.Roles.Form.NameInvalid));
       return;
     }
 
@@ -96,6 +100,10 @@ export const AdminRoleForm: React.FC<IAdminRoleFormProps> = ({
           label={t(AppLocales.Admin.Roles.Form.NameLabel)}
           placeholder={t(AppLocales.Admin.Roles.Form.NamePlaceholder)}
           value={name}
+          pattern={ADMIN_ROLE_NAME_PATTERN.source}
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
           required
           disabled={role?.system}
           error={nameError}
@@ -105,7 +113,11 @@ export const AdminRoleForm: React.FC<IAdminRoleFormProps> = ({
               : undefined
           }
           onChange={(event) => {
-            setName(event.target.value);
+            setName(
+              event.target.value
+                .toLowerCase()
+                .replace(ADMIN_ROLE_NAME_INVALID_CHARACTERS, ""),
+            );
             if (nameError) setNameError("");
           }}
         />

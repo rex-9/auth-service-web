@@ -9,7 +9,10 @@ import {
   NotificationController,
   type NotificationFilter,
   NOTIFICATION_FILTERS,
+  NOTIFICATION_CLIENTS,
   NOTIFICATION_SOCKET_TYPES,
+  isExternalNotificationLink,
+  resolveNotificationRoute,
 } from "../../../modules/notification";
 import socketService, {
   ISocketMessage,
@@ -23,6 +26,7 @@ import { DateTime } from "./DateTime";
 import type { IApiPagination } from "../../../models";
 import { useAuth } from "../../../contexts";
 import AppRoutes from "../../../AppRoutes";
+import { AnalyticsService } from "../../../services";
 
 export interface INotificationCenterProps {
   className?: string;
@@ -140,6 +144,11 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
     const handleSocketMessage = (msg: ISocketMessage) => {
       // If message is an in-app notification payload
       const envelope = msg as ISocketMessage & Partial<IUserNotification>;
+      if (
+        envelope.clients &&
+        !envelope.clients.includes(NOTIFICATION_CLIENTS.WEB)
+      )
+        return;
       const notificationId = envelope.id;
       const title = envelope.title || msg.message;
 
@@ -149,13 +158,19 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
           title: title,
           message: envelope.message || "",
           link: envelope.link || null,
+          clients: envelope.clients || [
+            NOTIFICATION_CLIENTS.WEB,
+            NOTIFICATION_CLIENTS.MOBILE,
+          ],
           data: envelope.data || {},
           operation_id:
             envelope.operation_id || envelope.data?.operation_id || null,
           operation_type:
             envelope.operation_type || envelope.data?.operation_type || null,
           operation_status:
-            envelope.operation_status || envelope.data?.operation_status || null,
+            envelope.operation_status ||
+            envelope.data?.operation_status ||
+            null,
           read: false,
           read_at: null,
           notification_id: envelope.notification_id || null,
@@ -197,13 +212,12 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
 
   // Mark single as read & navigate if link exists
   const handleItemClick = async (item: IUserNotification) => {
+    void AnalyticsService.logOpenNotification(item.id);
     if (!item.read) {
       // Optimistic update
       setNotifications((prev) =>
         prev.map((n) =>
-          n.id === item.id
-            ? { ...n, read: true, read_at: getUtcNowIso() }
-            : n,
+          n.id === item.id ? { ...n, read: true, read_at: getUtcNowIso() } : n,
         ),
       );
       setUnreadCount((prev) => Math.max(0, prev - 1));
@@ -230,7 +244,11 @@ export const NotificationCenter: React.FC<INotificationCenterProps> = ({
 
     if (item.link) {
       setIsOpen(false);
-      navigate(item.link);
+      if (isExternalNotificationLink(item.link)) {
+        window.open(item.link, "_blank", "noopener,noreferrer");
+        return;
+      }
+      navigate(resolveNotificationRoute(item.link));
     }
   };
 

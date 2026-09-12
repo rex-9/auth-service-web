@@ -16,6 +16,8 @@ import AppRoutes from "../../../AppRoutes";
 import { AuthController } from "..";
 import { AppLocales, useTranslate } from "../../../locales";
 import { ButtonVariants } from "../../../design";
+import { AnalyticsService } from "../../../services";
+import { ANALYTICS_AUTH_METHODS } from "../../../constants";
 
 interface ISignupPasswordConfirmDialogProps {
   email: string;
@@ -104,6 +106,10 @@ export const SignupPasswordConfirmDialog: React.FC<
         );
         if (result.success && result.token && result.user) {
           signin(result.token, result.user);
+          void AnalyticsService.logSignUp(ANALYTICS_AUTH_METHODS.GOOGLE);
+          void AnalyticsService.logCompleteOnboarding(
+            ANALYTICS_AUTH_METHODS.GOOGLE,
+          );
           success(
             t(AppLocales.Auth.SignUpPasscodeConfirm.GoogleSignInComplete),
           );

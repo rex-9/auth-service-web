@@ -41,7 +41,7 @@ describe("AnalyticsController", () => {
       },
       time_series: [],
       breakdowns: {
-        subscriptions_by_cycle: {},
+        subscriptions_by_interval: {},
         feedback_ratings: {},
         errors_by_platform: {},
       },

@@ -11,6 +11,14 @@ class AppConfig {
   static readonly SERVER_WS_BASE_URL =
     import.meta.env.VITE_REACT_APP_SERVER_WS_BASE_URL || "ws://localhost:3000";
 
+  static readonly FIREBASE = {
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "",
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "",
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "",
+    appId: import.meta.env.VITE_FIREBASE_APP_ID || "",
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "",
+  };
+
   // Media upload limits
   static readonly MEDIA_MAX_NON_VIDEO_SIZE_MB = Number(
     import.meta.env.VITE_MEDIA_MAX_NON_VIDEO_SIZE_MB || 10,

@@ -19,7 +19,7 @@ Built under the same creed as Rexone Core: **clear in thought, exact in structur
 
 **Typed · Modular · Localized · Observable · API-driven · Fully Tested**
 
-[Explore the client](#feature-map) · [Ecosystem Architecture](ECOSYSTEM.md) · [Development Law](LAW.md) · [Production Deployment](docs/DEPLOYMENT.md) · [Analytics Guide](ANALYTICS.md) · [Run it locally](#getting-started) · [Meet the architecture](#architecture) · [E2E Testing](#end-to-end-testing-playwright) · [Connect the API](#configuration)
+[Explore the client](#feature-map) · [Who it is for](#who-rexone-web-is-for) · [Ecosystem Architecture](ECOSYSTEM.md) · [Development Law](LAW.md) · [Production Deployment](docs/DEPLOYMENT.md) · [Run it locally](#getting-started) · [Meet the architecture](#architecture) · [Connect the API](#configuration)
 
 </div>
 
@@ -45,6 +45,29 @@ Its boundaries are deliberate. UI components own interaction and presentation. C
 And no—the interface was not assembled by stacking dependencies until a demo appeared.
 
 Authentication edge cases were traced. Sensitive passcodes were kept out of URLs. Session replacement and expiry were handled centrally. Runtime and React failures were made observable. Translation keys were organized by domain. Real user journeys are verified by automated Playwright E2E suites. The client is built to remain understandable after the first release, not merely attractive before it.
+
+## Who Rexone Web is for
+
+Rexone Web is built for React teams, founder-engineers, and agencies creating authenticated browser products on Rexone Core that need both a customer-facing application foundation and a permission-aware operational portal.
+
+It is a particularly good fit when a web product needs several of these concerns to behave consistently:
+
+- Complete identity, confirmation, recovery, Google sign-in, and session-expiry flows.
+- User and administrator experiences backed by the same IAM contract.
+- Stripe checkout, subscriptions, purchases, and entitlement-aware interfaces.
+- Queued AI, media, and notification workflows that update through real-time events.
+- Centralized localization, browser-local date and time presentation, analytics, and client telemetry.
+- Reusable responsive design primitives instead of one-off page implementations.
+
+Rexone Web is not a generic component showcase or an independent mock frontend. It is the reference browser client for the Rexone ecosystem, and its transport and domain contracts are designed to follow Rexone Core.
+
+## What you get
+
+- **A working product shell:** public, authenticated, profile, commerce, AI, and administration experiences share one routing and state architecture.
+- **A serious admin client:** granular IAM controls navigation and actions across operational resource modules.
+- **Centralized infrastructure:** API interception, socket lifecycle, localization, analytics, telemetry, persistence, and timezone handling stay out of individual pages.
+- **Reusable interface foundations:** forms, dialogs, tables, detail layouts, feedback states, and responsive behavior are shared deliberately.
+- **Real ecosystem integration:** the application consumes Rexone Core's versioned JSON contracts and real-time operation lifecycle.
 
 ## The philosophy
 
@@ -130,6 +153,13 @@ The UI does not need to know how Axios is configured, and transport code does no
 - Google logout coordination for Google-backed accounts.
 
 Authentication delegates identity rules and token authority to Rexone Core while keeping browser behavior, navigation, and feedback cohesive.
+
+### Product analytics
+
+- Firebase Analytics uses the Web stream from the shared Rexone GA4 property.
+- Route changes emit `view_page` centrally without query strings, while successful authentication, onboarding, product, purchase, and notification interactions use the shared `action_noun` event contract.
+- Every event includes `platform: web`; authenticated sessions use only the opaque Rexone user ID and never send email or other personal data to Analytics.
+- Firebase client identifiers are configured through the `VITE_FIREBASE_*` variables in [`.env.example`](.env.example).
 
 ### Routing & access
 
@@ -321,28 +351,13 @@ cp .env.example .env
 
 Set the Core HTTP and WebSocket URLs and provide a Google OAuth client ID if exercising Google sign-in.
 
-### 2. Install and run natively
-
-```bash
-npm install
-npm run dev
-```
-
-By default Vite listens on all interfaces. The checked-in development environment maps the client to [http://localhost:4000](http://localhost:4000).
-
-The convenience script runs the Docker development stack:
+### 2. Start the development environment
 
 ```bash
 ./scripts/dev.sh
 ```
 
-### 3. Run with Docker Compose
-
-```bash
-docker compose -f docker-compose.dev.yaml up --build
-```
-
-The development service mounts the repository into the container, keeps container-managed `node_modules`, and publishes the port configured by `VITE_REACT_APP_PORT_MAP`.
+The script starts the Docker development stack, building it when necessary. The service mounts the repository into the container, keeps container-managed `node_modules`, and publishes the port configured by `VITE_REACT_APP_PORT_MAP`. By default, the client is available at [http://localhost:4000](http://localhost:4000).
 
 ## End-to-End Testing (Playwright)
 

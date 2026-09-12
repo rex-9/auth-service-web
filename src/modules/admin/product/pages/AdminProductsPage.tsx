@@ -168,20 +168,20 @@ export const AdminProductsPage: React.FC<IAdminProductsPageProps> = ({
       {
         key: ADMIN_PRODUCT_TABLE_KEYS.PRICE,
         header: t(AppLocales.Admin.Products.Table.Price),
-        sortKey: ADMIN_PRODUCT_SORT_KEYS.PRICE_UNIT_AMOUNT,
+        sortKey: ADMIN_PRODUCT_SORT_KEYS.UNIT_AMOUNT,
         render: (product) => (
           <div className="font-medium text-base-content">
-            {formatPrice(product.price_unit_amount, product.currency, "Free")}
+            {formatPrice(product.unit_amount, product.currency, "Free")}
           </div>
         ),
       },
       {
-        key: ADMIN_PRODUCT_TABLE_KEYS.CYCLE,
-        header: t(AppLocales.Admin.Products.Table.Cycle),
-        sortKey: ADMIN_PRODUCT_SORT_KEYS.CYCLE,
+        key: ADMIN_PRODUCT_TABLE_KEYS.INTERVAL,
+        header: t(AppLocales.Admin.Products.Table.Interval),
+        sortKey: ADMIN_PRODUCT_SORT_KEYS.INTERVAL,
         render: (product) => (
           <span className="text-body-m capitalize text-base-content">
-            {product.cycle || "One-time"}
+            {product.interval || "One-time"}
           </span>
         ),
       },

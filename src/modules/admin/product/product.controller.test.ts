@@ -30,9 +30,9 @@ describe("ProductController", () => {
           attributes: {
             id: "p1",
             name: "Pro Plan",
-            price_unit_amount: 1999,
+            unit_amount: 1999,
             currency: "USD",
-            cycle: "month",
+            interval: "month",
             active: true,
           },
         },
@@ -142,9 +142,9 @@ describe("ProductController", () => {
       const formValues: IAdminProductFormValues = {
         name: "Enterprise",
         description: "Enterprise tier",
-        price_unit_amount: 9900,
+        unit_amount: 9900,
         currency: "USD",
-        cycle: "year",
+        interval: "year",
         active: true,
       };
 
@@ -173,9 +173,9 @@ describe("ProductController", () => {
       const formValues: IAdminProductFormValues = {
         name: "Enterprise Updated",
         description: "Updated description",
-        price_unit_amount: 9900,
+        unit_amount: 9900,
         currency: "USD",
-        cycle: "year",
+        interval: "year",
         active: true,
       };
 
