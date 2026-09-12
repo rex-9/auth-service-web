@@ -14,6 +14,9 @@ vi.mock("./asset.service", () => ({
     restoreAsset: vi.fn(),
     destroyAsset: vi.fn(),
     compressAsset: vi.fn(),
+    regenerateThumbnail: vi.fn(),
+    uploadThumbnail: vi.fn(),
+    uploadSubtitle: vi.fn(),
     getStorageStats: vi.fn(),
     emptyRecycleBin: vi.fn(),
     discardBatch: vi.fn(),
@@ -205,6 +208,76 @@ describe("AdminAssetController", () => {
           folder: "admin_uploads",
         }),
       );
+    });
+  });
+
+  describe("uploadSubtitle", () => {
+    it("uploads an srt file and returns the parsed asset", async () => {
+      const file = new File(["1\n00:00:00,000 --> 00:00:01,000\nHi\n"], "captions.srt", {
+        type: "application/x-subrip",
+      });
+      const mockResponse = {
+        data: {
+          status: { code: 200, success: true, message: "Subtitle uploaded" },
+          data: {
+            asset: {
+              id: "a-video",
+              name: "lesson.mp4",
+              type: "video",
+              format: "video",
+              subtitle: {
+                id: "a-sub",
+                url: "https://example.com/captions.srt",
+                status: "ready",
+                size_bytes: 128,
+              },
+            },
+          },
+        },
+      };
+
+      vi.mocked(AdminAssetService.uploadSubtitle).mockResolvedValue(
+        mockResponse as never,
+      );
+
+      const result = await AdminAssetController.uploadSubtitle("a-video", file);
+
+      expect(result.success).toBe(true);
+      expect(result.message).toBe("Subtitle uploaded");
+      expect(result.asset?.id).toBe("a-video");
+      expect(result.asset?.subtitle).toEqual({
+        id: "a-sub",
+        url: "https://example.com/captions.srt",
+        status: "ready",
+        size_bytes: 128,
+      });
+      expect(AdminAssetService.uploadSubtitle).toHaveBeenCalledWith(
+        "a-video",
+        file,
+      );
+    });
+
+    it("handles failure response", async () => {
+      const file = new File(["bad"], "notes.txt", { type: "text/plain" });
+      const mockResponse = {
+        data: {
+          status: {
+            code: 422,
+            success: false,
+            message: "Subtitle must be an SRT file",
+          },
+        },
+      };
+
+      vi.mocked(AdminAssetService.uploadSubtitle).mockResolvedValue(
+        mockResponse as never,
+      );
+
+      const result = await AdminAssetController.uploadSubtitle("a-video", file);
+
+      expect(result.success).toBe(false);
+      expect(result.asset).toBeUndefined();
+      expect(result.error).toBe("Subtitle must be an SRT file");
     });
   });
 
