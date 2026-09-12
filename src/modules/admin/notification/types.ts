@@ -22,6 +22,7 @@ export interface IAdminNotificationTemplate {
   description?: string | null;
   category: NotificationEventCategory | string;
   link?: string | null;
+  clients: string[];
   admin?: boolean;
   unavailable_reason?: string;
   in_app_title?: string | null;
@@ -46,6 +47,7 @@ export interface IAdminNotificationTemplateFormValues {
   description?: string;
   category: string;
   link?: string;
+  clients: string[];
   admin: boolean;
   in_app_title?: string;
   in_app_body?: string;

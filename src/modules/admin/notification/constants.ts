@@ -1,6 +1,10 @@
 import AppRoutes from "../../../AppRoutes";
 import { AppLocales } from "../../../locales";
 import { IAdminPageMeta } from "../constants";
+export {
+  DEFAULT_NOTIFICATION_CLIENTS,
+  NOTIFICATION_CLIENTS,
+} from "../../notification";
 
 export const ADMIN_NOTIFICATION_PAGE_TITLES = {
   LIST: "Notifications",
@@ -67,6 +71,15 @@ export const NOTIFICATION_CATEGORIES = {
   SYSTEM: "system",
   MARKETING: "marketing",
   BROADCAST: "broadcast",
+} as const;
+
+export const NOTIFICATION_TEMPLATE_LINKS = {
+  NONE: "",
+  EXTERNAL: "external",
+  HOME: AppRoutes.client.protected.HOME,
+  PROFILE: AppRoutes.client.protected.PROFILE,
+  PAYMENT: AppRoutes.client.protected.PAYMENT,
+  AI: AppRoutes.client.protected.AI,
 } as const;
 
 export const NOTIFICATION_ADMIN_TABS = {

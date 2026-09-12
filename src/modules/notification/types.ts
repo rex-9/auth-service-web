@@ -13,6 +13,7 @@ export interface IUserNotification {
   title: string;
   message: string;
   link: string | null;
+  clients: string[];
   data: INotificationData;
   operation_id?: string | null;
   operation_type?: TAsyncOperationType | null;

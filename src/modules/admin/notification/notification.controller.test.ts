@@ -112,6 +112,7 @@ describe("NotificationController", () => {
         event: "account.alert",
         name: "Alert Template",
         category: "security",
+        clients: ["web", "mobile"],
         admin: false,
         in_app_title: "Alert",
         in_app_body: "Security issue detected",
@@ -144,6 +145,7 @@ describe("NotificationController", () => {
         event: "",
         name: "",
         category: "",
+        clients: ["web", "mobile"],
         admin: false,
       });
 

@@ -4,6 +4,10 @@ import { NOTIFICATION_SOCKET_TYPES } from "../modules/notification";
 export type ISocketMessage = {
   type: string;
   message?: string;
+  id?: string;
+  title?: string;
+  link?: string | null;
+  clients?: string[];
   data?: Record<string, unknown>;
   created_at?: string;
   channel?: string;

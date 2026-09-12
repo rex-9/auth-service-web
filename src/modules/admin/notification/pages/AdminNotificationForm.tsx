@@ -10,6 +10,9 @@ import type {
 import {
   NOTIFICATION_CATEGORIES,
   NOTIFICATION_CHANNELS,
+  DEFAULT_NOTIFICATION_CLIENTS,
+  NOTIFICATION_CLIENTS,
+  NOTIFICATION_TEMPLATE_LINKS,
   type TNotificationChannel,
 } from "../constants";
 import {
@@ -36,6 +39,7 @@ const emptyForm: IAdminNotificationTemplateFormValues = {
   description: "",
   category: NOTIFICATION_CATEGORIES.MARKETING,
   link: "",
+  clients: [...DEFAULT_NOTIFICATION_CLIENTS],
   admin: true,
   in_app_title: "",
   in_app_body: "",
@@ -65,6 +69,7 @@ export const AdminNotificationForm: React.FC<IAdminNotificationFormProps> = ({
           description: template.description || "",
           category: template.category || NOTIFICATION_CATEGORIES.MARKETING,
           link: template.link || "",
+          clients: template.clients || [...DEFAULT_NOTIFICATION_CLIENTS],
           admin: template.admin ?? true,
           in_app_title: template.in_app_title || "",
           in_app_body: template.in_app_body || "",
@@ -81,6 +86,12 @@ export const AdminNotificationForm: React.FC<IAdminNotificationFormProps> = ({
 
   const [activeChannelTab, setActiveChannelTab] =
     useState<TNotificationChannel>(NOTIFICATION_CHANNELS.IN_APP);
+  const [linkSelection, setLinkSelection] = useState(() => {
+    const link = template?.link || "";
+    return link.startsWith("https://")
+      ? NOTIFICATION_TEMPLATE_LINKS.EXTERNAL
+      : link;
+  });
   const [alertMessage, setAlertMessage] = useState("");
 
   const categoryOptions = useMemo(
@@ -92,9 +103,51 @@ export const AdminNotificationForm: React.FC<IAdminNotificationFormProps> = ({
     [],
   );
 
-  const handleChange = (
-    field: keyof IAdminNotificationTemplateFormValues,
-    value: any,
+  const linkOptions = useMemo(
+    () => [
+      {
+        value: NOTIFICATION_TEMPLATE_LINKS.NONE,
+        label: t(
+          AppLocales.Admin.Notifications.Templates.Dialog.LinkOptions.None,
+        ),
+      },
+      {
+        value: NOTIFICATION_TEMPLATE_LINKS.EXTERNAL,
+        label: t(
+          AppLocales.Admin.Notifications.Templates.Dialog.LinkOptions.External,
+        ),
+      },
+      {
+        value: NOTIFICATION_TEMPLATE_LINKS.HOME,
+        label: t(
+          AppLocales.Admin.Notifications.Templates.Dialog.LinkOptions.Home,
+        ),
+      },
+      {
+        value: NOTIFICATION_TEMPLATE_LINKS.PROFILE,
+        label: t(
+          AppLocales.Admin.Notifications.Templates.Dialog.LinkOptions.Profile,
+        ),
+      },
+      {
+        value: NOTIFICATION_TEMPLATE_LINKS.PAYMENT,
+        label: t(
+          AppLocales.Admin.Notifications.Templates.Dialog.LinkOptions.Payment,
+        ),
+      },
+      {
+        value: NOTIFICATION_TEMPLATE_LINKS.AI,
+        label: t(
+          AppLocales.Admin.Notifications.Templates.Dialog.LinkOptions.Ai,
+        ),
+      },
+    ],
+    [t],
+  );
+
+  const handleChange = <K extends keyof IAdminNotificationTemplateFormValues>(
+    field: K,
+    value: IAdminNotificationTemplateFormValues[K],
   ) => {
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
@@ -112,6 +165,13 @@ export const AdminNotificationForm: React.FC<IAdminNotificationFormProps> = ({
     if (!formValues.name.trim()) {
       setAlertMessage(
         t(AppLocales.Admin.Notifications.Templates.Dialog.NameRequired),
+      );
+      return;
+    }
+
+    if (formValues.clients.length === 0) {
+      setAlertMessage(
+        t(AppLocales.Admin.Notifications.Templates.Dialog.ClientRequired),
       );
       return;
     }
@@ -180,17 +240,39 @@ export const AdminNotificationForm: React.FC<IAdminNotificationFormProps> = ({
               onValueChange={(val) => handleChange("category", val)}
             />
 
-            <TextInput
+            <Dropdown
               label={t(
                 AppLocales.Admin.Notifications.Templates.Dialog.LinkLabel,
               )}
-              placeholder={t(
-                AppLocales.Admin.Notifications.Templates.Dialog.LinkPlaceholder,
-              )}
-              value={formValues.link || ""}
-              onChange={(e) => handleChange("link", e.target.value)}
+              options={linkOptions}
+              value={linkSelection}
+              onValueChange={(value) => {
+                setLinkSelection(value);
+                handleChange(
+                  "link",
+                  value === NOTIFICATION_TEMPLATE_LINKS.EXTERNAL ? "" : value,
+                );
+              }}
             />
           </div>
+
+          {linkSelection === NOTIFICATION_TEMPLATE_LINKS.EXTERNAL && (
+            <TextInput
+              type="url"
+              label={t(
+                AppLocales.Admin.Notifications.Templates.Dialog
+                  .ExternalUrlLabel,
+              )}
+              placeholder={t(
+                AppLocales.Admin.Notifications.Templates.Dialog
+                  .ExternalUrlPlaceholder,
+              )}
+              value={formValues.link || ""}
+              onChange={(event) => handleChange("link", event.target.value)}
+              pattern="https://.*"
+              required
+            />
+          )}
 
           <TextArea
             label={t(AppLocales.Admin.Notifications.Templates.Dialog.DescLabel)}
@@ -210,6 +292,30 @@ export const AdminNotificationForm: React.FC<IAdminNotificationFormProps> = ({
               {t(AppLocales.Admin.Notifications.Templates.Dialog.AdminOnly)}
             </Checkbox>
           </div>
+
+          <div className="space-y-2 pt-1">
+            <p className="text-body-s font-semibold text-base-content">
+              {t(AppLocales.Admin.Notifications.Templates.Dialog.ClientsLabel)}
+            </p>
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
+              {Object.values(NOTIFICATION_CLIENTS).map((client) => (
+                <Checkbox
+                  key={client}
+                  checked={formValues.clients.includes(client)}
+                  onChange={(event) => {
+                    const clients = event.target.checked
+                      ? [...formValues.clients, client]
+                      : formValues.clients.filter((value) => value !== client);
+                    handleChange("clients", clients);
+                  }}
+                >
+                  {client === NOTIFICATION_CLIENTS.WEB
+                    ? t(AppLocales.Admin.Notifications.Templates.Dialog.ClientWeb)
+                    : t(AppLocales.Admin.Notifications.Templates.Dialog.ClientMobile)}
+                </Checkbox>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Section 2: Multi-Channel Content */}
@@ -219,7 +325,8 @@ export const AdminNotificationForm: React.FC<IAdminNotificationFormProps> = ({
               <iconsLib.sparkles className="h-5 w-5 text-secondary" />
               <h3 className="text-body-m font-bold text-base-content">
                 {t(
-                  AppLocales.Admin.Notifications.Templates.Dialog.ChannelContent,
+                  AppLocales.Admin.Notifications.Templates.Dialog
+                    .ChannelContent,
                 )}
               </h3>
             </div>
@@ -324,7 +431,8 @@ export const AdminNotificationForm: React.FC<IAdminNotificationFormProps> = ({
               />
               <TextInput
                 label={t(
-                  AppLocales.Admin.Notifications.Templates.Dialog.PushTemplateId,
+                  AppLocales.Admin.Notifications.Templates.Dialog
+                    .PushTemplateId,
                 )}
                 placeholder={t(
                   AppLocales.Admin.Notifications.Templates.Dialog

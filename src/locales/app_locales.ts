@@ -382,6 +382,7 @@ export const AppLocales = {
       Form: {
         NameLabel: "admin.roles.form.name_label",
         NamePlaceholder: "admin.roles.form.name_placeholder",
+        NameInvalid: "admin.roles.form.name_invalid",
         KeyLabel: "admin.roles.form.key_label",
         KeyPlaceholder: "admin.roles.form.key_placeholder",
         DescriptionLabel: "admin.roles.form.description_label",
@@ -927,9 +928,24 @@ export const AppLocales = {
             "admin.notifications.templates.dialog.desc_placeholder",
           CategoryLabel: "admin.notifications.templates.dialog.category_label",
           LinkLabel: "admin.notifications.templates.dialog.link_label",
-          LinkPlaceholder:
-            "admin.notifications.templates.dialog.link_placeholder",
+          LinkOptions: {
+            None: "admin.notifications.templates.dialog.link_options.none",
+            Home: "admin.notifications.templates.dialog.link_options.home",
+            Profile: "admin.notifications.templates.dialog.link_options.profile",
+            Payment: "admin.notifications.templates.dialog.link_options.payment",
+            Ai: "admin.notifications.templates.dialog.link_options.ai",
+            External:
+              "admin.notifications.templates.dialog.link_options.external",
+          },
+          ExternalUrlLabel:
+            "admin.notifications.templates.dialog.external_url_label",
+          ExternalUrlPlaceholder:
+            "admin.notifications.templates.dialog.external_url_placeholder",
           AdminOnly: "admin.notifications.templates.dialog.admin_only",
+          ClientsLabel: "admin.notifications.templates.dialog.clients_label",
+          ClientWeb: "admin.notifications.templates.dialog.client_web",
+          ClientMobile: "admin.notifications.templates.dialog.client_mobile",
+          ClientRequired: "admin.notifications.templates.dialog.client_required",
           ChannelContent:
             "admin.notifications.templates.dialog.channel_content",
           VariablesHint: "admin.notifications.templates.dialog.variables_hint",

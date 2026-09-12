@@ -48,7 +48,7 @@ class NotificationService {
   > {
     return api.post<IJsonApiResource<IAdminNotificationTemplate>>(
       AppRoutes.server.protected.admin.NOTIFICATIONS,
-      { notification: values },
+      { notification: { ...values, link: values.link || null } },
     );
   }
 
@@ -63,7 +63,14 @@ class NotificationService {
         AppRoutes.server.protected.admin.NOTIFICATION_DETAIL,
         id,
       ),
-      { notification: values },
+      {
+        notification: {
+          ...values,
+          ...(values.link !== undefined
+            ? { link: values.link || null }
+            : {}),
+        },
+      },
     );
   }
 
